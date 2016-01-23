@@ -1,0 +1,27 @@
+{
+  "name": "budgie",
+  "version": "1.0.0",
+  "description": "An intuitive, easy-to-use personal finance app.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ng-four/budgie.git"
+  },
+  "author": "ng-four",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ng-four/budgie/issues"
+  },
+  "homepage": "https://github.com/ng-four/budgie#readme",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "bookshelf": "^0.9.1",
+    "express": "^4.13.4",
+    "express-sessions": "^1.0.5",
+    "lodash": "^4.0.0",
+    "mysql": "^2.10.2"
+  }
+}

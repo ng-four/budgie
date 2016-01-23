@@ -1,0 +1,22 @@
+{
+  "name": "budgie",
+  "description": "An intuitive, easy-to-use personal finance app.",
+  "main": "app.js",
+  "authors": [
+    "ng-four"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/ng-four/budgie",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.9",
+    "angular-ui-router": "~0.2.15"
+  }
+}
