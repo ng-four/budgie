@@ -19,9 +19,11 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "bookshelf": "^0.9.1",
+    "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-sessions": "^1.0.5",
     "lodash": "^4.0.0",
+    "morgan": "^1.6.1",
     "mysql": "^2.10.2"
   }
 }
