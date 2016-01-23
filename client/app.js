@@ -1,4 +1,14 @@
-angular.module('budgie', [])
+angular.module('budgie', [
+	'main.controller',
+	'expense.controller',
+	'profile.controller',
+	'history.controller',
+	'learn.controller',
+	'stocks.controller',
+	'login.controller',
+	'signup.controller',
+	'landing.controller',
+	'ui.router'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider){
 
 	$stateProvider
@@ -33,12 +43,17 @@ angular.module('budgie', [])
 			templateUrl: './main/stocks/stocks.html',
 			controller: 'StocksController as stocks'
 		})
-		.state('login', {
+		.state('landing', {
+			url: '/landing',
+			templateUrl: './auth/landing.html',
+			controller: 'LandingController as landing'
+		})
+		.state('landing.login', {
 			url: '/login',
 			templateUrl: './auth/login.html',
 			controller: 'LoginController as login'
 		})
-		.state('signup', {
+		.state('landing.signup', {
 			url: '/signup',
 			templateUrl: './auth/signup.html',
 			controller: 'SignupController as signup'
