@@ -1,4 +1,13 @@
-angular.module('budgie', [])
+angular.module('budgie', [
+	'main.controller',
+	'expense.controller',
+	'profile.controller',
+	'history.controller',
+	'learn.controller',
+	'stocks.controller',
+	'login.controller',
+	'signup.controller',
+	'ui.router'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider){
 
 	$stateProvider
