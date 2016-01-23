@@ -60,7 +60,7 @@ angular.module('budgie', [
 		});
 
 		$urlRouterProvider.otherwise('/');
-		
+
 	//  $httpProvider.interceptors.push('AttachTokens');   // commented out till we get Auth set up
 
 })
