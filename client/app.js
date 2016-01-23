@@ -59,8 +59,8 @@ angular.module('budgie', [
 			controller: 'SignupController as signup'
 		});
 
-		$urlRouterProvider.otherwise('/');
-
+		$urlRouterProvider.otherwise('//expense');
+		
 	//  $httpProvider.interceptors.push('AttachTokens');   // commented out till we get Auth set up
 
 })
