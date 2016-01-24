@@ -17,7 +17,7 @@ app.use(session({
  secret: sessionSecret,
  resave: true,
  saveUninitialized: false,
- cookie: {maxAge: 1000*60*60}
+ cookie: {maxAge: 1000*60*60*8}
 }));
 
 // Set what we are listening on.
