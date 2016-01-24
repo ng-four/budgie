@@ -1,3 +1,20 @@
 <h1>profile.html</h1>
-<div class="container">
+<div id="wrapper">
+    <div id="page-content-wrapper">
+    	<br><br>
+    	<div class="col-lg-10">
+    		<legend>Dis be profile for {{ profile.full_name }}:</legend>
+    	</div>
+    	<div class="col-lg-10">
+    		<legend>Email: {{ profile.email }}</legend>
+    	</div>
+    	<div class="col-lg-10">
+    		<legend>Monthly limit: ${{ profile.monthly_limit }}</legend>
+    	</div>
+    	<div class="col-lg-10">
+    		<a href="#" class="btn btn-info btn-sm">edit</a>
+    	</div>
+
+
 	</div>
+</div>
