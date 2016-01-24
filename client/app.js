@@ -8,6 +8,7 @@ angular.module('budgie', [
 	'login.controller',
 	'signup.controller',
 	'landing.controller',
+	'auth.service',
 	'ui.router'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider){
 
@@ -59,8 +60,31 @@ angular.module('budgie', [
 			controller: 'SignupController as signup'
 		});
 
-		$urlRouterProvider.otherwise('/');
-
-	//  $httpProvider.interceptors.push('AttachTokens');   // commented out till we get Auth set up
+		$urlRouterProvider.otherwise('//expense');
+		
+	//  $httpProvider.interceptors.push('AttachSession');   // commented out till we get Auth set up
 
 })
+/*
+.factory('AttachSession', function ($window) {
+  var attach = {
+    request: function (object) {
+      var sess = $window.localStorage.getItem('budgieID');    // tbd based on what is returned by server
+      if (sess) {
+        object.headers['x-access-token'] = jwt;
+      }
+      object.headers['Allow-Control-Allow-Origin'] = '*';
+      return object;
+    }
+  };
+  return attach;
+})
+*/
+.run(function ($rootScope, $location, AuthServices) {
+  $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
+    if (toState.authenticate && !AuthServices.isAuth()) {
+      e.preventDefault();
+      $location.path('/');          //   might need to change to landing/login
+    }
+  });
+});
