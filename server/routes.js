@@ -179,7 +179,6 @@ router.post('/expenses', function(request, response) {
   var spent_date = request.body.spent_date || new Date().toISOString().slice(0, 19).replace('T', ' '); // TODO Get correct Date
   var location = request.body.location || null;
   // If no missing data
-  console.log(request.session.user);
   if (name !== null && amount !== null && category !== null && request.session.user !== undefined) {
     db.query('INSERT INTO Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ?, user_id = ?;',
     [name, amount, category, notes, spent_date, location, request.session.user],
@@ -228,9 +227,15 @@ router.put('/expenses/:id', function(request, response) {
 
 // Delete expense
 router.delete('/expenses/:id', function(request, response) {
-
+  var id = request.params.id;
+  db.query('DELETE FROM Expenses WHERE id = ?', [id], function (err, result) {
+    if (err) {
+      console.error(err);
+    } else {
+      response.sendStatus(200);      
+    }
+  });
 });
-
 
 
 // Export for use in server.js
@@ -240,8 +245,6 @@ module.exports = router;
 
 
 /*
-
-delete Expenses
 
 crud Goala
 curd Recurring_Expenses
