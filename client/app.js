@@ -9,6 +9,7 @@ angular.module('budgie', [
 	'signup.controller',
 	'landing.controller',
 	'auth.service',
+	'profile.service',
 	'ui.router'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider){
 
