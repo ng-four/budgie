@@ -1,16 +1,23 @@
 angular.module('profile.controller', [])
-.controller('ProfileController', function(ProfileServices){
+.controller('ProfileController', function(ProfileServices, AuthServices){
 	var profile = this;
 
 	// placeholders for now...
-	profile.full_name = "Tom";
-	profile.email = "tom@tom.com";
-	profile.monthly_limit = "3000";
-	profile.savings_goal = "10%";
+
+
+	AuthServices.submitNewUser(
+		{
+		email: 'tom2@tom.com',
+		password: 'tomtom',
+		full_name: 'tom2',
+		monthly_limit: 2000, 
+		savings_goal: 15
+	});
 
 	profile.loadProfile = function() {
 		ProfileServices.getProfileData()
 			.then(function(resp){
+				profile.email = resp.email;
 				profile.full_name = resp.full_name;			// could be resp.data or resp.body or whatever
 				profile.monthly_limit = resp.monthly_limit;
 				profile.savings_goal = resp.savings_goal;
@@ -32,10 +39,7 @@ angular.module('profile.controller', [])
 	profile.updateSavings = function(newSavings){		// maybe specify savings *rate* or *goal*
 
 
-	}
-
-
-
+	};
 
 
 	/* TODO:

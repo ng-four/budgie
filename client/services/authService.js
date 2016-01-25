@@ -17,7 +17,7 @@ angular.module('auth.service', [])
 			data: userData
 		}).then(function(resp) {
 			console.log("resp in submitNewUser ", resp);
-			$window.localStorage.setItem('budgieID', resp.data.sessionID);  // MAKE SURE IT'S CORRECT
+			$window.localStorage.setItem('budgieID', resp.data.id);  // MAKE SURE IT'S CORRECT
 			return resp.data;   
 		}, function(error) {
   			console.error('Sign up ERROR!!! ', error); 
@@ -36,7 +36,7 @@ angular.module('auth.service', [])
 			url: '/login',
 			data: userData
 		}).then(function(resp) {
-			$window.localStorage.setItem('budgieID', resp.data.sessionID);   // MAKE SURE IT'S CORRECT
+			$window.localStorage.setItem('budgieID', resp.data.id);   // FOR FRONT-END ROUTING AUTH ONLY
 			return resp.data;  
 		}).catch(function(error) {
   			console.error('Sign in ERROR!!!', error);  								
@@ -44,11 +44,11 @@ angular.module('auth.service', [])
 	};
 
 	var isAuth = function () {
-    	return !!$window.localStorage.getItem('budgieID');
+    	return !!$window.localStorage.getItem('budgieID');  // FOR FRONT-END ROUTING AUTH ONLY
   	};
 
   	var logOut = function () {
-    	$window.localStorage.removeItem('budgieID');
+    	$window.localStorage.removeItem('budgieID');  // FOR FRONT-END ROUTING AUTH ONLY
     	$location.path('/');
   	};
 

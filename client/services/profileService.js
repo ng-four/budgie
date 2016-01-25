@@ -11,7 +11,7 @@ angular.module('profile.service', [])
 	};
 
 	var updateLimit = function(newLimit) {
-		return $http.({
+		return $http({
 			method: 'PUT',
 			url: '/monthly_limit',
 			data: {monthly_limit: newLimit}
@@ -23,7 +23,7 @@ angular.module('profile.service', [])
 	};
 
 	var updateSavings = function(newGoal){
-		return $http.({
+		return $http({
 			method: 'PUT',
 			url: '/savings_goal', 
 			data: {savings_goal: newGoal}
