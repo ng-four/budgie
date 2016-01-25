@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var fs = require('fs');
+var config = require('./config.js');
 
 // if (process.env.CLEARDB_DATABASE_URL) {
 //   var db = mysql.createConnection({
@@ -13,9 +14,9 @@ var fs = require('fs');
 // Connect to local MySql database
   var db = mysql.createConnection({
     host     : 'localhost',
-    user     : 'root',
-    password : '',
-    database : 'budgie',
+    user     :  config.db.user,
+    password :  config.db.password,
+    database : config.db.database,
     multipleStatements: true
   });
 // }
