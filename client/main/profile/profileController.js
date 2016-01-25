@@ -4,7 +4,7 @@ angular.module('profile.controller', [])
 
 	// placeholders for now...
 
-
+	/*
 	AuthServices.submitNewUser(
 		{
 		email: 'tom2@tom.com',
@@ -13,6 +13,7 @@ angular.module('profile.controller', [])
 		monthly_limit: 2000, 
 		savings_goal: 15
 	});
+*/
 
 	profile.loadProfile = function() {
 		ProfileServices.getProfileData()
