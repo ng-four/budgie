@@ -5,6 +5,7 @@ angular.module('profile.controller', [])
 	// placeholders for now...
 
 	/*
+
 	AuthServices.submitNewUser(
 		{
 		email: 'tom2@tom.com',
@@ -41,11 +42,6 @@ angular.module('profile.controller', [])
 
 
 	};
-
-
-
-
-
 
 
 	/* TODO:
