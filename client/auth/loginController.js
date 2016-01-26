@@ -9,15 +9,15 @@ angular.module('login.controller', [])
 			password: login.password
 		};
 
-		console.log("login.submit called with ", user);
-
 		AuthServices.submitLogin(user)
 			.then(function(resp){
 				console.log(resp);
 				var changePath = function(){
-					$state.go('main.profile');
+					//$state.go('main.profile');
+					console.log('logged in; trying to redirect to main/profile');
+					$location.path('/main/profile');
 				}
-				$timeout(changePath, 3000);
+				$timeout(changePath, 1000);
 				
 			}, function(error){
 				throw error;

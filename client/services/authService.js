@@ -8,7 +8,7 @@ angular.module('auth.service', [])
 			data: userData
 		}).then(function(resp) {
 			console.log("resp in submitNewUser ", resp);
-			$window.localStorage.setItem('budgieID', resp.data.id);  // MAKE SURE IT'S CORRECT
+			$window.localStorage.setItem('budgieID', resp.data.id); 
 			return resp.data;   
 		}, function(error) {
   			console.error('Sign up ERROR!!! ', error); 
@@ -21,7 +21,7 @@ angular.module('auth.service', [])
 			url: '/login',
 			data: userData
 		}).then(function(resp) {
-			$window.localStorage.setItem('budgieID', resp.data.id);   // FOR FRONT-END ROUTING AUTH ONLY
+			$window.localStorage.setItem('budgieID', resp.data.id);  
 			return resp.data;  
 		}).catch(function(error) {
   			console.error('Sign in ERROR!!!', error);  								
@@ -29,13 +29,21 @@ angular.module('auth.service', [])
 	};
 
 	var isAuth = function () {
-    	return !!$window.localStorage.getItem('budgieID');  // FOR FRONT-END ROUTING AUTH ONLY
+    	return !!$window.localStorage.getItem('budgieID');  
   	};
 
   	var logOut = function () {
   		console.log('logOut called in AuthServices');
-    	$window.localStorage.removeItem('budgieID');  // FOR FRONT-END ROUTING AUTH ONLY
-    	$location.path('/landing/login');
+    	
+    	return $http({
+    		method: 'GET',
+    		url: '/logout',
+    	}).then(function(resp){
+    		$window.localStorage.removeItem('budgieID'); 
+    		$location.path('/landing/login');
+    	}, function(error) {
+    		throw error;
+    	}); 	
   	};
 
 	return {
