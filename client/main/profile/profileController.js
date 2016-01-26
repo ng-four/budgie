@@ -9,7 +9,7 @@ angular.module('profile.controller', [])
 				profile.limitClicked = false;
 				profile.savingsClicked = false;
 				profile.email = resp.email;
-				profile.full_name = resp.full_name;			// could be resp.data or resp.body or whatever
+				profile.full_name = resp.full_name;			
 				profile.monthly_limit = resp.monthly_limit;
 				profile.savings_goal = resp.savings_goal;
 			}, function(error){
@@ -25,7 +25,7 @@ angular.module('profile.controller', [])
 		ProfileServices.updateLimit(newLimit)
 			.then(function(resp){
 				console.log(resp);
-				$timeout(profile.loadProfile, 1000);     // reload updated profile
+				$timeout(profile.loadProfile, 1000);     
 			}, function(error){
 				throw error;
 			});	
@@ -36,7 +36,7 @@ angular.module('profile.controller', [])
 	};
 
 
-	profile.submitNewSavings = function(newSavings){		// maybe specify savings *rate* or *goal*
+	profile.submitNewSavings = function(newSavings){		
 		ProfileServices.updateSavings(newSavings)
 			.then(function(resp){
 				console.log("resp in updateSavings ", resp);
@@ -60,8 +60,6 @@ angular.module('profile.controller', [])
 		add goal
 		remove goal
 		edit goal
-
-
 
 	*/
 	
