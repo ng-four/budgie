@@ -86,10 +86,20 @@ angular.module('budgie', [
   return attach;
 })
 */
-.run(function ($rootScope, $location, AuthServices) {
+.run(function ($rootScope, $location, AuthServices, ProfileServices) {
+  ProfileServices.getProfileData()
+	.then(function(success){
+		console.log('user (re)authenicated in run function');
+	}, function(error){
+		if(AuthServices.isAuth()){
+			console.log("user not logged in but budgieID still in local storage");
+			AuthServices.logOut();
+		}
+	});
+  
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
     if (toState.authenticate && !AuthServices.isAuth()) {
-      $location.path('/landing/login');          //   might need to change to landing/login
+      $location.path('/landing/login');        
     }
   });
 });

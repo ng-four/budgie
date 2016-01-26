@@ -58,6 +58,6 @@ angular.module('auth.service', [])
 		submitNewUser: submitNewUser,
 		submitLogin: submitLogin,
 		isAuth: isAuth,
-		logOut: logOut
+		logOut: logOut,
 	};
 })

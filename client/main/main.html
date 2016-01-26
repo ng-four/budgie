@@ -1,4 +1,4 @@
- <div class="navbar navbar-default navbar-fixed-top">
+ <div class="navbar navbar-default navbar-fixed-top"  ><!-- ng-init="main.checkLoginStatus()" -->
     <div class="container">
         <div class="navbar-header">
           <a ui-sref="main.expense" class="navbar-brand">budgie</a>
@@ -8,22 +8,7 @@
             <span class="icon-bar"></span>
           </button>
         </div>
-        <div class="navbar-collapse collapse" id="navbar-main">
-    <!--      
-		  <ul class="nav navbar-nav">
-            <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Menu <span class="caret"></span></a>
-              <ul class="dropdown-menu" aria-labelledby="themes">
-                <li><a href="#">Example 1</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Example 2</a></li>
-                <li><a href="#">Example 3</a></li>
-                <li><a href="#">Example 4</a></li>
-              </ul>
-            </li>
-		  </ul>
-	-->
-		  
+        <div class="navbar-collapse collapse" id="navbar-main">		  
 		 <ul class="nav navbar-nav navbar-right">
 		  	<li><a ui-sref="main.expense">expense</a></li>
 		  	<li><a ui-sref="main.profile">profile</a></li>
@@ -35,7 +20,4 @@
         </div>
     </div>
 </div>
-
-
-
 <div ui-view></div>
