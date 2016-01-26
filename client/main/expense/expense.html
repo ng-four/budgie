@@ -56,13 +56,13 @@
         <tbody>
           <tr class="success" ng-repeat="expenseThings in expense.expenseTable">
             <td>{{expenseThings.amount}}</td>
-            <td>{{expenseThings.expense}}</td>
+            <td>{{expenseThings.name}}</td>
             <td>{{expenseThings.category}}</td>
-            <td>{{expenseThings.time}}</td>
+            <td>{{expenseThings.spent_date}}</td>
             <td>{{expenseThings.notes}}</td>
 
             <td class="text-right">
-		            <input type="button" value="Remove" class="btn btn-danger" data-ng-click="expense.removeRow($index)">
+		            <input type="button" value="Remove" class="btn btn-danger" data-ng-click="expense.removeRow($index, expenseThings.id)">
 		        </td>
 
           </tr>
