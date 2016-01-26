@@ -19,37 +19,37 @@ angular.module('budgie', [
 			url: '/main',
 			templateUrl: './main/main.html',
 			controller: 'MainController as main',
-			//authenticate: true
+			authenticate: true
 		})
       	.state('main.expense', {
        		url: '/expense',
         	templateUrl: './main/expense/expense.html',
         	controller: 'ExpenseController as expense',
-        	//authenticate: true
+        	authenticate: true
       	})
       	.state('main.profile', {
       		url: '/profile',
       		templateUrl: './main/profile/profile.html',
       		controller: 'ProfileController as profile',
-      		//authenticate: true
+      		authenticate: true
       	})
         .state('main.history', {
         	url: '/history',
         	templateUrl: './main/history/history.html',
         	controller: 'HistoryController as history',
-        	//authenticate: true
+        	authenticate: true
       	})
 		.state('main.learn', {
 			url: '/learn',
 			templateUrl: './main/learn/learn.html',
 			controller: 'LearnController as learn',
-			//authenticate: true
+			authenticate: true
 		})
 		.state('main.stocks', {
 			url: '/stocks',
 			templateUrl: './main/stocks/stocks.html',
 			controller: 'StocksController as stocks',
-			//authenticate: true
+			authenticate: true
 		})
 		.state('landing', {
 			url: '/landing',
@@ -89,7 +89,6 @@ angular.module('budgie', [
 .run(function ($rootScope, $location, AuthServices) {
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
     if (toState.authenticate && !AuthServices.isAuth()) {
-      e.preventDefault();
       $location.path('/landing/login');          //   might need to change to landing/login
     }
   });

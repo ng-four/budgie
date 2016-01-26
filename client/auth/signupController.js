@@ -19,7 +19,7 @@ angular.module('signup.controller', [])
 			.then(function(resp){
 				console.log("resp in submit in signup controller", resp);
 				//var changePath = function(){
-					$location.path('//profile');   // need to fix this double-slash routing issue
+					$location.path('/main/profile');  
 				//}
 				//setTimeout(changePath, 3000); //  all of this is just temporary till promises are squared away
 			}, function(error){
