@@ -1,5 +1,5 @@
 <h1>profile.html</h1>
-<div id="wrapper">
+<div id="wrapper" ng-init="profile.loadProfile()">
     <div id="page-content-wrapper">
     	<br><br>
     	<div class="col-lg-10">
@@ -9,15 +9,21 @@
     		<legend>Email: {{ profile.email }}</legend>
     	</div>
     	<div class="col-lg-10">
-    		<legend>Monthly limit: ${{ profile.monthly_limit }}</legend>
+    		<legend>Monthly limit: ${{ profile.monthly_limit }}</legend><a ng-click="profile.changeLimit()" class="btn btn-info btn-sm">edit</a>
     	</div>
-        <div class="col-lg-10">
-            <legend>Monthly limit: ${{ profile.savings_goal }}</legend>
+        <div class="form-group" ng-show="profile.limitClicked">
+            <div class="col-lg-10">
+            <input type="number" class="form-control" placeholder="New Monthly Limit" ng-model="profile.newLimit"/><button ng-click="profile.submitNewLimit(profile.newLimit)" class="btn btn-primary">Submit</button>
+            </div>
         </div>
-    	<div class="col-lg-10">
-    		<a href="#" class="btn btn-info btn-sm">edit</a>
-    	</div>
+        <div class="col-lg-10">
+            <legend>Savings goal: {{ profile.savings_goal }}%</legend><a ng-click="profile.changeSavings()" class="btn btn-info btn-sm">edit</a>
+        </div>
+         <div class="form-group" ng-show="profile.savingsClicked">
+            <div class="col-lg-10">
+            <input type="number" class="form-control" placeholder="New Savings Goal" ng-model="profile.newSavings"/><button class="btn btn-primary" ng-click="profile.submitNewSavings(profile.newSavings)">Submit</button>
 
-
+            </div>
+        </div>
 	</div>
 </div>
