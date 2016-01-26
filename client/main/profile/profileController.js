@@ -1,5 +1,5 @@
 angular.module('profile.controller', [])
-.controller('ProfileController', function(ProfileServices, AuthServices, $timeout){
+.controller('ProfileController', function(ProfileServices, AuthServices, $timeout, $window, $location){
 	var profile = this;
 
 	profile.loadProfile = function() {
@@ -33,7 +33,7 @@ angular.module('profile.controller', [])
 
 	profile.changeSavings = function() {
 		profile.savingsClicked = true;
-	}
+	};
 
 
 	profile.submitNewSavings = function(newSavings){		// maybe specify savings *rate* or *goal*
@@ -44,6 +44,10 @@ angular.module('profile.controller', [])
 			}, function(error){
 				throw error;
 			});
+	};
+
+	profile.logOut = function() {
+		AuthServices.logOut();			
 	};
 
 	/* TODO:

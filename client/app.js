@@ -17,33 +17,38 @@ angular.module('budgie', [
 		.state('main', {
 			url: '/',
 			templateUrl: './main/main.html',
-			controller: 'MainController as main'
+			controller: 'MainController as main',
+			//authenticate: true
 		})
       	.state('main.expense', {
        		url: '/expense',
         	templateUrl: './main/expense/expense.html',
-        	controller: 'ExpenseController as expense'
+        	controller: 'ExpenseController as expense',
+        	//authenticate: true
       	})
       	.state('main.profile', {
       		url: '/profile',
       		templateUrl: './main/profile/profile.html',
-      		controller: 'ProfileController as profile'
+      		controller: 'ProfileController as profile',
+      		//authenticate: true
       	})
         .state('main.history', {
         	url: '/history',
         	templateUrl: './main/history/history.html',
-        	controller: 'HistoryController as history'
-
+        	controller: 'HistoryController as history',
+        	//authenticate: true
       	})
 		.state('main.learn', {
 			url: '/learn',
 			templateUrl: './main/learn/learn.html',
-			controller: 'LearnController as learn'
+			controller: 'LearnController as learn',
+			//authenticate: true
 		})
 		.state('main.stocks', {
 			url: '/stocks',
 			templateUrl: './main/stocks/stocks.html',
-			controller: 'StocksController as stocks'
+			controller: 'StocksController as stocks',
+			//authenticate: true
 		})
 		.state('landing', {
 			url: '/landing',
@@ -85,7 +90,7 @@ angular.module('budgie', [
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
     if (toState.authenticate && !AuthServices.isAuth()) {
       e.preventDefault();
-      $location.path('/');          //   might need to change to landing/login
+      $location.path('/landing/login');          //   might need to change to landing/login
     }
   });
 });
