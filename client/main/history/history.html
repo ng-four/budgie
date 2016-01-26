@@ -1,1 +1,30 @@
-<h1>history.html</h1>
+<body>
+  <div id="page-content-wrapper">
+    <div class="container-fluid">
+      <h1>Expense History</h1>
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Amount</th>
+            <th>Expense</th>
+            <th>Category</th>
+            <th>Time</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="success" ng-repeat="expenseThings in history.expenseTable">
+            <td>{{expenseThings.amount}}</td>
+            <td>{{expenseThings.name}}</td>
+            <td>{{expenseThings.category}}</td>
+            <td>{{expenseThings.spent_date}}</td>
+            <td>{{expenseThings.notes}}</td>
+            <td class="text-right">
+		            <input type="button" value="Remove" class="btn btn-danger" data-ng-click="history.removeRow($index, expenseThings.id)" />
+		        </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
