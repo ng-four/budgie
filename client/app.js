@@ -16,7 +16,7 @@ angular.module('budgie', [
 
 	$stateProvider
 		.state('main', {
-			url: '/',
+			url: '/main',
 			templateUrl: './main/main.html',
 			controller: 'MainController as main',
 			//authenticate: true
@@ -67,8 +67,7 @@ angular.module('budgie', [
 			controller: 'SignupController as signup'
 		});
 
-		$urlRouterProvider.otherwise('//expense');
-
+		$urlRouterProvider.otherwise('/main/expense');
 	//  $httpProvider.interceptors.push('AttachSession');   // commented out till we get Auth set up
 
 })
