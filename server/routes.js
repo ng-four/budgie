@@ -96,6 +96,7 @@ router.get('/logout', function(request, response) {
 // Get User Info
 router.get('/user', function(request, response) {
   // Look for current user in the database
+  console.log("request.session ",request.session);
   db.query('SELECT * from Users WHERE id = ?;', [request.session.user], function(err, rows) {
     if (err) {
       console.error(err);

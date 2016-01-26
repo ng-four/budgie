@@ -4,36 +4,37 @@
 <div id="wrapper">
     <div id="page-content-wrapper">
 
-<form class="form-horizontal">
+<form class="form-horizontal" ng-submit="signup.submit(signup)">
   <fieldset>
     <div class="form-group">
       <div class="col-lg-10">
-        <input type="text" class="form-control" id="full_name" placeholder="Full Name">
+        <input type="text" class="form-control" id="full_name" placeholder="Full Name" ng-model="signup.full_name">
       </div>
     </div>
     <div class="form-group">
       <div class="col-lg-10">
-        <input type="text" class="form-control" id="email" placeholder="Email">
+        <input type="text" class="form-control" id="email" placeholder="Email" ng-model="signup.email">
       </div>
     </div>
     <div class="form-group">
       <div class="col-lg-10">
-        <input type="password" class="form-control" id="password" placeholder="Password">
+        <input type="password" class="form-control" id="password" placeholder="Password" ng-model="signup.password">
       </div>
     </div>
     <div class="form-group">
       <div class="col-lg-10">
-        <input type="password" class="form-control" id="monthly_limit" placeholder="Monthly Limit">
+        <input type="number" class="form-control" id="monthly_limit" placeholder="Monthly Limit" ng-model="signup.monthly_limit">
       </div>
     </div>
     <div class="form-group">
       <div class="col-lg-10">
-        <input type="password" class="form-control" id="savings_goal" placeholder="Savings Goal">
+        <input type="number" class="form-control" id="savings_goal" placeholder="Savings Goal" ng-model="signup.savings_goal">
       </div>
     </div>
     <div class="form-group">
       <div class="col-lg-10 col-lg-offset-2">
-        <a ui-sref="main.expense"><button type="submit" class="btn btn-primary">Create Profile</button></a>
+        <!-- <a ui-sref="main.expense"> -->
+          <button type="submit" class="btn btn-primary">Create Profile</button></a>
       </div>
     </div>
   </fieldset>
