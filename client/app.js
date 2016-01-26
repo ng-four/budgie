@@ -10,6 +10,7 @@ angular.module('budgie', [
 	'landing.controller',
 	'auth.service',
 	'profile.service',
+	'expense.service',
 	'ui.router'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider){
 
@@ -67,7 +68,7 @@ angular.module('budgie', [
 		});
 
 		$urlRouterProvider.otherwise('//expense');
-		
+
 	//  $httpProvider.interceptors.push('AttachSession');   // commented out till we get Auth set up
 
 })

@@ -1,0 +1,17 @@
+.donut-chart {
+  position: relative;
+  display: inline-block;
+}
+
+.donut-chart .donut-chart-label {
+  position: relative;
+  top: 115px;
+  text-align: center;
+  color: white;
+}
+
+.line-chart {
+  /*position: relative;*/
+  /*display: inline-block;*/
+  /*max-width: 100%;*/
+}

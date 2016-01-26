@@ -23,7 +23,7 @@ var dirname = __dirname.slice(0, -6);
 
 // Serve App
 router.get('/', function(request, response) {
-  response.status(200).sendFile(dirname + '/client/index.html')
+  response.status(200).sendFile(dirname + '/client/index.html');
 });
 
 // Add User
@@ -180,7 +180,7 @@ router.post('/expenses', function(request, response) {
   var spent_date = request.body.spent_date || new Date().toISOString().slice(0, 19).replace('T', ' '); // TODO Get correct Date
   var location = request.body.location || null;
   // If no missing data
-  if (name !== null && amount !== null && category !== null && request.session.user !== undefined) {
+  if (name !== null && amount !== null && category !== null /*&& request.session.user !== undefined*/) {
     db.query('INSERT INTO Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ?, user_id = ?;',
     [name, amount, category, notes, spent_date, location, request.session.user],
     function(err, result){
@@ -233,7 +233,7 @@ router.delete('/expenses/:id', function(request, response) {
     if (err) {
       console.error(err);
     } else {
-      response.sendStatus(200);      
+      response.sendStatus(200);
     }
   });
 });
