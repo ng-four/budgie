@@ -7,7 +7,7 @@ angular.module('expense.service', [])
      url: '/expenses',
      data: expenseData
    }).then(function(resp) {
-     console.log("resp in submitNewExpense ", resp);
+    //  console.log("resp in submitNewExpense ", resp);
      return resp.data;
    }, function(error) {
        console.error('Add Expense ERROR!!! ', error);
@@ -20,7 +20,7 @@ angular.module('expense.service', [])
      method: 'GET',
      url: '/expenses/' + days,
    }).then(function(resp) {
-     console.log("resp in getExpensesForDays ", resp);
+    //  console.log("resp in getExpensesForDays ", resp);
      return resp.data;
    }, function(error) {
      console.error('Add Expense ERROR!!! ', error);
