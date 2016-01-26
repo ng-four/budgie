@@ -40,6 +40,4 @@ angular.module('profile.service', [])
 		updateSavings: updateSavings
 	}
 
-
-
 })

@@ -2,15 +2,6 @@ angular.module('auth.service', [])
 .factory('AuthServices', function($http, $location, $window) {
 
 	var submitNewUser = function(userData) {
-/* format for userData object:
-	{
-		email:  
-		password: 
-		full_name:
-		monthly_limit:
-		savings_goal:
-	}
-*/
 		return $http({
 			method: 'POST',			
 		 	url: '/signup', 
@@ -25,12 +16,6 @@ angular.module('auth.service', [])
 	};
 
 	var submitLogin = function(userData){
-/* format for userData object:
-	{
-		email:  
-		password: 
-	}
-*/
 		return $http({
 			method: 'POST',
 			url: '/login',
@@ -48,8 +33,9 @@ angular.module('auth.service', [])
   	};
 
   	var logOut = function () {
+  		console.log('logOut called in AuthServices');
     	$window.localStorage.removeItem('budgieID');  // FOR FRONT-END ROUTING AUTH ONLY
-    	$location.path('/');
+    	$location.path('/landing/login');
   	};
 
 	return {
