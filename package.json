@@ -22,8 +22,11 @@
     "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
-    "gulp-sass": "^2.1.1",
     "mysql": "^2.10.2",
     "request": "^2.67.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-sass": "^2.1.1"
   }
 }
