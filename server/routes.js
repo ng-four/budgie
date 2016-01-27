@@ -159,7 +159,7 @@ router.put('/savings_goal', function(request, response) {
 
 // Show all expenses
 router.get('/expenses/:days', function(request, response) {
-  db.query('SELECT * FROM Expenses WHERE user_id = ? AND spent_date > DATE_SUB(NOW(), INTERVAL ? DAY);',
+  db.query('SELECT * FROM Expenses WHERE user_id = ? AND spent_date > DATE_SUB(NOW(), INTERVAL ? DAY) ORDER BY spent_date DESC;',
   [request.session.user, Number(request.params.days) || 30],
   function(err, rows) {
     if (err) {
@@ -177,7 +177,8 @@ router.post('/expenses', function(request, response) {
   var amount = request.body.amount;
   var category = request.body.category;
   var notes = request.body.notes || null;
-  var spent_date = request.body.spent_date || new Date().toISOString().slice(0, 19).replace('T', ' '); // TODO Get correct Date
+  var spent_date = request.body.spent_date;
+  console.log("spent date in post:expenses request", spent_date);
   var location = request.body.location || null;
   // If no missing data
   if (name !== null && amount !== null && category !== null /*&& request.session.user !== undefined*/) {

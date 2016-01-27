@@ -18,6 +18,7 @@
   "dependencies": {
     "angular": "~1.4.9",
     "angular-ui-router": "~0.2.15",
-    "chartist": "~0.9.5"
+    "chartist": "~0.9.5",
+    "moment": "~2.11.1"
   }
 }
