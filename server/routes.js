@@ -152,6 +152,21 @@ router.put('/savings_goal', function(request, response) {
   });
 });
 
+// Update Current Balance
+router.put('/total_savings', function(request, response) {
+  db.query('UPDATE Users SET total_savings = ? WHERE id = ?;',
+  [request.body.total_savings, request.session.user],
+  function(err, result) {
+    if (err) {
+      console.error(err);
+    } else if(result.affectedRows === 1){
+      response.sendStatus(200);
+    } else {
+      response.sendStatus(401);
+    }
+  });
+});
+
 /**
  * Expenses
  */
@@ -193,6 +208,18 @@ router.post('/expenses', function(request, response) {
             response.status(201).json(rows[0]);
           }
         });
+        db.query('SELECT * FROM Users WHERE id = ?;', [request.session.user], function(err, rows){
+          if (err) {
+            console.error(err);
+          } else {
+            var newSavings = Number(rows[0].total_savings) - Number(amount);
+            db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newSavings, request.session.user], function(err, rows){
+                if (err) {
+                  console.error(err);
+                }
+            });
+          }
+        });
       }
     });
   } else {
@@ -228,11 +255,30 @@ router.put('/expenses/:id', function(request, response) {
 // Delete expense
 router.delete('/expenses/:id', function(request, response) {
   var id = request.params.id;
-  db.query('DELETE FROM Expenses WHERE id = ?', [id], function (err, result) {
+  db.query('SELECT * FROM Expenses WHERE id = ?', [id], function (err, rows) {
     if (err) {
       console.error(err);
     } else {
-      response.sendStatus(200);
+      var expenseAmount = rows[0].amount;
+      db.query('DELETE FROM Expenses WHERE id = ?', [id], function (err, result){
+        if(err){
+          console.error(err);
+        }
+      });
+      db.query('SELECT * FROM Users WHERE id = ?;', [request.session.user], function(err, rows){
+        if (err) {
+          console.error(err);
+        } else {
+          var newSavings = Number(rows[0].total_savings) + Number(expenseAmount);
+          db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newSavings, request.session.user], function(err, rows){
+              if (err) {
+                console.error(err);
+              } else{
+                response.sendStatus(200);
+              }
+          });
+        }
+      });
     }
   });
 });
@@ -279,6 +325,18 @@ router.post('/incomes', function(request, response) {
             response.status(201).json(rows[0]);
           }
         });
+        db.query('SELECT * FROM Users WHERE id = ?;', [request.session.user], function(err, rows){
+          if (err) {
+            console.error(err);
+          } else {
+            var newSavings = Number(rows[0].total_savings) + Number(amount);
+            db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newSavings, request.session.user], function(err, rows){
+                if (err) {
+                  console.error(err);
+                }
+            });
+          }
+        });
       }
     });
   } else {
@@ -314,11 +372,30 @@ router.put('/incomes/:id', function(request, response) {
 // Delete income
 router.delete('/incomes/:id', function(request, response) {
   var id = request.params.id;
-  db.query('DELETE FROM Incomes WHERE id = ?', [id], function (err, result) {
+  db.query('SELECT * FROM Incomes WHERE id = ?', [id], function (err, rows) {
     if (err) {
       console.error(err);
     } else {
-      response.sendStatus(200);
+      var incomeAmount = rows[0].amount;
+      db.query('DELETE FROM Incomes WHERE id = ?', [id], function (err, result){
+        if(err){
+          console.error(err);
+        }
+      });
+      db.query('SELECT * FROM Users WHERE id = ?;', [request.session.user], function(err, rows){
+        if (err) {
+          console.error(err);
+        } else {
+          var newSavings = Number(rows[0].total_savings) - Number(incomeAmount);
+          db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newSavings, request.session.user], function(err, rows){
+              if (err) {
+                console.error(err);
+              } else{
+                response.sendStatus(200);
+              }
+          });
+        }
+      });
     }
   });
 });
