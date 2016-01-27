@@ -1,13 +1,16 @@
 /*--- NAVIGATION ---*/
-.navbar-brand {
-  padding: 8px 0 0 0; }
+.navbar-brand{
+  padding: 8px 0 0 0;
+}
 
 /*--- EXPENSES PAGE ---*/
 .donut-chart {
   position: relative;
-  display: inline-block; }
-  .donut-chart .donut-chart-label {
+  display: inline-block;
+  .donut-chart-label {
     position: relative;
     top: 115px;
     text-align: center;
-    color: white; }
+    color: white;
+  }
+}
