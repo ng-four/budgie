@@ -6,6 +6,7 @@ angular.module('expense.controller', [])
 
 
 	expense.expenseTable = [];
+	expense.incomeTable = [];
 	var categories = ['Education','Travel','Food & Drink','Rent','Household','Transport','Payments','Entertainment','Shopping','Healthcare','Tax','Miscellaneous'];
 	var dailyArr = [0,0,0,0,0,0,0,0,0,0,0,0];
 	var weeklyArr = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -19,9 +20,24 @@ angular.module('expense.controller', [])
 	var startMonth;
 
 	(function(){
-		ExpenseServices.getExpensesForDays(60)
+		ExpenseServices.getExpensesForDays(64)
 		.then(function(resp){
 			console.log("this is the response in getExpensesForDays", resp);
+
+			ExpenseServices.getIncomesForDays(64)
+			.then(function(incomes){
+				var today = moment().format("DD");
+				for(var i=0; i<incomes.length; i++){
+					var day = incomes[i].income_date.slice(8,10);
+					if(day === today){
+						incomes[i].format = moment(incomes[i].income_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
+						expense.incomeTable.push(incomes[i]);
+					}else{
+						break;
+					}
+				}
+			});
+
 			var today = moment().format("DD");
 			console.log("this is today", today);
 			for(var i=0; i<resp.length; i++){
@@ -38,6 +54,8 @@ angular.module('expense.controller', [])
 					break;
 				}
 			}
+
+
 
 
 			var thisWeek = moment().format("w");
@@ -102,18 +120,29 @@ angular.module('expense.controller', [])
 		console.log("this is spentDate in string format", spentDate);
 		console.log("this is hours and minutes", hours, minutes);
 
-		ExpenseServices.submitNewExpense({'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value})
+		ExpenseServices.submitNewExpense({'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value}, expense.inputType)
 		.then(function(resp){
-			// expense.expenseTable.push({'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':time.value, 'notes':notes.value});
-			console.log("This is expenseTable", expense.expenseTable);
+			resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
+			if(expense.inputType === 'expense'){
+				expense.expenseTable.push(resp);
+				console.log("This is expenseTable", expense.expenseTable);
+			}else if(expense.inputType === 'income'){
+				expense.incomeTable.push(resp);
+				console.log("This is incomeTable", expense.incomeTable);
+			}
 		});
 
 
 	};
 
-	expense.removeRow = function(idx, id){
-		expense.expenseTable.splice(idx, 1);
-		ExpenseServices.deleteExpense(id);
+	expense.removeRow = function(idx, id, inputType){
+		if(inputType === 'expense'){
+			expense.expenseTable.splice(idx, 1);
+			ExpenseServices.deleteExpense(id, inputType);
+		}else if(inputType === 'input'){
+			expense.incomeTable.splice(idx, 1);
+			ExpenseServices.deleteExpense(id, inputType);
+	}
 	};
 
 	var dataProgressBar = {
