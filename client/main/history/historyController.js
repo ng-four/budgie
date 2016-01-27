@@ -1,5 +1,5 @@
 angular.module('history.controller', [])
-.controller('HistoryController', function(ExpenseServices, $http){
+.controller('HistoryController', function(ExpenseServices, $http, $filter){
 	var history = this;
 	history.expenseTable = [];
 	var categories = ['Education','Travel','Food & Drink','Rent','Household','Transport','Payments','Entertainment','Shopping','Healthcare','Tax','Miscellaneous'];
@@ -18,5 +18,14 @@ angular.module('history.controller', [])
 		history.expenseTable.splice(idx, 1);
 		ExpenseServices.deleteExpense(id);
 	};
+
+	history.predicate = 'spent_date';
+    history.reverse = true;
+    var orderBy = $filter('orderBy');
+	history.sortBy = function(predicate){
+		history.predicate = predicate;
+		history.expenseTable = orderBy(history.expenseTable, predicate, history.reverse);
+		history.reverse = (history.predicate === predicate) ? !history.reverse : false;	
+	}
 
 })

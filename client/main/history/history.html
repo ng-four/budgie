@@ -5,15 +5,15 @@
       <table class="table table-striped table-hover">
         <thead>
           <tr>
-            <th>Amount</th>
-            <th>Expense</th>
-            <th>Category</th>
-            <th>Time</th>
+            <th ng-click="history.sortBy('amount')">Amount</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
+            <th ng-click="history.sortBy('name')">Expense</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
+            <th ng-click="history.sortBy('category')">Category</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
+            <th ng-click="history.sortBy('spent_date')">Time</th><span class="sortorder" ng-class="{reverse:reverse}"/>
             <th>Notes</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="success" ng-repeat="expenseThings in history.expenseTable">
+          <tr class="success" ng-repeat="expenseThings in history.expenseTable | orderBy:predicate:reverse">
             <td>{{expenseThings.amount}}</td>
             <td>{{expenseThings.name}}</td>
             <td>{{expenseThings.category}}</td>

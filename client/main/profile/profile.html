@@ -1,14 +1,15 @@
 <div id="wrapper" ng-init="profile.loadProfile()">
     <div id="page-content-wrapper">
+        <button class="btn btn-primary" ng-click="profile.logOut()">Logout</button>
     	<br><br>
     	<div class="col-lg-10">
-    		<legend>Dis be profile for {{ profile.full_name }}:</legend>
+    		<h1>{{ profile.full_name }}'s Profile:</h1>
     	</div>
     	<div class="col-lg-10">
     		<legend>Email: {{ profile.email }}</legend>
     	</div>
     	<div class="col-lg-10">
-    		<legend>Monthly limit: ${{ profile.monthly_limit }}</legend><a ng-click="profile.changeLimit()" class="btn btn-info btn-sm">edit</a>
+    		<legend>Monthly Spending Limit: ${{ profile.monthly_limit }}</legend><a ng-click="profile.changeLimit()" class="btn btn-info btn-sm">edit</a>
     	</div>
         <div class="form-group" ng-show="profile.limitClicked">
             <div class="col-lg-10">
@@ -16,7 +17,7 @@
             </div>
         </div>
         <div class="col-lg-10">
-            <legend>Monthly savings target: {{ profile.savings_goal }}%</legend><a ng-click="profile.changeSavings()" class="btn btn-info btn-sm">edit</a>
+            <h2 class="col-lg-8">Monthly Savings Target: {{ profile.savings_goal }}%</h2><a ng-click="profile.changeSavings()" class="btn btn-info btn-sm">edit</a>
         </div>
          <div class="form-group" ng-show="profile.savingsClicked">
             <div class="col-lg-10">
@@ -57,9 +58,5 @@
             <button class="btn btn-primary" ng-click="profile.submitNewGoal(profile.newGoal)">Submit</button>
             </div>
         </div>
-
-
-
-        <button class="btn btn-primary" ng-click="profile.logOut()">Logout</button>
 	</div>
 </div>
