@@ -96,7 +96,6 @@ router.get('/logout', function(request, response) {
 // Get User Info
 router.get('/user', function(request, response) {
   // Look for current user in the database
-  console.log("request.session ",request.session);
   db.query('SELECT * from Users WHERE id = ?;', [request.session.user], function(err, rows) {
     if (err) {
       console.error(err);
@@ -178,7 +177,6 @@ router.post('/expenses', function(request, response) {
   var category = request.body.category;
   var notes = request.body.notes || null;
   var spent_date = request.body.spent_date;
-  console.log("spent date in post:expenses request", spent_date);
   var location = request.body.location || null;
   // If no missing data
   if (name !== null && amount !== null && category !== null /*&& request.session.user !== undefined*/) {
@@ -208,7 +206,7 @@ router.put('/expenses/:id', function(request, response) {
   var amount = request.body.amount;
   var category = request.body.category;
   var notes = request.body.notes || null;
-  var spent_date = request.body.spent_date || new Date().toISOString().slice(0, 19).replace('T', ' '); // TODO Get correct Date
+  var spent_date = request.body.spent_date;
   var location = request.body.location || null;
   db.query('UPDATE Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ? WHERE id = ?;',
   [name, amount, category, notes, spent_date, location, request.params.id],
@@ -231,6 +229,92 @@ router.put('/expenses/:id', function(request, response) {
 router.delete('/expenses/:id', function(request, response) {
   var id = request.params.id;
   db.query('DELETE FROM Expenses WHERE id = ?', [id], function (err, result) {
+    if (err) {
+      console.error(err);
+    } else {
+      response.sendStatus(200);
+    }
+  });
+});
+
+/**
+ * Incomes
+ */
+
+// Show all incomes
+router.get('/incomes/:days', function(request, response) {
+  db.query('SELECT * FROM Incomes WHERE user_id = ?;',
+  /*AND income_date > DATE_SUB(NOW(), INTERVAL ? DAY) ORDER BY income_date DESC*/
+  [request.session.user, Number(request.params.days) || 30],
+  function(err, rows) {
+    if (err) {
+      console.error(err);
+    } else {
+      response.json(rows);
+    }
+  });
+});
+
+// Add new income(s)
+router.post('/incomes', function(request, response) {
+  // Get all the information
+  var name = request.body.name;
+  var amount = request.body.amount;
+  var category = request.body.category;
+  var notes = request.body.notes || null;
+  var income_date = request.body.income_date;
+  var location = request.body.location || null;
+  // If no missing data
+  if (name !== null && amount !== null && category !== null /*&& request.session.user !== undefined*/) {
+    db.query('INSERT INTO Incomes SET name = ?, amount = ?, category = ?, notes = ?, income_date = ?, location = ?, user_id = ?;',
+    [name, amount, category, notes, income_date, location, request.session.user],
+    function(err, result){
+      if (err) {
+        console.error(err);
+      } else if (result.insertId){
+        db.query('SELECT * FROM Incomes WHERE id = ? AND user_id = ?;', [result.insertId, request.session.user], function(err, rows){
+          if (err) {
+            console.err(err);
+          } else {
+            response.status(201).json(rows[0]);
+          }
+        });
+      }
+    });
+  } else {
+    response.sendStatus(400);
+  }
+});
+
+// Update income
+router.put('/incomes/:id', function(request, response) {
+  var name = request.body.name;
+  var amount = request.body.amount;
+  var category = request.body.category;
+  var notes = request.body.notes || null;
+  var income_date = request.body.income_date;
+  var location = request.body.location || null;
+  db.query('UPDATE Incomes SET name = ?, amount = ?, category = ?, notes = ?, income_date = ?, location = ? WHERE id = ?;',
+  [name, amount, category, notes, income_date, location, request.params.id],
+  function(err, result){
+    if (err) {
+      console.error(err);
+    } else {
+      db.query('SELECT * FROM Incomes WHERE id = ? AND user_id = ?;', [request.params.id, request.session.user], function(err, rows){
+        if (err) {
+          console.err(err);
+        } else {
+          response.status(200).json(rows[0]);
+        }
+      });
+    }
+  });
+});
+
+// Delete income
+router.delete('/incomes/:id', function(request, response) {
+  var id = request.params.id;
+  db.query('DELETE FROM Incomes WHERE id = ?', [id], function (err, result) {
     if (err) {
       console.error(err);
     } else {

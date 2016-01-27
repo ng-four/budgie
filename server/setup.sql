@@ -49,6 +49,27 @@ CREATE TABLE IF NOT EXISTS `Expenses` (
 );
 
 -- ---
+-- Table 'Incomes'
+--
+-- ---
+
+-- DROP TABLE IF EXISTS `Incomes`;
+
+CREATE TABLE IF NOT EXISTS `Incomes` (
+  `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `amount` DECIMAL NULL DEFAULT NULL,
+  `category` MEDIUMTEXT NULL DEFAULT NULL,
+  `notes` MEDIUMTEXT NULL DEFAULT NULL,
+  `income_date` MEDIUMTEXT NULL DEFAULT NULL,
+  `location` MEDIUMTEXT NULL DEFAULT NULL,
+  `name` MEDIUMTEXT NULL DEFAULT NULL,
+  `user_id` INTEGER NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
 -- Table 'Recurring_Expenses'
 --
 -- ---
@@ -172,6 +193,7 @@ CREATE TABLE IF NOT EXISTS `Users_Rewards` (
 
 ALTER TABLE `Expenses` ADD FOREIGN KEY (recurring_id) REFERENCES `Recurring_Expenses` (`id`);
 ALTER TABLE `Expenses` ADD FOREIGN KEY (user_id) REFERENCES `Users` (`id`);
+ALTER TABLE `Incomes` ADD FOREIGN KEY (user_id) REFERENCES `Users` (`id`);
 ALTER TABLE `Recurring_Expenses` ADD FOREIGN KEY (user_id) REFERENCES `Users` (`id`);
 ALTER TABLE `Goals` ADD FOREIGN KEY (user_id) REFERENCES `Users` (`id`);
 ALTER TABLE `Saved_Stocks` ADD FOREIGN KEY (user_id) REFERENCES `Users` (`id`);
