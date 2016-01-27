@@ -33,9 +33,6 @@ angular.module('expense.service', [])
  };
 
  var deleteExpense = function(id, inputType){
-   if(inputType === "income"){
-     expenseData.income_date = expenseData.spent_date;
-   }
    return $http({
      method: 'DELETE',
      url: '/'+inputType+"s/"+id,

@@ -136,10 +136,12 @@ angular.module('expense.controller', [])
 	};
 
 	expense.removeRow = function(idx, id, inputType){
+		console.log("inside removeRow based on income removal");
+		console.log("the idx and id and inputType inside removeRow", idx, id, inputType);
 		if(inputType === 'expense'){
 			expense.expenseTable.splice(idx, 1);
 			ExpenseServices.deleteExpense(id, inputType);
-		}else if(inputType === 'input'){
+		}else if(inputType === 'income'){
 			expense.incomeTable.splice(idx, 1);
 			ExpenseServices.deleteExpense(id, inputType);
 	}
