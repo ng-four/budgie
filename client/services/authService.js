@@ -26,7 +26,7 @@ angular.module('auth.service', [])
 			//the not-redirecting problem is clearly an async/promises issue...
 
 			console.log('trying to redirect to main/profile in AuthServices');
-			$location.path('/main/profile');
+			$location.path('/main/expense');
 
 
 

@@ -109,7 +109,8 @@ router.get('/user', function(request, response) {
         full_name: rows[0].full_name,
         email: rows[0].email,
         monthly_limit: rows[0].monthly_limit,
-        savings_goal: rows[0].savings_goal
+        savings_goal: rows[0].savings_goal,
+        total_savings: rows[0].total_savings
       });
     }
   });

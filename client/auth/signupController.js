@@ -10,7 +10,8 @@ angular.module('signup.controller', [])
 			password: signup.password,
 			full_name: signup.full_name,
 			monthly_limit: signup.monthly_limit,
-			savings_goal: signup.savings_goal
+			savings_goal: signup.savings_goal,
+			total_savings: signup.total_savings
 		}
 
 		console.log("called signup.submit with ", userData);
