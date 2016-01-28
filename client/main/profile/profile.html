@@ -36,30 +36,26 @@
             <input type="number" class="form-control" placeholder="New Total Savings" ng-model="profile.newTotalSavings"/><button class="btn btn-primary" ng-click="profile.submitNewTotalSavings(profile.newTotalSavings)">Submit</button>
             </div>
         </div>
-        <div class="col-lg-10">
-            <a ng-click="profile.toggleAllocate()" class="btn btn-info btn-sm">Click to allocate a portion of your savings</a>
-        </div>
 
 
 
 
 
-
-
-         <div class="form-group" ng-show="profile.allocateClicked">
-            <div class="col-lg-10">
-            <input type="number" class="form-control" placeholder="New Savings Goal" ng-model="profile.newSavings"/><button class="btn btn-primary" ng-click="profile.submitNewSavings(profile.newSavings)">Submit</button>
-            </div>
-        </div>
 
         <div class="col-lg-10">
             <table class='table borderless whitesmoke margin-bottom-ten' >
             <tr>
-                <th class='col-md-2'>Goal</th><th class='col-md-2'>Cost</th><th class='col-md-2'>Target Date</th><th class='col-md-2'>Progress</th>
+                <th class='col-md-2'>Goal</th><th class='col-md-2'>Amount</th><th class='col-md-2'>Category</th><th class='col-md-2'>Notes</th><th class='col-md-2'>Saved</th>
             </tr>
             <tr ng-repeat='goal in profile.goals'>
-                <td class='col-md-2'>{{ goal.name }}</td> <td class='col-md-2'>${{ goal.price }}</td>
-                <td class='col-md-2'>{{ goal.target_date }}</td> <td class='col-md-2'>${{ goal.progress }}</td>
+                <td class='col-md-2'>{{ goal.name }}</td>
+                <td class='col-md-2'>${{ goal.amount }}</td>
+                <td class='col-md-2'>{{ goal.category }}</td>
+                <td class='col-md-2'>${{ goal.notes }}</td>
+                <td class='col-md-2'>${{ goal.saved_amount }}</td>
+                <td class="text-right">
+    		            <input type="button" value="Acquire Goal" class="btn btn-success" data-ng-click="profile.completeGoal($index, goal.id)">
+    		        </td>
             </tr>
             </table>
             <a ng-click="profile.toggleNewGoal()" class="btn btn-info btn-sm">Add a new goal</a>
@@ -68,8 +64,9 @@
         <div class="form-group" ng-show="profile.newGoalClicked">
             <div class="col-lg-10">
             <input type="text" class="form-control" placeholder="New Goal" ng-model="profile.newGoal.name"/>
-            <input type="number" class="form-control" placeholder="Price" ng-model="profile.newGoal.price"/>
-            <input type="date" class="form-control" placeholder="Target Date" ng-model="profile.newGoal.target_date"/>
+            <input type="number" class="form-control" placeholder="Price" ng-model="profile.newGoal.amount"/>
+            <input type="text" class="form-control" placeholder="Category" ng-model="profile.newGoal.category"/>
+            <input type="text" class="form-control" placeholder="Notes" ng-model="profile.newGoal.notes"/>
             <button class="btn btn-primary" ng-click="profile.submitNewGoal(profile.newGoal)">Submit</button>
             </div>
         </div>
