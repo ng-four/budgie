@@ -34,6 +34,7 @@ router.post('/signup', function(request, response) {
   var password = request.body.password;
   var monthly_limit = request.body.monthly_limit;
   var savings_goal = request.body.savings_goal;
+  var total_savings = request.body.total_savings;
   // If no missing data
   if (email !== null && full_name !== null && password !== null && monthly_limit !== null && savings_goal !== null) {
     // Search in db in User table for existing email
@@ -44,7 +45,7 @@ router.post('/signup', function(request, response) {
         password = bcrypt.hashSync(password);
         // Create user
         db.query('INSERT INTO Users SET email = ?, full_name = ?, password = ?, monthly_limit = ?, savings_goal = ?, total_savings = ?;',
-        [email, full_name, password, monthly_limit, savings_goal, monthly_limit],
+        [email, full_name, password, monthly_limit, savings_goal, total_savings],
         function(err, rows){
           // Log user in (create session)
           util.createSession(request, response, rows.insertId);
@@ -312,7 +313,7 @@ router.post('/incomes', function(request, response) {
   var income_date = request.body.income_date;
   var location = request.body.location || null;
   // If no missing data
-  if (name !== null && amount !== null && category !== null /*&& request.session.user !== undefined*/) {
+  if (name !== null && amount !== null && category !== null) {
     db.query('INSERT INTO Incomes SET name = ?, amount = ?, category = ?, notes = ?, income_date = ?, location = ?, user_id = ?;',
     [name, amount, category, notes, income_date, location, request.session.user],
     function(err, result){
@@ -406,13 +407,172 @@ router.delete('/incomes/:id', function(request, response) {
 module.exports = router;
 
 
+/**
+ * Goals
+ */
 
+// Get all of the user's current goals
+router.get('/goals', function(request, response) {
+  db.query('SELECT * FROM Goals WHERE user_id = ?;', [request.session.user], function(err, rows){
+    if(err) {
+      console.error(err);
+    } else {
+      response.status(200).json(rows);
+    }
+  });
+});
 
-/*
+// Add new Goal
+router.post('/goals', function(request, response) {
+  console.log('Inside Adding Goal');
+  var name = request.body.name;
+  var amount = request.body.amount;
+  var category = request.body.category;
+  var notes = request.body.notes || null;
+  if (name !== null && amount !== null && category !== null) {
+    db.query('INSERT INTO Goals SET name = ?, amount = ?, saved_amount = 0, category = ?, notes = ?, user_id = ?;',
+    [name, amount, category, notes, request.session.user],
+    function(err, result){
+      if(err) {
+        console.error(err);
+      } else {
+        db.query('SELECT * FROM Goals WHERE id = ?', [result.insertId], function(err, rows){
+          if(err) {
+            console.error(err);
+          } else {
+            response.status(201).json(rows[0]);
+          }
+        });
+      }
+    });
+  }
+});
 
-crud Goala
-curd Recurring_Expenses
+// Add money to Goal
+router.put('/goals/:id', function(request, response) {
+  var amount = request.body.amount;
+  var id = request.params.id;
+  db.query('SELECT * FROM Users WHERE id = ?;', [request.session.user], function(err, rows){
+    if(err) {
+      console.error(err);
+    } else {
+      var totalSavings = rows[0].total_savings;
+      if(amount < totalSavings) {
+        totalSavings-=amount;
+        db.query('SELECT * FROM Goals WHERE id = ?;', [id], function(err, rows){
+          if(err) {
+            console.error(err);
+          } else {
+            var goal = rows[0];
+            var diff = goal.amount - (amount + goal.saved_amount) < 0 ? goal.amount - (amount + goal.saved_amount) : 0;
+            totalSavings += Math.abs(diff);
+            amount += goal.saved_amount + diff;
+            db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [totalSavings, request.session.user], function(err, result){
+              if(err) {
+                console.error(err);
+              }
+            });
+            db.query('UPDATE Goals SET saved_amount = ? WHERE id = ?;', [amount, id], function(err, result){
+              if(err) {
+                console.error(err);
+              } else {
+                response.sendStatus(200);
+              }
+            });
+          }
+        });
+      } else {
+        response.sendStatus(400);
+      }
+    }
+  });
+});
 
-crud Users_Stocks
+// Remove money from Goal
+router.patch('/goals/:id', function(request, response) {
+  var amount = request.body.amount;
+  var id = request.params.id;
+  db.query('SELECT * FROM Goals WHERE id = ?;', [id], function(err, rows){
+    if(err) {
+      console.error(err);
+    } else {
+      var saved = rows[0].saved_amount; //50
+      var diff = saved - amount < 0 ? saved - amount : 0;
+      amount += diff;
+      var newSaved = saved - amount;
+      db.query('UPDATE Goals SET saved_amount = ? WHERE id = ?;', [newSaved, id], function(err, result){
+        if(err) {
+          console.error(err);
+        }
+      });
+      db.query('SELECT * from Users WHERE id = ?;', [request.session.user], function(err, rows){
+        if(err) {
+          console.error(err);
+        } else {
+          var totalSavings = rows[0].total_savings;
+          var newSavings = totalSavings + amount;
+          db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newSavings, request.session.user], function(err, result){
+            if(err) {
+              console.error(err);
+            } else {
+              response.sendStatus(200);
+            }
+          });
+        }
+      });
+    }
+  });
+});
 
-*/
+//
+router.delete('/goals/:id', function(request, response) {
+  var id = request.params.id;
+  db.query('SELECT * FROM Goals WHERE id = ?;', [id], function(err, rows){
+    var savedAmount = rows[0].saved_amount;
+    db.query('SELECT * FROM Users WHERE id = ?;', [request.session.user], function(err, rows){
+      var newTotal = savedAmount + rows[0].total_savings;
+      db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newTotal, request.session.user], function(err, results){
+        if(err){
+          console.error(err);
+        }
+      });
+    });
+    db.query('DELETE FROM Goals WHERE id = ?;', [id], function(err, result){
+      if(err){
+        console.error(err);
+      } else {
+        response.sendStatus(200);
+      }
+    });
+  });
+});
+
+//Completed goal
+router.post('/goals/:id', function(request, response) {
+  console.log('Inside Complete Goal');
+  db.query('SELECT * FROM Users WHERE id = ?;', [request.session.user], function(err, rows){
+    var totalSavings = rows[0].total_savings;
+    db.query('SELECT * FROM Goals WHERE id = ?;', [request.params.id], function(err, rows){
+      var amount = rows[0].amount;
+      var saved = rows[0].saved_amount;
+      if(amount - saved < totalSavings) {
+        var newTotalSavings = totalSavings - (amount - saved);
+        var newSaved = amount;
+        db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newTotalSavings, request.session.user], function(err, results){
+          if(err){
+            console.error(err);
+          }
+        });
+        db.query('UPDATE Goals SET saved_amount = ? WHERE id = ?;', [newSaved, request.session.user], function(err, results){
+          if(err){
+            console.error(err);
+          } else {
+            response.sendStatus(200);
+          }
+        });
+      } else {
+        response.sendStatus(400);
+      }
+    });
+  });
+});
