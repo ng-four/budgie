@@ -27,7 +27,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="success" ng-repeat="expenseThings in history.allTable | filter: history.inputType | orderBy:cat:reverse">
+          <tr ng-class="{success: expenseThings.inputType === 'expense', info: expenseThings.inputType === 'income'}" ng-repeat="expenseThings in history.allTable | filter: history.inputType | orderBy:cat:reverse">
             <td>{{expenseThings.amount}}</td>
             <td>{{expenseThings.name}}</td>
             <td>{{expenseThings.category}}</td>
