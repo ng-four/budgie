@@ -89,17 +89,33 @@ angular.module('budgie', [
 .run(function ($rootScope, $location, AuthServices, ProfileServices) {
   ProfileServices.getProfileData()
 	.then(function(success){
-		console.log('user (re)authenicated in run function');
 	}, function(error){
 		if(AuthServices.isAuth()){
-			console.log("user not logged in but budgieID still in local storage");
 			AuthServices.logOut();
 		}
 	});
   
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
-    if (toState.authenticate && !AuthServices.isAuth()) {
-      $location.path('/landing/login');        
+  	console.log('toState ', toState);
+  	if (toState.authenticate && !AuthServices.isAuth()) {
+      $location.path('/landing/login'); 
     }
+  	if(toState.name === 'main'){						//redirects to handle routing edge cases
+  		$location.path('/main/expense');
+  	}
+  	if(toState.name === 'landing'){
+  		if(AuthServices.isAuth()){
+  			$location.path('/main/expense');
+  		} else {
+  			$location.path('/landing/login');
+  		}
+  	}
+  	if(
+  		(toState.name === 'landing.login' && AuthServices.isAuth()) || 
+  		(toState.name === 'landing.signup' && AuthServices.isAuth())
+  		)
+  	{
+  		$location.path('/main/expense');
+  	} 
   });
 });
