@@ -1,21 +1,47 @@
 var gulp = require('gulp');
+var rename = require('gulp-rename');
 var sass = require('gulp-sass');
+var uglify = require('gulp-uglify');
+var uglifycss = require('gulp-uglifycss');
+var concat = require('gulp-concat');
 
-// var input = './client/assets/scss/stylesheet.scss';
-// var output = './client/assets/css';
-var input = './client/assets/scss/*.scss';
-var output = './client/assets/css';
+gulp.task('default', ['process-sass', 'watch']);
 
-// define the default task and add the watch task to it
-gulp.task('default', ['watch']);
+// minify js files
+gulp.task('compress-scripts', function() {
+  return gulp.src('./server/*.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('dist'));
+});
 
-gulp.task('styles', function() {
-  return gulp.src(input)
+// minify css
+gulp.task('compress-css', function () {
+  gulp.src('./client/assets/css/stylesheet.css')
+    .pipe(uglifycss({
+      "max-line-len": 80
+    }))
+    .pipe(rename({
+      extname: '.min.css'
+    }))
+    .pipe(gulp.dest('./client/assets/css'));
+});
+
+// process sass into css
+gulp.task('process-sass', function() {
+  return gulp.src('./client/assets/scss/stylesheet.scss')
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest(output))
+    .pipe(gulp.dest('./client/assets/css'))
+});
+
+// concat files
+// TODO : want all js files in client to be minified
+gulp.task('concat-css', function() {
+    return gulp.src(['./client/assets/css/*.min.css'])
+      .pipe(concat('stylesheets.min.css'))
+      .pipe(gulp.dest('./client/assets/css'));
 });
 
 // Watch task
 gulp.task('watch', function() {
-  gulp.watch(input, ['styles']);
+  gulp.watch(sassInput, ['process-sass']);
 });
