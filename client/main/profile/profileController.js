@@ -1,5 +1,5 @@
 angular.module('profile.controller', [])
-.controller('ProfileController', function(ProfileServices, AuthServices, $timeout, $window, $location){
+.controller('ProfileController', function(ProfileServices, AuthServices, GoalServices, $timeout, $window, $location){
 	var profile = this;
 
 	var fakeGoals = [{
@@ -76,13 +76,13 @@ angular.module('profile.controller', [])
 
 	profile.toggleAllocate = function(){
 		profile.allocateClicked = true;
-	}
+	};
 
 	profile.allocateSavings = function() {
 
 		//TODO
 
-	}
+	};
 
 	profile.logOut = function() {
 		AuthServices.logOut();
@@ -94,26 +94,26 @@ angular.module('profile.controller', [])
 		} else {
 			profile.newGoalClicked = false;
 		}
-	}
+	};
 
-	profile.submitNewGoal = function(goal){
+	profile.submitNewGoal = function(newGoal){
 		profile.toggleNewGoal();
 		var newGoal = {
 			name: goal.name,
 			price: goal.price,
 			target_date: goal.target_date,
 			progress: 0
-		}
+		};
 
 											// placeholder till we get goal functionality on backend
 
 		fakeGoals.push(newGoal);
 		profile.loadProfile();
-	}
+	};
 
 	profile.toggleTotalSavings = function(){
 		profile.showTotalSavings = !profile.showTotalSavings;
-	}
+	};
 
 	profile.submitNewTotalSavings = function(amount){
 		console.log("this is amount (which should be profile.newTotalSavings) inside submitNewTotalSavings", amount);
@@ -136,4 +136,4 @@ angular.module('profile.controller', [])
 
 	*/
 
-})
+});
