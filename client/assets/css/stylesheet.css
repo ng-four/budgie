@@ -1,8 +1,15 @@
 /*--- NAVIGATION ---*/
 .navbar-brand {
   padding: 8px 0 0 0; }
+  .navbar-brand .budgie-logo {
+    height: 48px; }
 
 /*--- EXPENSES PAGE ---*/
+#progressBarChart {
+  position: relative;
+  left: -20px;
+  top: -24px; }
+
 .donut-chart {
   position: relative;
   display: inline-block; }
