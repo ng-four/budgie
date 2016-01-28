@@ -57,13 +57,13 @@ angular.module('profile.controller', [])
 			});	
 	};
 
-	profile.changeSavings = function() {
-		profile.savingsClicked = true;
+	profile.changeTarget = function() {
+		profile.targetClicked = true;
 	};
 
 
-	profile.submitNewSavings = function(newSavings){		
-		ProfileServices.updateSavings(newSavings)
+	profile.submitNewSavingsTarget = function(newSavings){		
+		ProfileServices.updateSavingsTarget(newSavings)
 			.then(function(resp){
 				console.log("resp in updateSavings ", resp);
 				$timeout(profile.loadProfile, 1000);     // reload updated profile

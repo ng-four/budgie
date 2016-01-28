@@ -17,11 +17,11 @@
             </div>
         </div>
         <div class="col-lg-10">
-            <h2 class="col-lg-8">Monthly Savings Target: {{ profile.savings_goal }}%</h2><a ng-click="profile.changeSavings()" class="btn btn-info btn-sm">edit</a>
+            <h2 class="col-lg-8">Monthly Savings Target: {{ profile.savings_goal }}%</h2><a ng-click="profile.changeTarget()" class="btn btn-info btn-sm">edit</a>
         </div>
-         <div class="form-group" ng-show="profile.savingsClicked">
+         <div class="form-group" ng-show="profile.targetClicked">
             <div class="col-lg-10">
-            <input type="number" class="form-control" placeholder="New Savings Target" ng-model="profile.newSavings"/><button class="btn btn-primary" ng-click="profile.submitNewSavings(profile.newSavings)">Submit</button>
+            <input type="number" class="form-control" placeholder="New Savings Target" ng-model="profile.newSavingsTarget"/><button class="btn btn-primary" ng-click="profile.submitNewSavingsTarget(profile.newSavingsTarget)">Submit</button>
             </div>
         </div>
 

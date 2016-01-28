@@ -22,11 +22,11 @@ angular.module('profile.service', [])
 		});
 	};
 
-	var updateSavings = function(newGoal){
+	var updateSavingsTarget = function(newTarget){
 		return $http({
 			method: 'PUT',
 			url: '/savings_goal', 
-			data: {savings_goal: newGoal}
+			data: {savings_goal: newTarget}
 		}).then(function(resp){
 			return resp;
 		}, function(error){
@@ -37,7 +37,7 @@ angular.module('profile.service', [])
 	return {
 		getProfileData: getProfileData,
 		updateLimit: updateLimit,
-		updateSavings: updateSavings
+		updateSavingsTarget: updateSavingsTarget
 	}
 
 })
