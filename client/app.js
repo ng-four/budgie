@@ -11,6 +11,7 @@ angular.module('budgie', [
 	'auth.service',
 	'profile.service',
 	'expense.service',
+	'goal.service',
 	'ui.router'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider){
 
@@ -94,11 +95,10 @@ angular.module('budgie', [
 			AuthServices.logOut();
 		}
 	});
-  
+
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
-  	console.log('toState ', toState);
-  	if (toState.authenticate && !AuthServices.isAuth()) {
-      $location.path('/landing/login'); 
+    if (toState.authenticate && !AuthServices.isAuth()) {
+      $location.path('/landing/login');
     }
   	if(toState.name === 'main'){						//redirects to handle routing edge cases
   		$location.path('/main/expense');
@@ -111,11 +111,11 @@ angular.module('budgie', [
   		}
   	}
   	if(
-  		(toState.name === 'landing.login' && AuthServices.isAuth()) || 
+  		(toState.name === 'landing.login' && AuthServices.isAuth()) ||
   		(toState.name === 'landing.signup' && AuthServices.isAuth())
   		)
   	{
   		$location.path('/main/expense');
-  	} 
+  	}
   });
 });

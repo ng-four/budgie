@@ -1,28 +1,6 @@
 angular.module('profile.controller', [])
-.controller('ProfileController', function(ProfileServices, AuthServices, $timeout, $window, $location){
+.controller('ProfileController', function(ProfileServices, AuthServices, GoalServices, $timeout, $window, $location){
 	var profile = this;
-
-	var fakeGoals = [{
-		name: "Rocket Car",
-		price: 20000,
-		target_date: null,
-		progress: 872,       // will need allocation functions to adjust
-		category: null
-		},
-		{
-		name: "Solid Gold House",
-		price: 45000,
-		target_date: null,
-		progress: 247,
-		category: null
-		},
-		{
-		name: "Mona Lisa",
-		price: 120000,
-		target_date: null,
-		progress: 89,
-		category: null
-		}];
 
 	profile.loadProfile = function() {
 		console.log("profile.loadProfile called ");
@@ -39,7 +17,11 @@ angular.module('profile.controller', [])
 				profile.full_name = resp.full_name;
 				profile.monthly_limit = resp.monthly_limit;
 				profile.savings_goal = resp.savings_goal;
-				profile.goals = resp.goals || fakeGoals;
+				GoalServices.getGoals()
+				.then(function(resp){
+					console.log(resp);
+					profile.goals = resp.data;
+				});
 			}, function(error){
 				throw error;
 			});
@@ -76,13 +58,13 @@ angular.module('profile.controller', [])
 
 	profile.toggleAllocate = function(){
 		profile.allocateClicked = true;
-	}
+	};
 
 	profile.allocateSavings = function() {
 
 		//TODO
 
-	}
+	};
 
 	profile.logOut = function() {
 		AuthServices.logOut();
@@ -94,26 +76,28 @@ angular.module('profile.controller', [])
 		} else {
 			profile.newGoalClicked = false;
 		}
-	}
+	};
 
 	profile.submitNewGoal = function(goal){
 		profile.toggleNewGoal();
 		var newGoal = {
 			name: goal.name,
-			price: goal.price,
-			target_date: goal.target_date,
-			progress: 0
-		}
+			amount: goal.amount,
+			category: goal.category,
+			notes: goal.notes
+		};
 
-											// placeholder till we get goal functionality on backend
+		GoalServices.addNewGoal(newGoal)
+		.then(function(resp){
+			profile.goals.push(resp.data);
+			console.log("this is the response in addNewGoal", resp);
+		});
 
-		fakeGoals.push(newGoal);
-		profile.loadProfile();
-	}
+	};
 
 	profile.toggleTotalSavings = function(){
 		profile.showTotalSavings = !profile.showTotalSavings;
-	}
+	};
 
 	profile.submitNewTotalSavings = function(amount){
 		console.log("this is amount (which should be profile.newTotalSavings) inside submitNewTotalSavings", amount);
@@ -123,17 +107,11 @@ angular.module('profile.controller', [])
 		});
 	};
 
-	/* TODO:
+	profile.completeGoal = function(idx, id){
+			profile.goals.splice(idx, 1);
+			//TODO call service for complete goal
+			GoalServices.completeGoal(id);
+	};
 
-	functions for:
 
-	 	getting total savings
-
-		get current goals
-		add goal
-		remove goal
-		edit goal
-
-	*/
-
-})
+});

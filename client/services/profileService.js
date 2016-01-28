@@ -51,7 +51,7 @@ angular.module('profile.service', [])
 		getProfileData: getProfileData,
 		updateLimit: updateLimit,
 		updateSavingsTarget: updateSavingsTarget,
-		updateTotalSavings: updateTotalSavings
-	}
+		updateTotalSavings: updateTotalSavings,
+	};
 
-})
+});
