@@ -2,6 +2,7 @@ var router = require('express').Router();
 var request = require('request');
 var parser = require('body-parser');
 var bcrypt = require('bcrypt-nodejs');
+var moment = require('moment');
 
 // Database Requirements
 var mysql = require('mysql');
@@ -424,7 +425,6 @@ router.get('/goals', function(request, response) {
 
 // Add new Goal
 router.post('/goals', function(request, response) {
-  console.log('Inside Adding Goal');
   var name = request.body.name;
   var amount = request.body.amount;
   var category = request.body.category;
@@ -524,7 +524,7 @@ router.patch('/goals/:id', function(request, response) {
   });
 });
 
-//
+// Delete Goal
 router.delete('/goals/:id', function(request, response) {
   var id = request.params.id;
   db.query('SELECT * FROM Goals WHERE id = ?;', [id], function(err, rows){
@@ -547,9 +547,8 @@ router.delete('/goals/:id', function(request, response) {
   });
 });
 
-//Completed goal
+// Complete goal
 router.post('/goals/:id', function(request, response) {
-  console.log('Inside Complete Goal');
   db.query('SELECT * FROM Users WHERE id = ?;', [request.session.user], function(err, rows){
     var totalSavings = rows[0].total_savings;
     db.query('SELECT * FROM Goals WHERE id = ?;', [request.params.id], function(err, rows){
@@ -557,17 +556,28 @@ router.post('/goals/:id', function(request, response) {
       var saved = rows[0].saved_amount;
       if(amount - saved < totalSavings) {
         var newTotalSavings = totalSavings - (amount - saved);
-        var newSaved = amount;
         db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newTotalSavings, request.session.user], function(err, results){
           if(err){
             console.error(err);
           }
         });
-        db.query('UPDATE Goals SET saved_amount = ? WHERE id = ?;', [newSaved, request.session.user], function(err, results){
+        var name = rows[0].amount;
+        var category = rows[0].category;
+        var notes = rows[0].notes || null;
+        var spent_date = moment().format('YYYY-MM-DD HH:mm:ss');
+        var location = null;
+        db.query('DELETE FROM Goals WHERE id = ?;', [request.params.id], function(err, results){
+          if(err){
+            console.error(err);
+          }
+        });
+        db.query('INSERT INTO Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ?, user_id = ?;',
+        [name, amount, category, notes, spent_date, location, request.session.user],
+        function(err, result){
           if(err){
             console.error(err);
           } else {
-            response.sendStatus(200);
+            response.sendStatus(201);
           }
         });
       } else {
