@@ -61,7 +61,6 @@ angular.module('history.controller', [])
 		history.cat = cat;
 		history.allTable = orderBy(history.allTable, cat, history.reverse);
 		history.reverse = (history.cat === cat) ? !history.reverse : false;	
-
 	}
 
 })
