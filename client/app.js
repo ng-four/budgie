@@ -12,6 +12,8 @@ angular.module('budgie', [
 	'profile.service',
 	'expense.service',
 	'goal.service',
+	'uiGmapgoogle-maps',
+	'appMaps',
 	'ui.router'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider){
 
@@ -110,12 +112,10 @@ angular.module('budgie', [
   			$location.path('/landing/login');
   		}
   	}
-  	if(
-  		(toState.name === 'landing.login' && AuthServices.isAuth()) ||
-  		(toState.name === 'landing.signup' && AuthServices.isAuth())
-  		)
-  	{
-  		$location.path('/main/expense');
-  	}
+  	if((toState.name === 'landing.login' && AuthServices.isAuth()) || 
+  	   (toState.name === 'landing.signup' && AuthServices.isAuth()))
+  		{
+  			$location.path('/main/expense');
+  		} 
   });
 });

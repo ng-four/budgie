@@ -22,14 +22,7 @@ angular.module('auth.service', [])
 			data: userData
 		}).then(function(resp) {
 			$window.localStorage.setItem('budgieID', resp.data.id); 
-
-			//the not-redirecting problem is clearly an async/promises issue...
-
-			console.log('trying to redirect to main/profile in AuthServices');
 			$location.path('/main/expense');
-
-
-
 			return resp.data;  
 		}).catch(function(error) {
   			console.error('Sign in ERROR!!!', error);  								
