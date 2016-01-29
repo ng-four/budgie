@@ -73,3 +73,7 @@ input.form-control {
 /*--- FOOTER ---*/
 footer {
   margin-top: 30px; }
+
+/*--- ANGULAR GOOGLE MAPS ---*/
+
+.angular-google-map-container { height: 400px; }

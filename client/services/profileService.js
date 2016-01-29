@@ -6,7 +6,9 @@ angular.module('profile.service', [])
 			.then(function(resp) {
 				return resp.data;
 			}, function(error){
-				throw error;
+				//$location.path('/landing/login');
+				// to handle edge case wherein server shuts down but browser window still open	
+				throw error;										
 			});
 	};
 

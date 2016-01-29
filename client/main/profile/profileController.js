@@ -23,6 +23,9 @@ angular.module('profile.controller', [])
 					profile.goals = resp.data;
 				});
 			}, function(error){
+				// to handle edge case wherein server shuts down but browser window still open	
+				console.log("loadProfile threw error, logging out... ");
+				AuthServices.logOut();
 				throw error;
 			});
 	};
