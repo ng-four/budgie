@@ -2,8 +2,7 @@ angular.module('expense.controller', [])
 .controller('ExpenseController', function(ExpenseServices, $http){
 	var expense = this;
 
-
-
+  expense.inputType = 'expense';
 
 	expense.expenseTable = [];
 	expense.incomeTable = [];
@@ -97,7 +96,6 @@ angular.module('expense.controller', [])
 			console.log("this is monthlyLineArr!!!!", monthlyLineArr);
 			console.log("this is lastMonthArr!!!!", lastMonthArr);
 
-			new Chartist.Bar('#progressBarChart', dataProgressBar, optionsProgressBar);
 			new Chartist.Pie('#dailyDonutChart', dataDailyDonutChart, optionsDailyDonutChart);
 			new Chartist.Pie('#weeklyDonutChart', dataWeeklyDonutChart, optionsWeeklyDonutChart);
 			new Chartist.Pie('#monthlyDonutChart', dataMonthlyDonutChart, optionsMonthlyDonutChart);
@@ -119,6 +117,7 @@ angular.module('expense.controller', [])
 
 		console.log("this is spentDate in string format", spentDate);
 		console.log("this is hours and minutes", hours, minutes);
+    console.log("This is the amount going to the server", {'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value});
 
 		ExpenseServices.submitNewExpense({'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value}, expense.inputType)
 		.then(function(resp){
@@ -145,29 +144,6 @@ angular.module('expense.controller', [])
 			expense.incomeTable.splice(idx, 1);
 			ExpenseServices.deleteExpense(id, inputType);
 	}
-	};
-
-	var dataProgressBar = {
-		labels: [''],
-		series: [[43],[7]] //first array is how much we have left to get to the goal, the second array is how much weve saved so far.
-	};
-	var optionsProgressBar = {
-		reverseData: true,
-		horizontalBars: true,
-		stackBars: true,
-		fullWidth: true,
-		seriesBarDistance: 0,
-		height: "20px",
-		low: 0,
-		high: 50, //price of goal
-		axisX: {
-			showLabel: false,
-			showGrid: false
-		},
-		axisY: {
-			showLabel: false,
-			showGrid: false,
-		}
 	};
 
 	var dataDailyDonutChart = {

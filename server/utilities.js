@@ -6,16 +6,16 @@ exports.createSession = function(request, response, user_id) {
       id: user_id
     });
   });
-}
+};
 
 // Login Checks
 var isLoggedIn = function(request) {
   return request.session ? !!request.session.user : false;
-}
+};
 
 var isLoggedOut = function(request) {
   return !isLoggedIn(request);
-}
+};
 
 // Reroute based on Auth status
 exports.checkUser = function(request, response, next) {
@@ -24,4 +24,4 @@ exports.checkUser = function(request, response, next) {
   } else {
     next();
   }
-}
+};

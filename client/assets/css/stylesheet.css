@@ -1,14 +1,65 @@
+/*--- GLOBAL STYLES ---*/
+body {
+  background-color: #202840; }
+
+.body-wrapper {
+  display: table;
+  height: 100%;
+  width: 100%; }
+  .body-wrapper .body-expand {
+    height: auto; }
+  .body-wrapper .body-row {
+    display: table-row;
+    height: 1px; }
+
+.main-content {
+  margin-top: 70px; }
+
+/*--- FORMS ---*/
+input.form-control {
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid #375a7f;
+  color: white; }
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto; }
+
 /*--- NAVIGATION ---*/
 .navbar-brand {
   padding: 8px 0 0 0; }
   .navbar-brand .budgie-logo {
     height: 48px; }
 
+.navbar-default {
+  background: -moz-linear-gradient(top, #281f3f 0%, rgba(55, 90, 127, 0) 100%);
+  background: -webkit-linear-gradient(top, #281f3f 0%, rgba(55, 90, 127, 0) 100%);
+  background: linear-gradient(to bottom, #281f3f 0%, rgba(55, 90, 127, 0) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#281f3f', endColorstr='#00375a7f',GradientType=0 ); }
+
 /*--- EXPENSES PAGE ---*/
-#progressBarChart {
-  position: relative;
-  left: -20px;
-  top: -24px; }
+.expense-form .form-control {
+  display: inline;
+  min-width: 20%;
+  width: auto; }
+
+.expense-form #select {
+  border-bottom: 1px solid #375a7f;
+  background: transparent;
+  color: white;
+  min-width: 10%; }
+
+.expense-form #notes {
+  min-width: 35%; }
+
+.expense-form #time {
+  min-width: 10%; }
+
+.expense-form .button-group {
+  margin-top: 20px; }
 
 .donut-chart {
   position: relative;
@@ -19,6 +70,6 @@
     text-align: center;
     color: white; }
 
-/*--- LEARN PAGE ---*/
-.learn-page .item {
-  margin-bottom: 20px; }
+/*--- FOOTER ---*/
+footer {
+  margin-top: 30px; }

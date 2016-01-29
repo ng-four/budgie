@@ -1,5 +1,5 @@
  <div class="navbar navbar-default navbar-fixed-top"  >
-    <div class="container">
+   <div class="container">
         <div class="navbar-header">
           <a ui-sref="main.expense" class="navbar-brand"><img src="assets/images/budgie_logo.svg" class="budgie-logo" title="Budgie" alt="Budgie"/></a>
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
@@ -9,14 +9,14 @@
           </button>
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
-		 <ul class="nav navbar-nav navbar-right">
-		  	<li><a ui-sref="main.expense">expense</a></li>
-		  	<li><a ui-sref="main.profile">profile</a></li>
-		  	<li><a ui-sref="main.history">history</a></li>
-            <li><a ui-sref="main.stocks">stocks</a></li>
-            <li><a ui-sref="main.learn">learn</a></li>
-		 </ul>
+  		 <ul class="nav navbar-nav navbar-right">
+  		  	<li><a ui-sref="main.expense">Home</a></li>
+  		  	<li><a ui-sref="main.history">History</a></li>
+          <!-- <li><a ui-sref="main.stocks">stocks</a></li> -->
+          <li><a ui-sref="main.learn">Learn</a></li>
+          <li><a ui-sref="main.profile">Profile</a></li>
+  		 </ul>
         </div>
-    </div>
+      </div>
 </div>
-<div ui-view></div>
+<div ui-view class="main-content"></div>
