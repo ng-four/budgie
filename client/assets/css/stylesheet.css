@@ -76,6 +76,6 @@ footer {
 
 /*--- ANGULAR GOOGLE MAPS ---*/
 
-#map_canvas { height: 400px;}
+#map_canvas { height: 400px; width: 600px;}
 
 .angular-google-map-container { height: 400px; }
