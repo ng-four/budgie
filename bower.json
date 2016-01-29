@@ -21,6 +21,9 @@
     "chartist": "~0.9.5",
     "moment": "~2.11.1",
     "jquery": "~2.2.0",
-    "bootstrap": "twbs/bootstrap#~3.3.6"
+    "bootstrap": "twbs/bootstrap#~3.3.6",
+    "lodash": "~4.1.0",
+    "angular-google-maps": "~2.3.1",
+    "angular-simple-logger": "~0.1.7"
   }
 }

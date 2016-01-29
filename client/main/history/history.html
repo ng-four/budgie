@@ -41,14 +41,22 @@
       </table>
     </div>
   </div>
+
+  <section class="map-container">
+    <div id="map_canvas" ng-controller="MapController"></div>
+  </section>
+
   <div>
     <h2>Click on a marker to view transaction details</h2>
   </div>
-  <div id="map_canvas" ng-controller="MapController">
+
+
+
+  <!-- <div id="map_canvas" ng-controller="MapController">
     <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options" bounds="map.bounds">
         <ui-gmap-markers models="allMarkers" coords="'self'" icon="'icon'" idkey="marker.id" click="showData(allMarkers[id])" labelContent="allMarkers[id].title">
         </ui-gmap-markers>
     </ui-gmap-google-map>
-  </div>
+  </div> -->
 
 </body>
