@@ -43,5 +43,5 @@ gulp.task('concat-css', function() {
 
 // Watch task
 gulp.task('watch', function() {
-  gulp.watch(sassInput, ['process-sass']);
+  gulp.watch('./client/assets/scss/stylesheet.scss', ['process-sass']);
 });
