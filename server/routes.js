@@ -565,7 +565,7 @@ router.post('/goals/:id', function(request, response) {
             console.error(err);
           }
         });
-        var name = rows[0].amount;
+        var name = rows[0].name;
         var category = rows[0].category;
         var notes = rows[0].notes || null;
         var spent_date = moment().format('YYYY-MM-DD HH:mm:ss');
