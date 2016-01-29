@@ -1,5 +1,8 @@
 angular.module('history.controller', [])
 .controller('HistoryController', function(ExpenseServices, AuthServices, $http, $filter, $timeout){
+	console.log('wtf???');
+
+
 	var history = this;
 	history.expenseTable = [];
 	history.incomeTable = [];
@@ -116,66 +119,127 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
 
 	$timeout($scope.combineTables, 500);
 
-    $scope.map = {
-      center: {
-        latitude: 34.0210487,
-        longitude: -118.4922354
-      },
-      zoom: 15,
-      bounds: {}
-    };
-    $scope.options = {
-      scrollwheel: false
-    };
+	console.log('wtf???');
 
-    var createMarker = function(i, bounds, transaction, idKey) {
-      var lat_min = bounds.southwest.latitude,
-        lat_range = bounds.northeast.latitude - lat_min,
-        lng_min = bounds.southwest.longitude,
-        lng_range = bounds.northeast.longitude - lng_min;
+    // $scope.map = {
+    //   center: {
+    //     latitude: 34.0210487,
+    //     longitude: -118.4922354
+    //   },
+    //   zoom: 15,
+    //   bounds: {}
+    // };
+    // $scope.options = {
+    //   scrollwheel: false
+    // };
 
-      if (idKey == null) {
-        idKey = "id";
-      }
+    // var createMarker = function(i, bounds, transaction, idKey) {
+    //   var lat_min = bounds.southwest.latitude,
+    //     lat_range = bounds.northeast.latitude - lat_min,
+    //     lng_min = bounds.southwest.longitude,
+    //     lng_range = bounds.northeast.longitude - lng_min;
 
-      var latitude = lat_min + (Math.random() * lat_range);
-      var longitude = lng_min + (Math.random() * lng_range);
-      var transMarker = {
-        latitude: latitude,
-        longitude: longitude,
-        title: transaction.name,
-        idKey: transaction.id,
-        id: transaction.id,
-        amount: transaction.amount,
-        spent_date: transaction.spent_date,
-        category: transaction.category,
-        notes: transaction.notes,
-        options: {label: transaction.name}
+    //   if (idKey == null) {
+    //     idKey = "id";
+    //   }
 
-      };
+    //   var latitude = lat_min + (Math.random() * lat_range);
+    //   var longitude = lng_min + (Math.random() * lng_range);
+    //   var transMarker = {
+    //     latitude: latitude,
+    //     longitude: longitude,
+    //     title: transaction.name,
+    //     idKey: transaction.id,
+    //     id: transaction.id,
+    //     amount: transaction.amount,
+    //     spent_date: transaction.spent_date,
+    //     category: transaction.category,
+    //     notes: transaction.notes,
+    //     options: {label: transaction.name}
 
-     // transMarker[idKey] = i;
+    //   };
+
+    //  // transMarker[idKey] = i;
       
-      return transMarker;
-    };
+    //   return transMarker;
+    // };
 
-    $scope.allMarkers = [];
+    // $scope.allMarkers = [];
 
-    $scope.showData = function(markerData){
-    	console.log('marker info ', markerData);
-    }
-    // Get the bounds from the map once it's loaded
-    $scope.$watch(function() {
-      return $scope.map.bounds;
-    }, function(nv, ov) {
-      // Only need to regenerate once
-      if (!ov.southwest && nv.southwest) {
-        var markers = [];
-        for (var i = 0; i < $scope.allTable.length; i++) {
-          markers.push(createMarker(i, $scope.map.bounds, $scope.allTable[i]))
-        }
-        // console.log('markers ', markers);
-        $scope.allMarkers = markers;
-      }
-    }, true);
+    // $scope.showData = function(markerData){
+    // 	console.log('marker info ', markerData);
+    // }
+    // // Get the bounds from the map once it's loaded
+    // $scope.$watch(function() {
+    //   return $scope.map.bounds;
+    // }, function(nv, ov) {
+    //   // Only need to regenerate once
+    //   if (!ov.southwest && nv.southwest) {
+    //     var markers = [];
+    //     for (var i = 0; i < $scope.allTable.length; i++) {
+    //       markers.push(createMarker(i, $scope.map.bounds, $scope.allTable[i]))
+    //     }
+    //     // console.log('markers ', markers);
+    //     $scope.allMarkers = markers;
+    //   }
+    // }, true);
+
+// This example displays a marker at the center of Australia.
+// When the user clicks the marker, an info window opens.
+console.log('wtf???');
+
+  var mapCanvas = $('#map_canvas')[0];
+ 
+  var map = new google.maps.Map(mapCanvas, {
+    zoom: 15,
+    center: {lat: 34.0210487, lng: -118.4922354}
+  });
+  
+  var marker;
+  var contentString;
+  var infowindow;
+  var i = .000002
+  var lati = 34.0210487;
+  var longi = -118.4922354;
+
+  var renderMarkers = function () {
+  $scope.allTable.forEach(function(item){
+  	console.log(item);
+  	i += .002; 	
+
+  	contentString = '<div id="content">'+
+      '<div id="bodyContent">'+
+      '<p style="color: black">' + item.name + '</p>'+
+       '<p style="color: black">' + item.category + '</p>'+
+      '<p style="color: black">' + item.amount + '</p>'+
+      '</div>'+
+      '</div>';
+
+  	infowindow = new google.maps.InfoWindow({
+    	content: contentString
+  	});
+
+  	marker = new google.maps.Marker({
+    	position: {lat: 34.0210487, lng: longi += i},
+    	map: map,
+    	title: item.name
+  	});
+
+  	marker.addListener('click', function() {
+    	infowindow.open(map, marker);
+  	});
+
+  })
+}
+
+$timeout(renderMarkers, 1000);
+
+  
+
+ 
+
+
+
+
+
   });
