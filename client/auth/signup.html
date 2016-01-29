@@ -1,51 +1,42 @@
-<h1>Dis be signup.html</h1>
-
-
 <div id="wrapper">
     <div id="page-content-wrapper">
 
-<form class="form-horizontal" ng-submit="signup.submit(signup)">
+<form class="form-signin" ng-submit="signup.submit(signup)">
   <fieldset>
     <div class="form-group">
-      <div class="col-lg-10">
-        <input type="text" class="form-control" id="full_name" placeholder="Full Name" ng-model="signup.full_name">
-      </div>
+      <label for="inputName" class="sr-only">Full Name</label>
+      <input type="text" class="form-control" id="full_name" placeholder="Full Name" ng-model="signup.full_name">
     </div>
     <div class="form-group">
-      <div class="col-lg-10">
-        <input type="text" class="form-control" id="email" placeholder="Email" ng-model="signup.email">
-      </div>
+      <label for="inputEmail" class="sr-only">Email Address</label>
+      <input type="text" class="form-control" id="email" placeholder="Email" ng-model="signup.email">
     </div>
     <div class="form-group">
-      <div class="col-lg-10">
-        <input type="password" class="form-control" id="password" placeholder="Password" ng-model="signup.password">
-      </div>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" class="form-control" id="password" placeholder="Password" ng-model="signup.password">
     </div>
     <div class="form-group">
-      <div class="col-lg-10">
-        <input type="number" class="form-control" id="monthly_limit" placeholder="Monthly Limit" ng-model="signup.monthly_limit">
-      </div>
+      <label for="inputMonthlyLimit" class="sr-only">Monthly Limit</label>
+      <input type="number" class="form-control" id="monthly_limit" placeholder="Monthly Limit" ng-model="signup.monthly_limit">
     </div>
     <div class="form-group">
-      <div class="col-lg-10">
-        <input type="number" class="form-control" id="savings_goal" placeholder="Monthly Savings Goal" ng-model="signup.savings_goal">
-      </div>
+      <label for="inputMonthlySavingsGoal" class="sr-only">Monthly Savings Goal</label>
+      <input type="number" class="form-control" id="savings_goal" placeholder="Monthly Savings Goal" ng-model="signup.savings_goal">
     </div>
     <div class="form-group">
-      <div class="col-lg-10">
-        <input type="number" class="form-control" id="total_goal" placeholder="Current Total Savings" ng-model="signup.total_savings">
-      </div>
+      <label for="inputTotalSavingsGoal" class="sr-only">Current Total Savings</label>
+      <input type="number" class="form-control" id="total_goal" placeholder="Current Total Savings" ng-model="signup.total_savings">
     </div>
-    <div class="form-group">
-      <div class="col-lg-10 col-lg-offset-2">
-        <!-- <a ui-sref="main.expense"> -->
-          <button type="submit" class="btn btn-primary">Create Profile</button></a>
-      </div>
+    <div class="form-group text-center">
+      <button type="submit" class="btn btn-primary">Create Profile</button></a>
     </div>
   </fieldset>
 
+
+
 </form>
-
-
+<div class="text-center">
+  <p>Already have an account? <a ui-sref="landing.login"><button type="submit" class="btn btn-success btn-xs">Log In</button></a></p>
+</div>
   </div>  <!-- /#page-content-wrapper -->
 </div>  <!-- /#wrapper -->

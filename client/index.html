@@ -3,6 +3,7 @@
 <head>
   <meta charset='UTF-8'>
   <title>Budgie</title>
+  <link rel='stylesheet' href='..bower_components/bootstrap/dist/css/bootstrap.min.css'/>
   <link rel='stylesheet' href='assets/css/darkly.min.css'/>
   <link rel='stylesheet' href='../bower_components/chartist/dist/chartist.min.css'/>
   <script type='text/javascript' src='../bower_components/chartist/dist/chartist.min.js'></script>
@@ -26,9 +27,15 @@
   <script type='text/javascript' src='services/expenseService.js'></script>
   <script type='text/javascript' src='services/goalService.js'></script>
 
+  <script type='text/javascript' src='../bower_components/jquery/dist/jquery.min.js'></script>
+  <script type='text/javascript' src='../bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
+
 </head>
-<body>
-  <h1>Dis be index.html</h1>
-<div ui-view></div>
+<body class="body-wrapper">
+  <!-- <h1>Dis be index.html</h1> -->
+  <div ui-view class="body-expand"></div>
+  <footer class="body-row text-center">
+    © Budgie 2016 | <a href="#">Budgie github</a> | <a href="#">Kaushik Sahoo</a> | <a href="#">Joseph Martin</a> | <a href="#">Thomas Leupp</a> | <a href="#">VJ Aguilar</a>
+  </footer>
 </body>
 </html>
