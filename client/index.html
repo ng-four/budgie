@@ -12,6 +12,13 @@
   <script type='text/javascript' src='../bower_components/angular/angular.js'></script>
   <script type='text/javascript' src='../bower_components/angular-ui-router/release/angular-ui-router.js'></script>
   <script type='text/javascript' src='../bower_components/moment/min/moment.min.js'></script>
+  <script type='text/javascript' src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+  <script type='text/javascript' src="../bower_components/ng-csv/build/ng-csv.min.js"></script>
+  <script type='text/javascript' src="assets/ng-csv-dropbox.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js"></script>
+
+
+
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDT_EUBiOzMqTtcOmndgzbJ-vBYlRpFu1k"></script>
   <script type='text/javascript' src='../bower_components/lodash/lodash.js'></script>
@@ -44,5 +51,11 @@
   <footer class="body-row text-center">
     © Budgie 2016 | <a href="#">Budgie github</a> | <a href="#">Kaushik Sahoo</a> | <a href="#">Joseph Martin</a> | <a href="#">Thomas Leupp</a> | <a href="#">VJ Aguilar</a>
   </footer>
+
+  <script type="text/javascript">
+    var client = new Dropbox.Client({ key: "yhintvoqspu0w44" });
+    client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "http://localhost:8000/dropbox"}));
+  </script>
+  
 </body>
 </html>

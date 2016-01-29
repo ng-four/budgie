@@ -16,6 +16,14 @@
             </div>
           </div>
 
+          <button class="btn btn-default" ng-csv-dropbox="history.allTable" csv-header="['Amount','Name','Category','Notes','Type']"
+          csv-column-order="['amount','name','category','notes','inputType']" filename="BudgieHistory.csv" field-separator="," decimal-separator=".">
+          Export to Dropbox</button>
+
+          <button class="btn btn-default" ng-csv="history.allTable" csv-header="['Amount','Name','Category','Notes','Type']"
+          csv-column-order="['amount','name','category','notes','inputType']" filename="BudgieHistory.csv" field-separator="," decimal-separator=".">
+          Export to CSV</button>
+
       <table class="table table-striped table-hover">
         <thead>
           <tr>

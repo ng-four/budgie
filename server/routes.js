@@ -3,6 +3,10 @@ var request = require('request');
 var parser = require('body-parser');
 var bcrypt = require('bcrypt-nodejs');
 var moment = require('moment');
+var Dropbox = require('dropbox');
+var config = require('./config.js');
+
+var client = new Dropbox.Client({ key: "yhintvoqspu0w44", secret:config.dropbox});
 
 // Database Requirements
 var mysql = require('mysql');
@@ -585,4 +589,22 @@ router.post('/goals/:id', function(request, response) {
       }
     });
   });
+});
+
+// Dropbox logic
+router.get('/dropbox', function(request, response){
+  response.send(
+"<!DOCTYPE html>" +
+"<html lang=\"en\">" +
+"  <head>" +
+"    <script src=\"//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js\" type=\"text/javascript\"></script>" +
+"    <script type=\"text/javascript\">" +
+"      Dropbox.AuthDriver.Popup.oauthReceiver();" +
+"    </script>" +
+"  </head>" +
+"  <body>" +
+"    <h1>Dropbox sign-in successful</h1>" +
+"    <p>Please close this window.</p>" +
+"  </body>" +
+"</html>");
 });

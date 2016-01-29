@@ -20,6 +20,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
     "cors": "^2.7.1",
+    "dropbox": "^0.10.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "moment": "^2.11.1",

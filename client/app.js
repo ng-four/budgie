@@ -14,7 +14,10 @@ angular.module('budgie', [
 	'goal.service',
 	'uiGmapgoogle-maps',
 	'appMaps',
-	'ui.router'])
+	'ui.router',
+	'ngSanitize',
+	'ngCsv',
+	'ngCsvDropbox'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider){
 
 	$stateProvider
@@ -112,10 +115,10 @@ angular.module('budgie', [
   			$location.path('/landing/login');
   		}
   	}
-  	if((toState.name === 'landing.login' && AuthServices.isAuth()) || 
+  	if((toState.name === 'landing.login' && AuthServices.isAuth()) ||
   	   (toState.name === 'landing.signup' && AuthServices.isAuth()))
   		{
   			$location.path('/main/expense');
-  		} 
+  		}
   });
 });

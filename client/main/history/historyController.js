@@ -46,7 +46,7 @@ angular.module('history.controller', [])
 			history.allTable.push(item);
 		});
 		console.log("allTable array ", history.allTable);
-	}
+	};
 
 	$timeout(history.combineTables, 500);
 
@@ -58,7 +58,7 @@ angular.module('history.controller', [])
 			history.incomeTable.splice(idx,1);
 			ExpenseServices.deleteExpense(id, inputType);
 		}
-		
+
 	};
 
 	history.cat = 'spent_date';
@@ -68,16 +68,18 @@ angular.module('history.controller', [])
 	history.sortBy = function(cat){
 		history.cat = cat;
 		history.allTable = orderBy(history.allTable, cat, history.reverse);
-		history.reverse = (history.cat === cat) ? !history.reverse : false;	
-	}
+		history.reverse = (history.cat === cat) ? !history.reverse : false;
+	};
 
 
 });
 
+
+
 angular.module('appMaps', ['uiGmapgoogle-maps'])
   .controller('MapController', function(ExpenseServices, AuthServices, $scope, $timeout) {
 
-  	$scope.expenseTable = [];
+  $scope.expenseTable = [];
 	$scope.incomeTable = [];
 	$scope.allTable = [];
 
@@ -115,7 +117,7 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
 			$scope.allTable.push(item);
 		});
 		console.log("allTable array ", $scope.allTable);
-	}
+	};
 
 	$timeout($scope.combineTables, 500);
 
@@ -160,7 +162,7 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
     //   };
 
     //  // transMarker[idKey] = i;
-      
+
     //   return transMarker;
     // };
 
@@ -189,12 +191,12 @@ angular.module('appMaps', ['uiGmapgoogle-maps'])
 console.log('wtf???');
 
   var mapCanvas = $('#map_canvas')[0];
- 
+
   var map = new google.maps.Map(mapCanvas, {
     zoom: 15,
     center: {lat: 34.0210487, lng: -118.4922354}
   });
-  
+
   var marker;
   var contentString;
   var infowindow;
@@ -205,7 +207,7 @@ console.log('wtf???');
   var renderMarkers = function () {
   $scope.allTable.forEach(function(item){
   	console.log(item);
-  	i += .002; 	
+  	i += .002;
 
   	contentString = '<div id="content">'+
       '<div id="bodyContent">'+
@@ -229,14 +231,14 @@ console.log('wtf???');
     	infowindow.open(map, marker);
   	});
 
-  })
-}
+  });
+};
 
 $timeout(renderMarkers, 1000);
 
-  
 
- 
+
+
 
 
 
