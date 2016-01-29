@@ -24,6 +24,8 @@
     "bootstrap": "twbs/bootstrap#~3.3.6",
     "lodash": "~4.1.0",
     "angular-google-maps": "~2.3.1",
-    "angular-simple-logger": "~0.1.7"
+    "angular-simple-logger": "~0.1.7",
+    "angular-sanitize": "^1.4.9",
+    "ng-csv": "^0.3.6"
   }
 }
