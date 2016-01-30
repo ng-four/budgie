@@ -4,9 +4,12 @@ var parser = require('body-parser');
 var bcrypt = require('bcrypt-nodejs');
 var moment = require('moment');
 var Dropbox = require('dropbox');
+var Twitter = require('twitter');
 var config = require('./config.js');
 
 var client = new Dropbox.Client({ key: "yhintvoqspu0w44", secret:config.dropbox});
+
+var twitterClient = new Twitter(config.twitter);
 
 // Database Requirements
 var mysql = require('mysql');
@@ -90,6 +93,17 @@ router.post('/login', function (request, response) {
       }
     });
   }
+});
+
+// Get Tweets on Learn Page
+router.get('/learn', function(request, response) {
+  twitterClient.get('search/tweets', {q: 'from:wsj, OR from:nytimes, OR from:EconBizFin, OR from:money_cnn, OR from:Investopedia, OR from:business', count:100, result_type:'recent'}, function(err, tweets, tweetResponse){
+    if (err) {
+      console.error(err);
+    } else {
+      response.json(tweets);
+    }
+  });
 });
 
 // Logout User

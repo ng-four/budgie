@@ -30,6 +30,7 @@
   <script type='text/javascript' src='services/profileService.js'></script>
   <script type='text/javascript' src='services/expenseService.js'></script>
   <script type='text/javascript' src='services/goalService.js'></script>
+  <script type='text/javascript' src='services/learnService.js'></script>
 
   <script type='text/javascript' src='../bower_components/jquery/dist/jquery.min.js'></script>
   <script type='text/javascript' src='../bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
@@ -46,6 +47,6 @@
     var client = new Dropbox.Client({ key: "yhintvoqspu0w44" });
     client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "http://localhost:8000/dropbox"}));
   </script>
-  
+
 </body>
 </html>
