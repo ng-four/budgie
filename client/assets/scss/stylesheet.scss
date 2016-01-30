@@ -87,6 +87,49 @@ input.form-control{
   }
 }
 
+/*--- LEARN PAGE ---*/
+.learn-page{
+  .resources{
+    .item{
+      margin-bottom: 15px;
+      text-align: center;
+      img{
+        background-color: #fff;
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+  .tweet-container{
+    li{
+      border-bottom: 1px solid rgba(225, 232, 237, 0.3);
+    }
+    .tweet{
+      min-height: 65px;
+      padding: 9px 0;
+      position: relative;
+      .content{
+        margin-left: 58px;
+        .avatar{
+          float: left;
+          height: 48px;
+          margin-left: -58px;
+          width: 48px;
+        }
+        .username{
+          color: #8899a6;
+        }
+        small{
+          color: #8899a6;
+        }
+      }
+
+    }
+
+
+  }
+}
+
 
 /*--- FOOTER ---*/
 footer{
@@ -94,4 +137,20 @@ footer{
   // bottom: 5px;
   // position: fixed;
   // width: 100%;
+}
+
+
+/*--- MEDIA QUERIES ---*/
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .learn-page{
+    .resources{
+      .item{
+        img{
+          height: 200px;
+          width: 200px;
+        }
+      }
+    }
+  }
 }
