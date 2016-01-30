@@ -24,8 +24,11 @@
               .<br>
               <label for="inputCategory">Category:</label>
               <input type="text" class="form-control" id="category" placeholder="Category" name="category" ng-model="category">&nbsp;
+
               <label for="inputNotes">Notes:</label>
               <input type="text" class="form-control" id="notes" placeholder="Notes" name="notes" ng-model="notes">
+              <label for="inputLocation">Location:</label>
+              <input type="text" class="form-control" id="location" placeholder="Location" name="location" ng-model="expense.location" googleplace>
 
             <div class="form-group button-group">
                 <button type="submit" class="btn btn-primary" ng-click="expense.addExpense()">Submit</button>
@@ -120,19 +123,11 @@
               <div class="ct-chart line-chart" id="monthlyLineChart"></div>
             </div>
 
-
-
-
-
         </div>
 
       </div>
 
-
-
-
-
-    </div>  <!-- /#page-<content-wrapper -->
+    </div>  <!-- /#page-<content-wrapper  -->
 
 </body>
 
