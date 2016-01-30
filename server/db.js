@@ -3,7 +3,7 @@ var fs = require('fs');
 
 
 if (process.env.CLEARDB_DATABASE_URL) {
-  var db = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
+  var db = mysql.createConnection(process.env.CLEARDB_DATABASE_URL + "&multipleStatements=true");
 } else {
 // Connect to local MySql database
   var db = mysql.createConnection({
