@@ -1,15 +1,16 @@
 var express = require('express');
 var session = require('express-session');
+var cors = require('cors');
 
 // Config
 var config = require('./config.js');
 
+var app = express();
+
 // Middleware
 var parser = require('body-parser');
 var router = require('./routes.js');
-
-// Router
-var app = express();
+app.use(cors());
 
 // Establish session
 var sessionSecret = !!config.sessionSecret ? config.sessionSecret : CONFIG_SESSIONS_SECRET;
@@ -27,8 +28,8 @@ app.set("port", process.env.PORT || 8000);
 app.use(parser.json());
 
 // Serving static files from client directory.
-var dirname = __dirname
-dirname = dirname.slice(0,-6)
+var dirname = __dirname;
+dirname = dirname.slice(0,-6);
 app.use(express.static(dirname + '/client/'));
 
 // Set up our routes
