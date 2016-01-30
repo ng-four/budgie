@@ -1,5 +1,6 @@
 angular.module('expense.controller', [])
-.controller('ExpenseController', function(ExpenseServices, $http){
+.controller('ExpenseController', function(ExpenseServices, $http, $timeout){
+
 	var expense = this;
 
   expense.inputType = 'expense';
@@ -117,9 +118,9 @@ angular.module('expense.controller', [])
 
 		console.log("this is spentDate in string format", spentDate);
 		console.log("this is hours and minutes", hours, minutes);
-    console.log("This is the amount going to the server", {'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value});
+    console.log("This is the amount going to the server", {'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location});
 
-		ExpenseServices.submitNewExpense({'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value}, expense.inputType)
+		ExpenseServices.submitNewExpense({'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location}, expense.inputType)
 		.then(function(resp){
 			resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
 			if(expense.inputType === 'expense'){
@@ -208,4 +209,24 @@ angular.module('expense.controller', [])
 
 
 
+})
+.directive('googleplace', function() {
+    return {
+        require : 'ngModel',
+        link : function(scope, element, attrs, model) {
+            var options = {
+                types : [],
+            };
+            scope.gPlace = new google.maps.places.Autocomplete(element[0],
+                    options);
+ 
+            google.maps.event.addListener(scope.gPlace, 'place_changed',
+                    function() {
+                        scope.$apply(function() {
+                            model.$setViewValue(element.val());
+                        });
+                    });
+        }
+    };
 });
+

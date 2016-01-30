@@ -13,7 +13,7 @@ angular.module('budgie', [
 	'expense.service',
 	'goal.service',
 	'learn.service',
-	'map.controller',
+	'map.service',
 	'ui.router',
 	'ngSanitize',
 	'ngCsv',
