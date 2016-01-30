@@ -12,20 +12,33 @@ angular.module('signup.controller', [])
 			monthly_limit: signup.monthly_limit,
 			savings_goal: signup.savings_goal,
 			total_savings: signup.total_savings
-		}
+		};
 
 		console.log("called signup.submit with ", userData);
 
 		AuthServices.submitNewUser(userData)
-			.then(function(resp){
-				console.log("resp in submit in signup controller", resp);
-				//var changePath = function(){
-					$location.path('/main/profile');  
-				//}
-				//setTimeout(changePath, 3000); //  all of this is just temporary till promises are squared away
-			}, function(error){
-				throw error;
-			})
-	}
-	
-})
+    .then(function(token){
+      if(token){
+        $location.path('/main/expense');
+      } else {
+        console.log("Error Creating User");
+      }
+    }, function(error){
+      console.log("Erroring");
+      $location.path('/landing/login');
+      throw error;
+    });
+
+
+			// .then(function(resp){
+			// 	console.log("resp in submit in signup controller", resp);
+			// 	//var changePath = function(){
+			// 		$location.path('/main/profile');
+			// 	//}
+			// 	//setTimeout(changePath, 3000); //  all of this is just temporary till promises are squared away
+			// }, function(error){
+			// 	throw error;
+			// });
+	};
+
+});

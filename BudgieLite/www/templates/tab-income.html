@@ -1,0 +1,30 @@
+<ion-view view-title="Add Income">
+  <ion-content class="padding">
+    <form ng-submit="addIncome()">
+      <div class="list">
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Amount</span>
+          <input type="number" placeholder="$" ng-model="input.amount">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Name</span>
+          <input type="text" placeholder="Expense" ng-model="input.name">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Time</span>
+          <input type="time" placeholder="Time" ng-model="input.time">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Category</span>
+          <input type="text" placeholder="Category" ng-model="input.category">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Notes</span>
+          <input type="text" placeholder="Notes" ng-model="input.notes">
+        </label>
+        <button class="button button-full button-balanced" type="submit">Add Income</button>
+        <button class="button button-full button-balanced" ng-show="submitted">Income Added!</button>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>

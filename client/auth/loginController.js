@@ -10,25 +10,18 @@ angular.module('login.controller', [])
 		};
 
 		AuthServices.submitLogin(user)
-			.then(function(resp){
-				console.log(resp);
-			//	var changePath = function(){
-					//$state.go('main.profile');
-			//		console.log('logged in; trying to redirect to main/profile');
-			//		$location.path('/main/profile');
-			//	}
-			//	$timeout(changePath, 1000);
+		.then(function(token){
+      if(token){
+        $location.path('/main/expense');
+      } else {
+        console.log("Error Authenticating User");
+      }
+    }, function(error){
+      console.log("Erroring");
+      $location.path('/landing/login');
+      throw error;
+    });
 
+	};
 
-
-			//the not-redirecting problem is clearly an async/promises issue...
-
-			
-				
-			}, function(error){
-				throw error;
-			})
-
-	}
-	
-})
+});

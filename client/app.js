@@ -20,6 +20,8 @@ angular.module('budgie', [
 	'ngCsvDropbox'])
   .config(function($stateProvider, $urlRouterProvider, $httpProvider){
 
+  $httpProvider.interceptors.push('AttachTokens');
+
 	$stateProvider
 		.state('main', {
 			url: '/main',
@@ -77,12 +79,13 @@ angular.module('budgie', [
 	//  $httpProvider.interceptors.push('AttachSession');   // commented out till we get Auth set up
 
 })
-/*
-.factory('AttachSession', function ($window) {
+
+
+.factory('AttachTokens', function () {
   var attach = {
     request: function (object) {
-      var sess = $window.localStorage.getItem('budgieID');    // tbd based on what is returned by server
-      if (sess) {
+      var jwt = window.localStorage.getItem('budgieID');
+      if (jwt !== 'undefined' && jwt) {
         object.headers['x-access-token'] = jwt;
       }
       object.headers['Allow-Control-Allow-Origin'] = '*';
@@ -91,7 +94,8 @@ angular.module('budgie', [
   };
   return attach;
 })
-*/
+
+
 .run(function ($rootScope, $location, AuthServices, ProfileServices) {
   ProfileServices.getProfileData()
 	.then(function(success){
