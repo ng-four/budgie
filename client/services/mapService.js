@@ -14,6 +14,8 @@ angular.module('map.service', [])
   		var deferred = $q.defer();
   		var geocoder = new google.maps.Geocoder();
 
+
+  		console.log("address in getGeoCode service ", address);
     	var geocodeOptions = {
       		address: address
     	};
@@ -60,7 +62,11 @@ angular.module('map.service', [])
     		infowindow.close(map, marker);
   		});
 
-  		bounds.extend(transaction.latlng);
+  		console.log("transaction.latlng in map service ", transaction.latlng);
+
+  		var ll = new google.maps.LatLng(transaction.latlng);
+  		console.log("ll in map svc ", ll);
+  		bounds.extend(ll);
     
 
   	}

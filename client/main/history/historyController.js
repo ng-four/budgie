@@ -79,15 +79,21 @@ angular.module('history.controller', [])
 	var bounds = new google.maps.LatLngBounds();
 
 	var addMarkers = function(){
-	for(var j = 0; j < history.allTable.length; j++){
-   		if(history.allTable[j].location){
 
-   			var deferred = $q.defer();
+	for(var j = 0; j < history.allTable.length; j++){
+		
+   		if(history.allTable[j].location){
 
    			var loc = history.allTable[j].location;
    			console.log("loc ", loc);
-   			MapServices.getGeoCode(loc)
+
+   			var deferred = $q.defer();
+   		(function(loc,j) {	
+   			console.log("loc in promise workaround ", loc);
+   			console.log("j in promise workaround ", j);
+   			MapServices.getGeoCode(loc, j)
    				.then(function(result){
+   					console.log("j in for loop for GeoCode ", j);
    					console.log("result in for loop for GeoCode ", result);
    					console.log("history.allTable[j] in for loop ", history.allTable[j]);
    					history.allTable[j].latlng = {lat: result.lat(), lng: result.lng()};
@@ -96,10 +102,12 @@ angular.module('history.controller', [])
    					MapServices.renderMarker(history.allTable[j], map, bounds);
    				});
 
-   			deferred.resolve();
-
+   				deferred.resolve();
+   			})(loc,j);
    		}
+   		
    	}
+   	
    }
 
    	var setBounds = function(){
