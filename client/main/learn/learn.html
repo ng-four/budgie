@@ -1,5 +1,5 @@
 <body>
-  <div id="page-content-wrapper" class="learn-page">
+  <div id="page-content-wrapper" class="learn-page" ng-init="learn.loadTweets()">
     <div class="container-fluid">
       <div class="row text-center">
         <div class="item col-xs-6 col-sm-4 col-md-3">
@@ -40,6 +40,19 @@
         </div>
 
       </div>
+
+      <ul class="tweet-container" ng-repeat="tweets in learn.tweetsArr">
+        <li>
+            <div>
+              <a href="https://twitter.com/{{tweets.user.screen_name}}/status/{{tweets.id_str}}" style="text-decoration: none" target="_blank">Click to see Tweet</a>
+              <span>{{tweets.text}}</span><br>
+              <img src="{{tweets.user.profile_image_url}}" title="{{tweets.user.name}}" alt="{{tweets.user.name}}"/>
+              <span>{{tweets.user.name}}</span>&nbsp;
+              <span style="color:#666">@{{tweets.user.screen_name}}</span><br>
+              <span>{{tweets.created_at}}</span>
+            </div>
+        </li>
+      </ul>
 
 
 
