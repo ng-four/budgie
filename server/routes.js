@@ -6,7 +6,8 @@ var moment = require('moment');
 var Dropbox = require('dropbox');
 var Twitter = require('twitter');
 
-var client = new Dropbox.Client({ key: "yhintvoqspu0w44", secret: process.env.dropbox || require('./config.js').dropbox });
+var dropboxOptions = process.env.dropbox || require('./config.js').dropbox;
+var client = new Dropbox.Client({ key: "yhintvoqspu0w44", secret: dropboxOptions });
 var twitterOptions = process.env.twitter || require('./config.js').twitter;
 var twitterClient = new Twitter(twitterOptions);
 
