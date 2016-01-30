@@ -102,6 +102,13 @@ input.form-control {
 footer {
   margin-top: 30px; }
 
+/*---- MAP ----*/
+
+#map_canvas {
+  height: 400px;
+  width: 600px;
+}
+
 /*--- MEDIA QUERIES ---*/
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
