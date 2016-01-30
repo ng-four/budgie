@@ -5,11 +5,10 @@ var bcrypt = require('bcrypt-nodejs');
 var moment = require('moment');
 var Dropbox = require('dropbox');
 var Twitter = require('twitter');
-var config = require('./config.js');
 
-var client = new Dropbox.Client({ key: "yhintvoqspu0w44", secret:config.dropbox});
-
-var twitterClient = new Twitter(config.twitter);
+var client = new Dropbox.Client({ key: "yhintvoqspu0w44", secret: process.env.dropbox || require('./config.js').dropbox });
+var twitterOptions = process.env.twitter || require('./config.js').twitter;
+var twitterClient = new Twitter(twitterOptions);
 
 // Database Requirements
 var mysql = require('mysql');

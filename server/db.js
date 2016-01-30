@@ -1,25 +1,19 @@
 var mysql = require('mysql');
 var fs = require('fs');
-var config = require('./config.js');
 
-// if (process.env.CLEARDB_DATABASE_URL) {
-//   var db = mysql.createConnection({
-//     host     : 'localhost',
-//     user     : 'root',
-//     password : '',
-//     database : 'budgie',
-//     multipleStatements: true
-//   });
-// } else {
+
+if (process.env.CLEARDB_DATABASE_URL) {
+  var db = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
+} else {
 // Connect to local MySql database
   var db = mysql.createConnection({
     host     : 'localhost',
-    user     :  config.db.user,
-    password :  config.db.password,
-    database : config.db.database,
+    user     :  require('./config.js').db.user,
+    password :  require('./config.js').db.password,
+    database :  require('./config.js').db.database,
     multipleStatements: true
   });
-// }
+}
 
 db.connect();
 
