@@ -1,6 +1,6 @@
 angular.module('history.controller', [])
 .controller('HistoryController', function(ExpenseServices, AuthServices, MapServices, $http, $filter, $timeout, $q, $scope){
-	
+
 	var history = this;
 	history.expenseTable = [];
 	history.incomeTable = [];
@@ -54,10 +54,10 @@ angular.module('history.controller', [])
 
 	history.removeRow = function(idx, id, inputType){
 		if(inputType === 'expense'){
-			history.expenseTable.splice(idx, 1);
+			history.allTable.splice(idx, 1);
 			ExpenseServices.deleteExpense(id, inputType);
 		} else if (inputType === 'income'){
-			history.incomeTable.splice(idx,1);
+			history.allTable.splice(idx,1);
 			ExpenseServices.deleteExpense(id, inputType);
 		}
 
@@ -81,14 +81,14 @@ angular.module('history.controller', [])
 	var addMarkers = function(){
 
 	for(var j = 0; j < history.allTable.length; j++){
-		
+
    		if(history.allTable[j].location){
 
    			var loc = history.allTable[j].location;
    			console.log("loc ", loc);
 
    			var deferred = $q.defer();
-   		(function(loc,j) {	
+   		(function(loc,j) {
    			console.log("loc in promise workaround ", loc);
    			console.log("j in promise workaround ", j);
    			MapServices.getGeoCode(loc, j)
@@ -105,9 +105,9 @@ angular.module('history.controller', [])
    				deferred.resolve();
    			})(loc,j);
    		}
-   		
+
    	}
-   	
+
    }
 
    	var setBounds = function(){
@@ -118,6 +118,3 @@ angular.module('history.controller', [])
    	$timeout(setBounds, 2000);
 
 });
-
-
-
