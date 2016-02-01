@@ -46,6 +46,7 @@ router.post('/signup', function(request, response) {
   // If no missing data
   if (email !== null && full_name !== null && password !== null && monthly_limit !== null && savings_goal !== null) {
     // Search in db in User table for existing email
+    // db.connect();
     db.query('SELECT * FROM Users WHERE email = ?;', [email], function(err, rows){
       // If it doesn't exists
       if(rows.length === 0) {
@@ -63,6 +64,7 @@ router.post('/signup', function(request, response) {
         response.sendStatus(409);
       }
     });
+    // db.end();
   } else {
     response.sendStatus(400);
   }
@@ -74,6 +76,7 @@ router.post('/login', function (request, response) {
   var password = request.body.password;
   console.log("email", email, "password", password);
   if (email !== null || password !== null) {
+    // db.connect();
     db.query('SELECT * from Users WHERE email = ?;', [email], function(err, rows) {
       // If user doesn't exist
       if (rows.length > 0) {
@@ -96,6 +99,7 @@ router.post('/login', function (request, response) {
         response.sendStatus(401);
       }
     });
+    // db.end();
   }
 });
 
@@ -120,6 +124,7 @@ router.get('/logout', function(request, response) {
 // Get User Info
 router.get('/user', util.checkToken, function(request, response) {
   // Look for current user in the database
+  // db.connect();
   db.query('SELECT * from Users WHERE id = ?;', [request.user.id], function(err, rows) {
     if (err) {
       console.error(err);
@@ -138,6 +143,7 @@ router.get('/user', util.checkToken, function(request, response) {
       });
     }
   });
+  // db.end();
 });
 
 /**
@@ -146,6 +152,7 @@ router.get('/user', util.checkToken, function(request, response) {
 
 // Update Monthly Limit
 router.put('/monthly_limit', util.checkToken, function(request, response) {
+  // db.connect();
   db.query('SELECT * FROM Users WHERE id = ?', [request.user.id], function(err, rows){
     var new_total_savings = rows[0].total_savings - rows[0].monthly_limit + request.body.monthly_limit;
     db.query('UPDATE Users SET monthly_limit = ?, total_savings = ? WHERE id = ?;',
@@ -160,10 +167,12 @@ router.put('/monthly_limit', util.checkToken, function(request, response) {
       }
     });
   });
+  // db.end();
 });
 
 // Update Savings Goal
 router.put('/savings_goal', util.checkToken, function(request, response) {
+  // db.connect();
   db.query('UPDATE Users SET savings_goal = ? WHERE id = ?;',
   [request.body.savings_goal, request.user.id],
   function(err, result) {
@@ -175,10 +184,12 @@ router.put('/savings_goal', util.checkToken, function(request, response) {
       response.sendStatus(401);
     }
   });
+  // db.end();
 });
 
 // Update Current Balance
 router.put('/total_savings', util.checkToken, function(request, response) {
+  // db.connect();
   db.query('UPDATE Users SET total_savings = ? WHERE id = ?;',
   [request.body.total_savings, request.user.id],
   function(err, result) {
@@ -190,6 +201,7 @@ router.put('/total_savings', util.checkToken, function(request, response) {
       response.sendStatus(401);
     }
   });
+  // db.end();
 });
 
 /**
@@ -198,6 +210,7 @@ router.put('/total_savings', util.checkToken, function(request, response) {
 
 // Show all expenses
 router.get('/expenses/:days', util.checkToken, function(request, response) {
+  // db.connect();
   db.query('SELECT * FROM Expenses WHERE user_id = ? AND spent_date > DATE_SUB(NOW(), INTERVAL ? DAY) ORDER BY spent_date DESC;',
   [request.user.id, Number(request.params.days) || 30],
   function(err, rows) {
@@ -207,6 +220,7 @@ router.get('/expenses/:days', util.checkToken, function(request, response) {
       response.json(rows);
     }
   });
+  // db.end();
 });
 
 // Add new expense(s)
@@ -220,6 +234,7 @@ router.post('/expenses', util.checkToken, function(request, response) {
   var location = request.body.location || null;
   // If no missing data
   if (name !== null && amount !== null && category !== null /*&& request.user.id !== undefined*/) {
+    // db.connect();
     db.query('INSERT INTO Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ?, user_id = ?;',
     [name, amount, category, notes, spent_date, location, request.user.id],
     function(err, result){
@@ -247,6 +262,7 @@ router.post('/expenses', util.checkToken, function(request, response) {
         });
       }
     });
+    // db.end();
   } else {
     response.sendStatus(400);
   }
@@ -260,6 +276,7 @@ router.put('/expenses/:id', util.checkToken, function(request, response) {
   var notes = request.body.notes || null;
   var spent_date = request.body.spent_date;
   var location = request.body.location || null;
+  // db.connect();
   db.query('UPDATE Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ? WHERE id = ?;',
   [name, amount, category, notes, spent_date, location, request.params.id],
   function(err, result){
@@ -275,11 +292,13 @@ router.put('/expenses/:id', util.checkToken, function(request, response) {
       });
     }
   });
+  // db.end();
 });
 
 // Delete expense
 router.delete('/expenses/:id', util.checkToken, function(request, response) {
   var id = request.params.id;
+  // db.connect();
   db.query('SELECT * FROM Expenses WHERE id = ?', [id], function (err, rows) {
     if (err) {
       console.error(err);
@@ -306,6 +325,7 @@ router.delete('/expenses/:id', util.checkToken, function(request, response) {
       });
     }
   });
+  // db.end();
 });
 
 /**
@@ -314,6 +334,7 @@ router.delete('/expenses/:id', util.checkToken, function(request, response) {
 
 // Show all incomes
 router.get('/incomes/:days', util.checkToken, function(request, response) {
+  // db.connect();
   db.query('SELECT * FROM Incomes WHERE user_id = ?;',
   /*AND income_date > DATE_SUB(NOW(), INTERVAL ? DAY) ORDER BY income_date DESC*/
   [request.user.id, Number(request.params.days) || 30],
@@ -324,6 +345,7 @@ router.get('/incomes/:days', util.checkToken, function(request, response) {
       response.json(rows);
     }
   });
+  // db.end();
 });
 
 // Add new income(s)
@@ -337,6 +359,7 @@ router.post('/incomes', util.checkToken, function(request, response) {
   var location = request.body.location || null;
   // If no missing data
   if (name !== null && amount !== null && category !== null) {
+    // db.connect();
     db.query('INSERT INTO Incomes SET name = ?, amount = ?, category = ?, notes = ?, income_date = ?, location = ?, user_id = ?;',
     [name, amount, category, notes, income_date, location, request.user.id],
     function(err, result){
@@ -364,6 +387,7 @@ router.post('/incomes', util.checkToken, function(request, response) {
         });
       }
     });
+    // db.end();
   } else {
     response.sendStatus(400);
   }
@@ -377,6 +401,7 @@ router.put('/incomes/:id', util.checkToken, function(request, response) {
   var notes = request.body.notes || null;
   var income_date = request.body.income_date;
   var location = request.body.location || null;
+  // db.connect();
   db.query('UPDATE Incomes SET name = ?, amount = ?, category = ?, notes = ?, income_date = ?, location = ? WHERE id = ?;',
   [name, amount, category, notes, income_date, location, request.params.id],
   function(err, result){
@@ -392,11 +417,13 @@ router.put('/incomes/:id', util.checkToken, function(request, response) {
       });
     }
   });
+  // db.end();
 });
 
 // Delete income
 router.delete('/incomes/:id', util.checkToken, function(request, response) {
   var id = request.params.id;
+  // db.connect();
   db.query('SELECT * FROM Incomes WHERE id = ?', [id], function (err, rows) {
     if (err) {
       console.error(err);
@@ -423,6 +450,7 @@ router.delete('/incomes/:id', util.checkToken, function(request, response) {
       });
     }
   });
+  // db.end();
 });
 
 /**
@@ -431,6 +459,7 @@ router.delete('/incomes/:id', util.checkToken, function(request, response) {
 
 // Get all of the user's current goals
 router.get('/goals', util.checkToken, function(request, response) {
+  // db.connect();
   db.query('SELECT * FROM Goals WHERE user_id = ?;', [request.user.id], function(err, rows){
     if(err) {
       console.error(err);
@@ -438,6 +467,7 @@ router.get('/goals', util.checkToken, function(request, response) {
       response.status(200).json(rows);
     }
   });
+  // db.end();
 });
 
 // Add new Goal
@@ -447,6 +477,7 @@ router.post('/goals', util.checkToken, function(request, response) {
   var category = request.body.category;
   var notes = request.body.notes || null;
   if (name !== null && amount !== null && category !== null) {
+    // db.connect();
     db.query('INSERT INTO Goals SET name = ?, amount = ?, saved_amount = 0, category = ?, notes = ?, user_id = ?;',
     [name, amount, category, notes, request.user.id],
     function(err, result){
@@ -462,6 +493,7 @@ router.post('/goals', util.checkToken, function(request, response) {
         });
       }
     });
+    // db.end();
   }
 });
 
@@ -469,6 +501,7 @@ router.post('/goals', util.checkToken, function(request, response) {
 router.put('/goals/:id', util.checkToken, function(request, response) {
   var amount = request.body.amount;
   var id = request.params.id;
+  // db.connect();
   db.query('SELECT * FROM Users WHERE id = ?;', [request.user.id], function(err, rows){
     if(err) {
       console.error(err);
@@ -503,12 +536,14 @@ router.put('/goals/:id', util.checkToken, function(request, response) {
       }
     }
   });
+  // db.end();
 });
 
 // Remove money from Goal
 router.patch('/goals/:id', util.checkToken, function(request, response) {
   var amount = request.body.amount;
   var id = request.params.id;
+  // db.connect();
   db.query('SELECT * FROM Goals WHERE id = ?;', [id], function(err, rows){
     if(err) {
       console.error(err);
@@ -539,11 +574,13 @@ router.patch('/goals/:id', util.checkToken, function(request, response) {
       });
     }
   });
+  // db.end();
 });
 
 // Delete Goal
 router.delete('/goals/:id', util.checkToken, function(request, response) {
   var id = request.params.id;
+  // db.connect();
   db.query('SELECT * FROM Goals WHERE id = ?;', [id], function(err, rows){
     var savedAmount = rows[0].saved_amount;
     db.query('SELECT * FROM Users WHERE id = ?;', [request.user.id], function(err, rows){
@@ -562,10 +599,12 @@ router.delete('/goals/:id', util.checkToken, function(request, response) {
       }
     });
   });
+  // db.end();
 });
 
 // Complete goal
 router.post('/goals/:id', util.checkToken, function(request, response) {
+  // db.connect();
   db.query('SELECT * FROM Users WHERE id = ?;', [request.user.id], function(err, rows){
     var totalSavings = rows[0].total_savings;
     db.query('SELECT * FROM Goals WHERE id = ?;', [request.params.id], function(err, rows){
@@ -602,6 +641,7 @@ router.post('/goals/:id', util.checkToken, function(request, response) {
       }
     });
   });
+  // db.end();
 });
 
 // Dropbox logic

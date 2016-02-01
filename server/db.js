@@ -15,7 +15,7 @@ if (process.env.CLEARDB_DATABASE_URL) {
   });
 }
 
-db.connect();
+// db.connect();
 
 // Read MySql schema and create tables if necessary
 fs.readFile(__dirname + '/setup.sql', 'utf-8', function(err, data){
@@ -27,6 +27,7 @@ fs.readFile(__dirname + '/setup.sql', 'utf-8', function(err, data){
         console.error(err);
       } else {
         console.log('database successfully created');
+        // db.destroy();
       }
     });
   }
