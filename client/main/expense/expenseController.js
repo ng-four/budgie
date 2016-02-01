@@ -3,7 +3,7 @@ angular.module('expense.controller', [])
 
 	var expense = this;
 
-  expense.inputType = 'expense';
+    expense.inputType = 'expense';
 
 	expense.expenseTable = [];
 	expense.incomeTable = [];
@@ -207,7 +207,9 @@ angular.module('expense.controller', [])
 		seriesBarDistance: 10
 	};
 
-
+	expense.getNotes = function(note){
+		console.log("note in modal ", note);
+	}
 
 })
 .directive('googleplace', function() {
@@ -228,5 +230,5 @@ angular.module('expense.controller', [])
                     });
         }
     };
-});
+})
 
