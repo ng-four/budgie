@@ -12,7 +12,7 @@ exports.checkToken = function(request, response, next){
   var secret = process.env.jwtsecret || require('./config.js').jwtsecret;
 
   if(!request.headers['x-access-token']) {
-    response.sendStatus(500);
+    response.sendStatus(401);
   } else {
       var decodedToken = jwt.decode(request.headers['x-access-token'], secret);
       request.user = {};

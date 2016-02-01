@@ -53,6 +53,7 @@ router.post('/signup', function(request, response) {
         // Encrypt password
         password = bcrypt.hashSync(password);
         // Create user
+        // db.connect();
         db.query('INSERT INTO Users SET email = ?, full_name = ?, password = ?, monthly_limit = ?, savings_goal = ?, total_savings = ?;',
         [email, full_name, password, monthly_limit, savings_goal, total_savings],
         function(err, rows){
@@ -64,6 +65,7 @@ router.post('/signup', function(request, response) {
           util.createToken(request, response, rows.insertId);
 
         });
+        // db.end();
       } else {
         response.sendStatus(409);
       }
@@ -82,6 +84,11 @@ router.post('/login', function (request, response) {
   if (email !== null || password !== null) {
     // db.connect();
     db.query('SELECT * from Users WHERE email = ?;', [email], function(err, rows) {
+      if(err){
+        console.log(err);
+        response.sendStatus(500);
+
+      }else{
       // If user doesn't exist
       if (rows.length > 0) {
         // Password check
@@ -103,7 +110,8 @@ router.post('/login', function (request, response) {
         console.log("Email not found");
         response.sendStatus(401);
       }
-    });
+    }
+  });
     // db.end();
   }
 });
@@ -162,6 +170,7 @@ router.put('/monthly_limit', util.checkToken, function(request, response) {
   // db.connect();
   db.query('SELECT * FROM Users WHERE id = ?', [request.user.id], function(err, rows){
     var new_total_savings = rows[0].total_savings - rows[0].monthly_limit + request.body.monthly_limit;
+    // db.connect();
     db.query('UPDATE Users SET monthly_limit = ?, total_savings = ? WHERE id = ?;',
     [request.body.monthly_limit, new_total_savings, request.user.id],
     function(err, result) {
@@ -174,6 +183,7 @@ router.put('/monthly_limit', util.checkToken, function(request, response) {
         response.sendStatus(401);
       }
     });
+    // db.end()
   });
   // db.end();
 });

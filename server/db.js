@@ -6,7 +6,8 @@ if (process.env.CLEARDB_DATABASE_URL) {
   var db = mysql.createConnection(process.env.CLEARDB_DATABASE_URL + "&multipleStatements=true");
 } else {
 // Connect to local MySql database
-  var db = mysql.createConnection({
+  var db = mysql.createPool({
+    connectionLimit: 15,
     host     : 'localhost',
     user     :  require('./config.js').db.user,
     password :  require('./config.js').db.password,
