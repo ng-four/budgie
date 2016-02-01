@@ -57,6 +57,10 @@ router.post('/signup', function(request, response) {
         [email, full_name, password, monthly_limit, savings_goal, total_savings],
         function(err, rows){
           // Log user in (create token)
+          if(err){
+            console.log(err);
+            response.sendStatus(500);
+          }
           util.createToken(request, response, rows.insertId);
 
         });
@@ -84,6 +88,7 @@ router.post('/login', function (request, response) {
         bcrypt.compare(password, rows[0].password, function(err, result) {
           if (err) {
             console.error(err);
+            response.sendStatus(500);
           } else if (result) {
             // Log user in
             util.createToken(request, response, rows[0].id);
@@ -108,6 +113,7 @@ router.get('/learn', function(request, response) {
   twitterClient.get('search/tweets', {q: 'from:wsj, OR from:nytimes, OR from:EconBizFin, OR from:money_cnn, OR from:Investopedia, OR from:business', count:100, result_type:'recent'}, function(err, tweets, tweetResponse){
     if (err) {
       console.error(err);
+      response.sendStatus(500);
     } else {
       response.json(tweets);
     }
@@ -128,6 +134,7 @@ router.get('/user', util.checkToken, function(request, response) {
   db.query('SELECT * from Users WHERE id = ?;', [request.user.id], function(err, rows) {
     if (err) {
       console.error(err);
+      response.sendStatus(500);
     // If no user found
     } else if (rows.length === 0) {
       response.sendStatus(401);
@@ -160,6 +167,7 @@ router.put('/monthly_limit', util.checkToken, function(request, response) {
     function(err, result) {
       if (err) {
         console.error(err);
+        response.sendStatus(500);
       } else if(result.affectedRows === 1){
         response.sendStatus(200);
       } else {
@@ -178,6 +186,7 @@ router.put('/savings_goal', util.checkToken, function(request, response) {
   function(err, result) {
     if (err) {
       console.error(err);
+      response.sendStatus(500);
     } else if(result.affectedRows === 1){
       response.sendStatus(200);
     } else {
@@ -195,6 +204,7 @@ router.put('/total_savings', util.checkToken, function(request, response) {
   function(err, result) {
     if (err) {
       console.error(err);
+      response.sendStatus(500);
     } else if(result.affectedRows === 1){
       response.sendStatus(200);
     } else {
@@ -216,6 +226,7 @@ router.get('/expenses/:days', util.checkToken, function(request, response) {
   function(err, rows) {
     if (err) {
       console.error(err);
+      response.sendStatus(500);
     } else {
       response.json(rows);
     }
@@ -240,6 +251,7 @@ router.post('/expenses', util.checkToken, function(request, response) {
     function(err, result){
       if (err) {
         console.error(err);
+        response.sendStatus(500);
       } else if (result.insertId){
         db.query('SELECT * FROM Expenses WHERE id = ? AND user_id = ?;', [result.insertId, request.user.id], function(err, rows){
           if (err) {
@@ -251,6 +263,7 @@ router.post('/expenses', util.checkToken, function(request, response) {
         db.query('SELECT * FROM Users WHERE id = ?;', [request.user.id], function(err, rows){
           if (err) {
             console.error(err);
+            response.sendStatus(500);
           } else {
             var newSavings = Number(rows[0].total_savings) - Number(amount);
             db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newSavings, request.user.id], function(err, rows){
@@ -282,6 +295,7 @@ router.put('/expenses/:id', util.checkToken, function(request, response) {
   function(err, result){
     if (err) {
       console.error(err);
+      response.sendStatus(500);
     } else {
       db.query('SELECT * FROM Expenses WHERE id = ? AND user_id = ?;', [request.params.id, request.user.id], function(err, rows){
         if (err) {
@@ -302,21 +316,25 @@ router.delete('/expenses/:id', util.checkToken, function(request, response) {
   db.query('SELECT * FROM Expenses WHERE id = ?', [id], function (err, rows) {
     if (err) {
       console.error(err);
+      response.sendStatus(500);
     } else {
       var expenseAmount = rows[0].amount;
       db.query('DELETE FROM Expenses WHERE id = ?', [id], function (err, result){
         if(err){
           console.error(err);
+          response.sendStatus(500);
         }
       });
       db.query('SELECT * FROM Users WHERE id = ?;', [request.user.id], function(err, rows){
         if (err) {
           console.error(err);
+          response.sendStatus(500);
         } else {
           var newSavings = Number(rows[0].total_savings) + Number(expenseAmount);
           db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newSavings, request.user.id], function(err, rows){
               if (err) {
                 console.error(err);
+                response.sendStatus(500);
               } else{
                 response.sendStatus(200);
               }
@@ -341,6 +359,7 @@ router.get('/incomes/:days', util.checkToken, function(request, response) {
   function(err, rows) {
     if (err) {
       console.error(err);
+      response.sendStatus(500);
     } else {
       response.json(rows);
     }
@@ -365,10 +384,12 @@ router.post('/incomes', util.checkToken, function(request, response) {
     function(err, result){
       if (err) {
         console.error(err);
+        response.sendStatus(500);
       } else if (result.insertId){
         db.query('SELECT * FROM Incomes WHERE id = ? AND user_id = ?;', [result.insertId, request.user.id], function(err, rows){
           if (err) {
             console.err(err);
+            response.sendStatus(500);
           } else {
             response.status(201).json(rows[0]);
           }
@@ -376,11 +397,13 @@ router.post('/incomes', util.checkToken, function(request, response) {
         db.query('SELECT * FROM Users WHERE id = ?;', [request.user.id], function(err, rows){
           if (err) {
             console.error(err);
+            response.sendStatus(500);
           } else {
             var newSavings = Number(rows[0].total_savings) + Number(amount);
             db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newSavings, request.user.id], function(err, rows){
                 if (err) {
                   console.error(err);
+                  response.sendStatus(500);
                 }
             });
           }
@@ -407,10 +430,12 @@ router.put('/incomes/:id', util.checkToken, function(request, response) {
   function(err, result){
     if (err) {
       console.error(err);
+      response.sendStatus(500);
     } else {
       db.query('SELECT * FROM Incomes WHERE id = ? AND user_id = ?;', [request.params.id, request.user.id], function(err, rows){
         if (err) {
           console.err(err);
+          response.sendStatus(500);
         } else {
           response.status(200).json(rows[0]);
         }
@@ -427,21 +452,25 @@ router.delete('/incomes/:id', util.checkToken, function(request, response) {
   db.query('SELECT * FROM Incomes WHERE id = ?', [id], function (err, rows) {
     if (err) {
       console.error(err);
+      response.sendStatus(500);
     } else {
       var incomeAmount = rows[0].amount;
       db.query('DELETE FROM Incomes WHERE id = ?', [id], function (err, result){
         if(err){
           console.error(err);
+          response.sendStatus(500);
         }
       });
       db.query('SELECT * FROM Users WHERE id = ?;', [request.user.id], function(err, rows){
         if (err) {
           console.error(err);
+          response.sendStatus(500);
         } else {
           var newSavings = Number(rows[0].total_savings) - Number(incomeAmount);
           db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newSavings, request.user.id], function(err, rows){
               if (err) {
                 console.error(err);
+                response.sendStatus(500);
               } else{
                 response.sendStatus(200);
               }
@@ -463,6 +492,7 @@ router.get('/goals', util.checkToken, function(request, response) {
   db.query('SELECT * FROM Goals WHERE user_id = ?;', [request.user.id], function(err, rows){
     if(err) {
       console.error(err);
+      response.sendStatus(500);
     } else {
       response.status(200).json(rows);
     }
@@ -483,10 +513,12 @@ router.post('/goals', util.checkToken, function(request, response) {
     function(err, result){
       if(err) {
         console.error(err);
+        response.sendStatus(500);
       } else {
         db.query('SELECT * FROM Goals WHERE id = ?', [result.insertId], function(err, rows){
           if(err) {
             console.error(err);
+            response.sendStatus(500);
           } else {
             response.status(201).json(rows[0]);
           }
@@ -505,6 +537,7 @@ router.put('/goals/:id', util.checkToken, function(request, response) {
   db.query('SELECT * FROM Users WHERE id = ?;', [request.user.id], function(err, rows){
     if(err) {
       console.error(err);
+      response.sendStatus(500);
     } else {
       var totalSavings = rows[0].total_savings;
       if(amount < totalSavings) {
@@ -512,6 +545,7 @@ router.put('/goals/:id', util.checkToken, function(request, response) {
         db.query('SELECT * FROM Goals WHERE id = ?;', [id], function(err, rows){
           if(err) {
             console.error(err);
+            response.sendStatus(500);
           } else {
             var goal = rows[0];
             var diff = goal.amount - (amount + goal.saved_amount) < 0 ? goal.amount - (amount + goal.saved_amount) : 0;
@@ -520,11 +554,13 @@ router.put('/goals/:id', util.checkToken, function(request, response) {
             db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [totalSavings, request.user.id], function(err, result){
               if(err) {
                 console.error(err);
+                response.sendStatus(500);
               }
             });
             db.query('UPDATE Goals SET saved_amount = ? WHERE id = ?;', [amount, id], function(err, result){
               if(err) {
                 console.error(err);
+                response.sendStatus(500);
               } else {
                 response.sendStatus(200);
               }
@@ -547,6 +583,7 @@ router.patch('/goals/:id', util.checkToken, function(request, response) {
   db.query('SELECT * FROM Goals WHERE id = ?;', [id], function(err, rows){
     if(err) {
       console.error(err);
+      response.sendStatus(500);
     } else {
       var saved = rows[0].saved_amount; //50
       var diff = saved - amount < 0 ? saved - amount : 0;
@@ -555,17 +592,20 @@ router.patch('/goals/:id', util.checkToken, function(request, response) {
       db.query('UPDATE Goals SET saved_amount = ? WHERE id = ?;', [newSaved, id], function(err, result){
         if(err) {
           console.error(err);
+          response.sendStatus(500);
         }
       });
       db.query('SELECT * from Users WHERE id = ?;', [request.user.id], function(err, rows){
         if(err) {
           console.error(err);
+          response.sendStatus(500);
         } else {
           var totalSavings = rows[0].total_savings;
           var newSavings = totalSavings + amount;
           db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newSavings, request.user.id], function(err, result){
             if(err) {
               console.error(err);
+              response.sendStatus(500);
             } else {
               response.sendStatus(200);
             }
@@ -588,12 +628,14 @@ router.delete('/goals/:id', util.checkToken, function(request, response) {
       db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newTotal, request.user.id], function(err, results){
         if(err){
           console.error(err);
+          response.sendStatus(500);
         }
       });
     });
     db.query('DELETE FROM Goals WHERE id = ?;', [id], function(err, result){
       if(err){
         console.error(err);
+        response.sendStatus(500);
       } else {
         response.sendStatus(200);
       }
@@ -615,6 +657,7 @@ router.post('/goals/:id', util.checkToken, function(request, response) {
         db.query('UPDATE Users SET total_savings = ? WHERE id = ?;', [newTotalSavings, request.user.id], function(err, results){
           if(err){
             console.error(err);
+            response.sendStatus(500);
           }
         });
         var name = rows[0].name;
@@ -625,6 +668,7 @@ router.post('/goals/:id', util.checkToken, function(request, response) {
         db.query('DELETE FROM Goals WHERE id = ?;', [request.params.id], function(err, results){
           if(err){
             console.error(err);
+            response.sendStatus(500);
           }
         });
         db.query('INSERT INTO Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ?, user_id = ?;',
@@ -632,6 +676,7 @@ router.post('/goals/:id', util.checkToken, function(request, response) {
         function(err, result){
           if(err){
             console.error(err);
+            response.sendStatus(500);
           } else {
             response.sendStatus(201);
           }
