@@ -8,8 +8,16 @@ var Twitter = require('twitter');
 
 var dropboxOptions = process.env.dropbox || require('./config.js').dropbox;
 var client = new Dropbox.Client({ key: "yhintvoqspu0w44", secret: dropboxOptions });
-var twitterOptions = process.env.twitter || require('./config.js').twitter;
+var twitterOptions;
+if(process.env !== undefined){
+  twitterOptions = require('./config.js').twitter;
+} else {
+  twitterOptions = {consumer_key: process.env.twitter_consumer_key, consumer_secret: process.env.twitter_consumer_secret, access_token_key: process.env.twitter_access_token_key, access_token_secret: process.env.twitter_access_token_secret};
+}
+// var twitterOptions = process !== undefined ? {consumer_key: process.env.twitter_consumer_key, consumer_secret: process.env.twitter_consumer_secret, access_token_key: process.env.twitter_access_token_key, access_token_secret: process.env.twitter_access_token_secret} : require('./config.js').twitter;
+// var twitterOptions = require('./config.js').twitter;
 var twitterClient = new Twitter(twitterOptions);
+console.log("this is twitterOptions1", twitterOptions);
 
 // Database Requirements
 var mysql = require('mysql');
