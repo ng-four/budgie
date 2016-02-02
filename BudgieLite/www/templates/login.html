@@ -2,6 +2,7 @@
   <ion-content class="padding">
     <form ng-submit="submit()">
       <div class="list">
+
         <label class="item item-input item-floating-label">
           <span class="input-label">Email</span>
           <input type="text" placeholder="Email" ng-model="input.email">
@@ -10,7 +11,10 @@
           <span class="input-label">Password</span>
           <input type="password" placeholder="Password" ng-model="input.password">
         </label>
+        <div class="col-100">
         <button class="button button-full button-balanced" type="submit">Login</button>
+        </div>
+
       </div>
     </form>
   </ion-content>
