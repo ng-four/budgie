@@ -3,7 +3,8 @@ angular.module('expense.controller', [])
 
 	var expense = this;
 
-    expense.inputType = 'expense';
+  expense.inputType = 'expense';
+	expense.categoryType = 'select a category';
 
 	expense.expenseTable = [];
 	expense.incomeTable = [];
@@ -55,7 +56,6 @@ angular.module('expense.controller', [])
 				}
 			}
 
-
 			var thisWeek = moment().format("w");
 			for(var j=0; j<resp.length; j++){
 				var week = moment(resp[j].spent_date, 'YYYY-MM-DD HH:mm:ss').format("w");
@@ -103,8 +103,57 @@ angular.module('expense.controller', [])
 		});
 	})();
 
+	expense.changeExpense = function() {
+		expense.editExpenseClicked = !expense.editExpenseClicked;
+	};
+
+	expense.editClick = function (idx, id) {
+		expense.newIndex = idx;
+		expense.newId = id;
+		expense.newAmount = expense.expenseTable[idx].amount;
+		expense.newExpenseItem = expense.expenseTable[idx].name;
+		expense.newCategory = expense.expenseTable[idx].category;
+		expense.newNotes = expense.expenseTable[idx].notes;
+		expense.newSpentDate = new Date(expense.expenseTable[idx].spent_date);
+		// expense.newLocation = expense.expenseTable[idx].location;
+	}
+
+	expense.editRow = function(idx, id, inputType){
+		console.log('index', idx);
+		console.log('id', id);
+		console.log('inputType', inputType);
+
+		var jstime = new Date(expense.newSpentDate);
+		console.log('jstime', jstime);
+
+		var hour = jstime.getHours();
+		console.log('hour', hour);
+
+		var minute = jstime.getMinutes();
+		console.log('minute', minute);
+
+		jstime = jstime.toISOString().slice(0, 16);
+
+		var spentDate = moment(jstime, moment.ISO_8601);
+		spentDate.hour(hour);
+		spentDate.minute(minute);
+		spentDate = spentDate.format('YYYY-MM-DD HH:mm:ss');
+		console.log('spentDate', spentDate);
+
+		ExpenseServices.editExpense(id, {
+			name: expense.newExpenseItem,
+			amount: expense.newAmount,
+			category: expense.newCategory,
+			notes: expense.newNotes,
+			spent_date: spentDate,
+			// location: expense.newLocation,
+		}, inputType);
+	};
+
 	expense.addExpense = function(){
 		var spentDate = moment();
+
+		console.log(time.value)
 
 		var hours = time.value.split(':')[0];
 		var minutes = time.value.split(':')[1];
@@ -115,11 +164,11 @@ angular.module('expense.controller', [])
 		spentDate = spentDate.format('YYYY-MM-DD HH:mm:ss');
 
 		console.log("this is spentDate in string format", spentDate);
-		console.log("this is hours and minutes", hours, minutes);    
+		console.log("this is hours and minutes", hours, minutes);
         console.log("This is the amount going to the server", {'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location});
 
         var expenseData = {'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location};
- 
+
         if(expenseData.location){
         	MapServices.getGeoCode(expenseData.location)
         	.then(function(resp) {
@@ -155,10 +204,10 @@ angular.module('expense.controller', [])
 				expense.incomeTable.push(resp);
 				console.log("This is incomeTable", expense.incomeTable);
 			}
-		});	
+		});
 	}
 
-	
+
 
 	expense.removeRow = function(idx, id, inputType){
 		console.log("inside removeRow based on income removal");
@@ -246,7 +295,7 @@ angular.module('expense.controller', [])
             };
             scope.gPlace = new google.maps.places.Autocomplete(element[0],
                     options);
- 
+
             google.maps.event.addListener(scope.gPlace, 'place_changed',
                     function() {
                         scope.$apply(function() {
@@ -256,4 +305,3 @@ angular.module('expense.controller', [])
         }
     };
 })
-
