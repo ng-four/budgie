@@ -20,8 +20,6 @@ angular.module('expense.service', [])
     });
  };
 
-
-
  var getExpensesForDays = function(days){
    return $http({
      method: 'GET',
@@ -45,6 +43,26 @@ angular.module('expense.service', [])
    });
  };
 
+ var editExpense = function(id, expenseData, inputType) {
+console.log('----', expenseData, inputType);
+   if(inputType === "income"){
+     expenseData.income_date = expenseData.spent_date;
+   }
+   var url = '/'+inputType+"s/"+id;
+   console.log(url);
+   // console.log("this is the url, that is being used", ('/'+inputType+"s"));
+   return $http({
+     method: 'PUT',
+     url: '/'+inputType+"s/"+id,
+     data: expenseData
+   }).then(function(resp) {
+     console.log("resp in editExpense ", resp);
+     return resp.data;
+   }, function(error) {
+       console.error('Edit Expense ERROR!!! ', error);
+   });
+ };
+
  var getIncomesForDays = function(days){ //in refactor add to financeService
    return $http({
      method: 'GET',
@@ -56,10 +74,24 @@ angular.module('expense.service', [])
    });
  };
 
+ var updateExpense = function(newLimit) {
+    return $http({
+      method: 'PUT',
+      url: '/monthly_limit',
+      data: {'monthly_limit': newLimit}
+    }).then(function(resp){
+      return resp;
+    }, function(error){
+      throw error;
+    });
+};
+
  return {
    submitNewExpense: submitNewExpense,
    getExpensesForDays: getExpensesForDays,
+   editExpense: editExpense,
    getIncomesForDays: getIncomesForDays,
    deleteExpense: deleteExpense,
+   updateExpense: updateExpense,
  };
 });

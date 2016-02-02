@@ -307,11 +307,11 @@ router.put('/expenses/:id', util.checkToken, function(request, response) {
   var category = request.body.category;
   var notes = request.body.notes || null;
   var spent_date = request.body.spent_date;
-  var location = request.body.location || null;
-  var lat = request.body.latlng || null;
+  // var location = request.body.location || null;
+  // var lat = request.body.latlng || null;
 
-  db.query('UPDATE Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ?, geocode = ? WHERE id = ?;',
-  [name, amount, category, notes, spent_date, location, lat, request.params.id],
+  db.query('UPDATE Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ? WHERE id = ?;',
+  [name, amount, category, notes, spent_date, request.params.id],
   function(err, result){
     if (err) {
       console.error(err);
