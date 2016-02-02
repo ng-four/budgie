@@ -18,19 +18,21 @@ if (process.env.CLEARDB_DATABASE_URL) {
 }
 
 // db.on('error', function(){console.log("ERROR LOG FOR DAYS, ERROR ERROR ERROR");});
-// Read MySql schema and create tables if necessary
-// fs.readFile(__dirname + '/setup.sql', 'utf-8', function(err, data){
-//   if (err) {
-//     console.error(err);
-//   } else {
-//     db.query(data, function(err, results, fields){
-//       if (err) {
-//         console.error(err);
-//       } else {
-//         console.log('database successfully created');
-//       }
-//     });
-//   }
-// });
+fs.readFile(__dirname + '/setup.sql', 'utf-8', function(err, data){
+  if (err) {
+    console.error(err);
+  } else {
+    data = data.split(";");
+    data.forEach(function(item){
+      db.query(item, function(err, results, fields){
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('table created SUCCESSSSSSSS');
+        }
+      });
+    });
+  }
+});
 
 module.exports = db;
