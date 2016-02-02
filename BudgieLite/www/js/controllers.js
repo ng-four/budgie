@@ -26,7 +26,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ExpenseCtrl', function($scope, $http) {
+.controller('ExpenseCtrl', function($scope, $http, $timeout) {
   $scope.input = {};
   $scope.input.name = "";
   $scope.input.time = "";
@@ -57,13 +57,16 @@ angular.module('starter.controllers', [])
       }
     }).then(function(resp){
       $scope.submitted = true;
+      $timeout(function(){
+        $scope.submitted = false;
+      }, 1000);
     }, function(error){
       console.error(error);
     });
 	};
 })
 
-.controller('IncomeCtrl', function($scope, $http) {
+.controller('IncomeCtrl', function($scope, $http, $timeout) {
   $scope.input = {};
   $scope.input.amount = {};
   $scope.input.name = "";
@@ -96,34 +99,80 @@ angular.module('starter.controllers', [])
       }
     }).then(function(resp){
       $scope.submitted = true;
+      $timeout(function(){
+        $scope.submitted = false;
+      }, 1000);
     }, function(error){
       console.error(error);
     });
 	};
 })
 
-.controller('TodayCtrl', function($scope, $http) {
-  $scope.$on('$ionicView.enter', function(e) {
+// .controller('TodayCtrl', function($scope, $http) {
+//   $scope.$on('$ionicView.enter', function(e) {
+//     return $http({
+//       method: 'GET',
+//       url: 'http://localhost:8000/expenses/1',
+//     }).then(function(expenses) {
+//       return $http({
+//         method: 'GET',
+//         url: 'http://localhost:8000/incomes/1',
+//       }).then(function(incomes) {
+//
+//         // TODO: Loop through nboth lists and add item type
+//         // color by itemtype
+//         $scope.all = incomes.data.concat(expenses.data);
+//         console.log("this is the wholeistic list of expenses/incomes", $scope.all);
+//
+//
+//
+//       }, function(error) {
+//         console.error('Get Income ERROR!!! ', error);
+//       });
+//     }, function(error) {
+//       console.error('Get Expense ERROR!!! ', error);
+//     });
+//   });
+// });
+.controller('TodayCtrl', function($scope, $http){
+  $scope.$on('$ionicView.enter', function(e){
     return $http({
       method: 'GET',
       url: 'http://localhost:8000/expenses/1',
-    }).then(function(expenses) {
+    }).then(function(expenses){
       return $http({
         method: 'GET',
-        url: 'http://localhost:8000/incomes/1',
-      }).then(function(incomes) {
-
-        // TODO: Loop through nboth lists and add item type
-        // color by itemtype
-        $scope.all = incomes.data.concat(expenses.data);
-
-
-
-      }, function(error) {
-        console.error('Get Income ERROR!!! ', error);
+        url: 'http://localhost:8000/incomes/1'
+      }).then(function(incomes){
+        $scope.expensesData = expenses.data;
+        console.log("these are the expenses", $scope.expensesData);
+        $scope.incomesData = incomes.data;
       });
-    }, function(error) {
-      console.error('Get Expense ERROR!!! ', error);
     });
   });
+})
+
+.controller('NewsfeedCtrl', function($scope, $http){
+  $scope.getTweets = function() {
+    return $http({
+      method: 'GET',
+      url: 'http://localhost:8000/learn',
+    }).then(function(resp) {
+      return resp.data.statuses;
+    }, function(error) {
+      console.error("loadTweets threw error.");
+    });
+  };
+
+  $scope.tweetsArr = [];
+  $scope.loadTweets = function() {
+    console.log("profile.loadProfile called ");
+    $scope.getTweets()
+    .then(function(resp){
+      console.log("this is resp in loadTweets", resp);
+      $scope.tweetsArr = resp.slice();
+    }, function(error){
+      console.error("loadTweets threw error.");
+    });
+  };
 });

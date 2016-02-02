@@ -9,7 +9,9 @@ var Twitter = require('twitter');
 var dropboxOptions = process.env.dropbox || require('./config.js').dropbox;
 var client = new Dropbox.Client({ key: "yhintvoqspu0w44", secret: dropboxOptions });
 var twitterOptions;
-if(process.env === undefined){
+
+console.log("this is process.env.DROPBOX on line 13 routes.js", process.env.dropbox);
+if(process.env.dropbox === undefined){
   twitterOptions = require('./config.js').twitter;
 } else {
   twitterOptions = {consumer_key: process.env.twitter_consumer_key, consumer_secret: process.env.twitter_consumer_secret, access_token_key: process.env.twitter_access_token_key, access_token_secret: process.env.twitter_access_token_secret};

@@ -1,7 +1,16 @@
 <ion-view view-title="Today's Activity">
   <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="item in all">
+    <ion-list class="list">
+      <div class="item item-divider">
+        Expenses
+      </div>
+      <ion-item ng-repeat="item in expensesData">
+        ${{item.amount}} for {{item.name}} @ {{item.location}}
+      </ion-item>
+      <div class="item item-divider">
+        Incomes
+      </div>
+      <ion-item ng-repeat="item in incomesData">
         ${{item.amount}} for {{item.name}}
       </ion-item>
     </ion-list>
