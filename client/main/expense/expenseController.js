@@ -1,5 +1,5 @@
 angular.module('expense.controller', [])
-.controller('ExpenseController', function(ExpenseServices, $http, $timeout){
+.controller('ExpenseController', function(ExpenseServices, MapServices, $http, $timeout){
 
 	var expense = this;
 
@@ -54,8 +54,6 @@ angular.module('expense.controller', [])
 					break;
 				}
 			}
-
-
 
 
 			var thisWeek = moment().format("w");
@@ -117,23 +115,50 @@ angular.module('expense.controller', [])
 		spentDate = spentDate.format('YYYY-MM-DD HH:mm:ss');
 
 		console.log("this is spentDate in string format", spentDate);
-		console.log("this is hours and minutes", hours, minutes);
-    console.log("This is the amount going to the server", {'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location});
+		console.log("this is hours and minutes", hours, minutes);    
+        console.log("This is the amount going to the server", {'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location});
 
-		ExpenseServices.submitNewExpense({'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location}, expense.inputType)
+        var expenseData = {'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location};
+ 
+        if(expenseData.location){
+        	MapServices.getGeoCode(expenseData.location)
+        	.then(function(resp) {
+        		expenseData.latlng = JSON.stringify({lat: resp.lat(), lng: resp.lng()});
+        		postExpense(expenseData, expense.inputType);
+        	})
+
+        } else {
+        	postExpense(expenseData, expense.inputType);
+        }
+	};
+
+	// ExpenseServices.submitNewExpense(expenseData, expense.inputType)
+	// 	.then(function(resp){
+	// 		resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
+	// 		if(expense.inputType === 'expense'){
+	// 			expense.expenseTable.push(resp);
+	// 			console.log("This is expenseTable", expense.expenseTable);
+	// 		}else if(expense.inputType === 'income'){
+	// 			expense.incomeTable.push(resp);
+	// 			console.log("This is incomeTable", expense.incomeTable);
+	// 		}
+	// 	});
+
+	var postExpense = function(expObj, expType){
+		ExpenseServices.submitNewExpense(expObj, expType)
 		.then(function(resp){
 			resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
-			if(expense.inputType === 'expense'){
+			if(expType === 'expense'){
 				expense.expenseTable.push(resp);
 				console.log("This is expenseTable", expense.expenseTable);
-			}else if(expense.inputType === 'income'){
+			}else if(expType === 'income'){
 				expense.incomeTable.push(resp);
 				console.log("This is incomeTable", expense.incomeTable);
 			}
-		});
+		});	
+	}
 
-
-	};
+	
 
 	expense.removeRow = function(idx, id, inputType){
 		console.log("inside removeRow based on income removal");
