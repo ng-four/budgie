@@ -3,10 +3,8 @@ angular.module('profile.controller', [])
 	var profile = this;
 
 	profile.loadProfile = function() {
-		console.log("profile.loadProfile called ");
 		ProfileServices.getProfileData()
 			.then(function(resp){
-				console.log('this is resp in loadProfile', resp);
 				profile.limitClicked = false;
 				profile.savingsClicked = false;
 				profile.allocateClicked = false;
@@ -24,61 +22,57 @@ angular.module('profile.controller', [])
 				});
 			}, function(error){
 				// to handle edge case wherein server shuts down but browser window still open	
-				console.log("loadProfile threw error, logging out... ");
-				AuthServices.logOut();
+				//console.log("loadProfile threw error, logging out... ");
+				//AuthServices.logOut();
 				throw error;
 			});
 	};
 
 	profile.changeLimit = function() {
-		profile.limitClicked = true;
+		profile.limitClicked = !profile.limitClicked;
 	};
 
 	profile.submitNewLimit = function(newLimit){
+		if(!newLimit){
+			newLimit = profile.monthly_limit;
+		}
 		ProfileServices.updateLimit(newLimit)
 			.then(function(resp){
 				console.log(resp);
-				$timeout(profile.loadProfile, 1000);
+				profile.loadProfile();
+				//$timeout(profile.loadProfile, 1000);
 			}, function(error){
 				throw error;
 			});
 	};
 
 	profile.changeTarget = function() {
-		profile.targetClicked = true;
+		profile.targetClicked = !profile.targetClicked;
 	};
 
 
 	profile.submitNewSavingsTarget = function(newSavings){
+		if(!newSavings){
+			newSavings = profile.savings_goal;
+		}
 		ProfileServices.updateSavingsTarget(newSavings)
 			.then(function(resp){
-				console.log("resp in updateSavings ", resp);
-				$timeout(profile.loadProfile, 1000);     // reload updated profile
+				console.log(resp);
+				profile.changeTarget();
+				profile.loadProfile();
+				//$timeout(profile.loadProfile, 1000); 
 			}, function(error){
 				throw error;
 			});
 	};
 
-	profile.toggleAllocate = function(){
-		profile.allocateClicked = true;
-	};
-
-	profile.allocateSavings = function() {
-
-		//TODO
-
-	};
 
 	profile.logOut = function() {
 		AuthServices.logOut();
 	};
 
 	profile.toggleNewGoal = function(){
-		if(!profile.newGoalClicked){
-			profile.newGoalClicked = true;
-		} else {
-			profile.newGoalClicked = false;
-		}
+		profile.newGoalClicked = !profile.newGoalClicked;
 	};
 
 	profile.submitNewGoal = function(goal){
@@ -103,10 +97,14 @@ angular.module('profile.controller', [])
 	};
 
 	profile.submitNewTotalSavings = function(amount){
+		if(!amount){
+			amount = profile.total_savings;
+		}
 		console.log("this is amount (which should be profile.newTotalSavings) inside submitNewTotalSavings", amount);
 		ProfileServices.updateTotalSavings(amount)
 		.then(function(resp){
 			profile.total_savings = amount;
+			profile.toggleTotalSavings();
 		});
 	};
 
@@ -116,5 +114,6 @@ angular.module('profile.controller', [])
 			GoalServices.completeGoal(id);
 	};
 
+	profile.loadProfile();
 
 });

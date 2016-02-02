@@ -261,11 +261,12 @@ router.post('/expenses', util.checkToken, function(request, response) {
   var notes = request.body.notes || null;
   var spent_date = request.body.spent_date;
   var location = request.body.location || null;
+  var lat = request.body.latlng || null;
+
   // If no missing data
   if (name !== null && amount !== null && category !== null /*&& request.user.id !== undefined*/) {
-    // db.connect();
-    db.query('INSERT INTO Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ?, user_id = ?;',
-    [name, amount, category, notes, spent_date, location, request.user.id],
+    db.query('INSERT INTO Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ?, geocode = ?, user_id = ?;',
+    [name, amount, category, notes, spent_date, location, lat, request.user.id],
     function(err, result){
       if (err) {
         console.error(err);
@@ -307,9 +308,10 @@ router.put('/expenses/:id', util.checkToken, function(request, response) {
   var notes = request.body.notes || null;
   var spent_date = request.body.spent_date;
   var location = request.body.location || null;
-  // db.connect();
-  db.query('UPDATE Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ? WHERE id = ?;',
-  [name, amount, category, notes, spent_date, location, request.params.id],
+  var lat = request.body.latlng || null;
+
+  db.query('UPDATE Expenses SET name = ?, amount = ?, category = ?, notes = ?, spent_date = ?, location = ?, geocode = ? WHERE id = ?;',
+  [name, amount, category, notes, spent_date, location, lat, request.params.id],
   function(err, result){
     if (err) {
       console.error(err);

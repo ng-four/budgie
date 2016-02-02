@@ -1,21 +1,23 @@
 angular.module('expense.service', [])
-.factory('ExpenseServices', function($http, $location, $window) {
+.factory('ExpenseServices', function($http, $location, $window, $q, $timeout) {
+
+  var geocoder = new google.maps.Geocoder();
 
  var submitNewExpense = function(expenseData, inputType) {
-   if(inputType === "income"){
+  if(inputType === "income"){
      expenseData.income_date = expenseData.spent_date;
    }
-   console.log("this is the url, that is being used", ('/'+inputType+"s"));
-   return $http({
-     method: 'POST',
-     url: '/'+inputType+"s",
-     data: expenseData
-   }).then(function(resp) {
-    //  console.log("resp in submitNewExpense ", resp);
-     return resp.data;
-   }, function(error) {
+    console.log("this is the url, that is being used", ('/'+inputType+"s"));
+    return $http({
+      method: 'POST',
+      url: '/'+inputType+"s",
+      data: expenseData
+    }).then(function(resp) {
+      
+      return resp.data;
+    }, function(error) {
        console.error('Submit Expense ERROR!!! ', error);
-   });
+    });
  };
 
 
@@ -25,7 +27,6 @@ angular.module('expense.service', [])
      method: 'GET',
      url: '/expenses/' + days,
    }).then(function(resp) {
-    //  console.log("resp in getExpensesForDays ", resp);
      return resp.data;
    }, function(error) {
      console.error('Get Expense ERROR!!! ', error);
@@ -49,7 +50,6 @@ angular.module('expense.service', [])
      method: 'GET',
      url: '/incomes/' + days,
    }).then(function(resp) {
-    //  console.log("resp in getExpensesForDays ", resp);
      return resp.data;
    }, function(error) {
      console.error('Get Income ERROR!!! ', error);

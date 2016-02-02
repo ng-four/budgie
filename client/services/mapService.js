@@ -9,13 +9,12 @@ angular.module('map.service', [])
   		return map;
   	}
 
+    var geocoder = new google.maps.Geocoder();
+
   	var getGeoCode = function(address){
 
   		var deferred = $q.defer();
-  		var geocoder = new google.maps.Geocoder();
-
-
-  		console.log("address in getGeoCode service ", address);
+  		
     	var geocodeOptions = {
       		address: address
     	};
@@ -23,7 +22,7 @@ angular.module('map.service', [])
     	geocoder.geocode(geocodeOptions, function(results, status) {
       		if ( status !== google.maps.GeocoderStatus.OK ) {
       			console.log("Geocoder failed!!! ", status);
-        		// deffered.reject('Geocoder failed due to: ' + status);
+        		//deferred.reject('Geocoder failed due to: ' + status);
       		}
       		deferred.resolve(results[0].geometry.location);	
     	});
@@ -38,7 +37,7 @@ angular.module('map.service', [])
   		var contentString = '<div id="content">'+
       		'<div id="bodyContent">'+
       		'<p style="color: black">' + transaction.name + '</p>'+
-       		'<p style="color: black">' + transaction.category + '</p>'+
+       		'<p style="color: black">' + transaction.location + '</p>'+
       		'<p style="color: black">$' + transaction.amount + '</p>'+
       		'<p style="color: black">' + date + '</p>'+
       		'</div>'+
@@ -49,7 +48,7 @@ angular.module('map.service', [])
   		});
 
   		var marker = new google.maps.Marker({
-    		position: transaction.latlng,  // how are we getting this lat/lng info???
+    		position: transaction.latlng, 
     		map: map,
     		title: transaction.name
   		});
@@ -62,13 +61,9 @@ angular.module('map.service', [])
     		infowindow.close(map, marker);
   		});
 
-  		console.log("transaction.latlng in map service ", transaction.latlng);
-
   		var ll = new google.maps.LatLng(transaction.latlng);
-  		console.log("ll in map svc ", ll);
+  		
   		bounds.extend(ll);
-    
-
   	}
 
   	var setBounds = function(map, bounds){
