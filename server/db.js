@@ -35,4 +35,8 @@ fs.readFile(__dirname + '/setup.sql', 'utf-8', function(err, data){
   }
 });
 
+setInterval(function () {
+    db.query('SELECT 1');
+}, 5000);
+
 module.exports = db;
