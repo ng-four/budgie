@@ -4,7 +4,9 @@
   "description": "An intuitive, easy-to-use personal finance app.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js",
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,7 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.14.2",
+    "bower": "^1.7.7",
     "cors": "^2.7.1",
     "dropbox": "^0.10.3",
     "express": "^4.13.4",

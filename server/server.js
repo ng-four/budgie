@@ -3,7 +3,6 @@ var session = require('express-session');
 var cors = require('cors');
 
 // Config
-var config = require('./config.js');
 
 var app = express();
 
@@ -12,14 +11,14 @@ var parser = require('body-parser');
 var router = require('./routes.js');
 app.use(cors());
 
-// Establish session
-var sessionSecret = !!config.sessionSecret ? config.sessionSecret : CONFIG_SESSIONS_SECRET;
-app.use(session({
- secret: sessionSecret,
- resave: true,
- saveUninitialized: false,
- cookie: {maxAge: 1000*60*60*8}
-}));
+// // Establish session
+// var sessionSecret = !!config.sessionSecret ? config.sessionSecret : CONFIG_SESSIONS_SECRET;
+// app.use(session({
+//  secret: sessionSecret,
+//  resave: true,
+//  saveUninitialized: false,
+//  cookie: {maxAge: 1000*60*60*8}
+// }));
 
 // Set what we are listening on.
 app.set("port", process.env.PORT || 8000);
