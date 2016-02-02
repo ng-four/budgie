@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -80,7 +80,20 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         controller: 'TodayCtrl'
       }
     }
+  })
+
+  .state('tab.newsfeed', {
+    url: '/newsfeed',
+    views: {
+      'tab-newsfeed': {
+        templateUrl: 'templates/tab-newsfeed.html',
+        authenticate: true,
+        controller: 'NewsfeedCtrl'
+      }
+    }
   });
+
+
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/expense');
@@ -111,7 +124,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 			return resp.data.token;
 		}, function(error) {
   			console.error('Sign up ERROR!!! ', error);
-		})
+		});
 	};
 
 	var checkSignin = function(userData){
