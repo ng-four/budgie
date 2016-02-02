@@ -2,12 +2,22 @@ angular.module('history.controller', [])
 .controller('HistoryController', function(ExpenseServices, AuthServices, MapServices, $http, $filter, $timeout, $q){
 
 	var history = this;
+
+	history.dates = "7";  // default view
 	history.expenseTable = [];
 	history.incomeTable = [];
 	history.allTable = [];
 
-	var loadHistoryView = function(){
-		ExpenseServices.getExpensesForDays(10000)
+	history.filterDates = function(days){
+		loadHistoryView(days);
+	}
+
+	var loadHistoryView = function(days){
+		days = days || 7;
+		history.expenseTable = [];
+		history.incomeTable = [];
+		history.allTable = [];
+		ExpenseServices.getExpensesForDays(days)
 			.then(function(resp){
 				history.expenseTable = resp;
 				if(resp[0].spent_date){
@@ -18,16 +28,19 @@ angular.module('history.controller', [])
 				AuthServices.logOut();
 				throw error;
 			}).then(function(resp){
-				ExpenseServices.getIncomesForDays(10000)
+				ExpenseServices.getIncomesForDays(days)
 					.then(function(incomeresp){
 					history.incomeTable = incomeresp;
 					if(incomeresp.spent_date){						// code breaks if there's no income entered yet
 						var firstDate = new Date(incomeresp[0].spent_date);
 					}
 			}).then(function(resp){
-				history.combineTables()
+				history.combineTables();
+				console.log("history.allTable.length ", history.allTable.length);
+
 				})
 				.then(function(resp){
+					console.log("history.allTable.length2 ", history.allTable.length);
 					renderMap();
 			});
 		})
@@ -63,6 +76,51 @@ angular.module('history.controller', [])
 		history.cat = cat;
 		history.allTable = orderBy(history.allTable, cat, history.reverse);
 		history.reverse = (history.cat === cat) ? !history.reverse : false;
+	};
+
+
+	history.editClick = function (idx, id) {
+		console.log("idx, id ", idx, id);
+		history.newIndex = idx;
+		history.newId = id;
+		history.newAmount = history.allTable[idx].amount;
+		history.newExpenseItem = history.allTable[idx].name;
+		history.newCategory = history.allTable[idx].category;
+		history.newNotes = history.allTable[idx].notes;
+		history.newSpentDate = new Date(history.allTable[idx].spent_date);
+		// expense.newLocation = expense.expenseTable[idx].location;
+	}
+
+	history.editRow = function(idx, id, inputType){
+		inputType = history.allTable[idx].inputType;
+
+		var jstime = new Date(history.newSpentDate);
+		var hour = jstime.getHours();
+		var minute = jstime.getMinutes();
+
+		jstime = jstime.toISOString().slice(0, 16);
+
+		var spentDate = moment(jstime, moment.ISO_8601);
+
+		spentDate.hour(hour);
+		spentDate.minute(minute);
+		spentDate = spentDate.format('YYYY-MM-DD HH:mm:ss');
+
+		var data = {
+			name: history.newExpenseItem,
+			amount: history.newAmount,
+			category: history.newCategory,
+			notes: history.newNotes,
+			spent_date: spentDate,
+			// location: expense.newLocation,
+		}
+
+		ExpenseServices.editExpense(id, data, inputType)
+			.then(function(resp){
+				console.log("in promise func in edit expense" );
+
+				loadHistoryView(history.dates);
+			})
 	};
 
 	/*--------  MAP FUNCTIONS  -------------*/
@@ -116,6 +174,7 @@ angular.module('history.controller', [])
    		MapServices.setBounds(map, bounds);
    	}
 
-   	loadHistoryView();
+   	loadHistoryView(history.dates);
 
 });
+

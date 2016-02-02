@@ -3,7 +3,7 @@ angular.module('expense.controller', [])
 
 	var expense = this;
 
-  expense.inputType = 'expense';
+    expense.inputType = 'expense';
 	expense.categoryType = 'select a category';
 
 	expense.expenseTable = [];
@@ -177,21 +177,10 @@ angular.module('expense.controller', [])
         	})
 
         } else {
+        	console.log("expenseData ", expenseData);
         	postExpense(expenseData, expense.inputType);
         }
 	};
-
-	// ExpenseServices.submitNewExpense(expenseData, expense.inputType)
-	// 	.then(function(resp){
-	// 		resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
-	// 		if(expense.inputType === 'expense'){
-	// 			expense.expenseTable.push(resp);
-	// 			console.log("This is expenseTable", expense.expenseTable);
-	// 		}else if(expense.inputType === 'income'){
-	// 			expense.incomeTable.push(resp);
-	// 			console.log("This is incomeTable", expense.incomeTable);
-	// 		}
-	// 	});
 
 	var postExpense = function(expObj, expType){
 		ExpenseServices.submitNewExpense(expObj, expType)
