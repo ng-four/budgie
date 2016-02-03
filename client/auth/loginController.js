@@ -1,21 +1,25 @@
 angular.module('login.controller', [])
 .controller('LoginController', function(AuthServices, $location, $timeout, $state){
 
-	var login = this;
+  var login = this;
 
-	login.submit = function() {
-		$("#loginModal").modal("hide");
-		var user = {
-			email: login.email,
-			password: login.password
-		};
+  login.submit = function() {
+    var user = {
+      email: login.email,
+      password: login.password
+    };
 
-		AuthServices.submitLogin(user)
-		.then(function(token){
+    AuthServices.submitLogin(user)
+    .then(function(token){
       if(token){
+        $("#loginModal").modal("hide");
         $location.path('/main/expense');
       } else {
+        //   $( "Error Authenticating user" ).appendTo( ".blerg" );
         console.log("Error Authenticating User");
+        login.email = '';
+        login.password = '';
+        login.isInvalid = true;
       }
     }, function(error){
       console.log("Erroring");
@@ -23,6 +27,6 @@ angular.module('login.controller', [])
       throw error;
     });
 
-	};
+  };
 
 });
