@@ -1,6 +1,4 @@
-<div id="wrapper">
-    <div id="page-content-wrapper">
-
+<h2 class="text-center">Sign Up</h2>
 <form class="form-signin" ng-submit="signup.submit(signup)">
   <fieldset>
     <div class="form-group">
@@ -28,12 +26,10 @@
       <input type="number" class="form-control" id="total_goal" placeholder="Current Total Savings" ng-model="signup.total_savings">
     </div>
     <div class="form-group text-center">
-      <button type="submit" class="btn btn-primary">Create Profile</button></a>
+      <button type="submit" class="btn btn-primary" data-dismiss="modal">Create Profile</button></a>
     </div>
   </fieldset>
 </form>
 <div class="text-center">
   <p>Already have an account? <a ui-sref="landing.login"><button type="submit" class="btn btn-success btn-xs">Log In</button></a></p>
 </div>
-  </div>  <!-- /#page-content-wrapper -->
-</div>  <!-- /#wrapper -->

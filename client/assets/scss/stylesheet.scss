@@ -1,6 +1,12 @@
+/*--- VARIABLES ---*/
+$site-background: #202840;
+$category-tag-color: #0089e0;
+$budgie-green: #00bc8c;
+$income-blue: #3498db;
+
 /*--- GLOBAL STYLES ---*/
 body{
-  background-color: #202840;
+  background-color: $site-background;
 }
 .body-wrapper{
   display: table;
@@ -15,7 +21,73 @@ body{
   }
 }
 .main-content{
-  margin-top: 70px;
+  margin-top: 100px;
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+
+.table>tbody>tr.success{
+  border-bottom: 1px solid #00bc8c;
+}
+.table>tbody>tr.info{
+  border-bottom: 1px solid #3498db;
+}
+.table>tbody>tr.success>td,
+.table>tbody>tr.info>td{
+  background-color: transparent;
+}
+.table{
+  .button-remove{
+    background: transparent;
+    border: none;
+    color: #ff5940;
+  }
+  .button-edit{
+    background: transparent;
+    border: none;
+    color: #57a5f9;
+  }
+}
+
+
+
+/*--- LANDING ---*/
+.landing-page{
+  .jumbotron{
+    height: 500px;
+    text-align: center;
+    h2{
+      padding-top: 4.5em;
+    }
+  }
+  .devices-row{
+    position: relative;
+    top: -70px;
+  }
+  .features-column{
+    padding: 50px 65px 100px;
+  }
+  .developers-row{
+    background-color: $budgie-green;
+    color: $site-background;
+    .contact-links a{
+      color: $site-background;
+    }
+    .team-header{
+      margin-top: 35px;
+    }
+  }
+  .developers-column{
+    padding: 35px 0 90px 0;
+  }
 }
 
 /*--- FORMS ---*/
@@ -41,25 +113,61 @@ input.form-control{
 }
 
 .navbar-default {
-  background: -moz-linear-gradient(top, rgba(40,31,63,1) 0%, rgba(55,90,127,0) 100%);
-  background: -webkit-linear-gradient(top, rgba(40,31,63,1) 0%,rgba(55,90,127,0) 100%);
-  background: linear-gradient(to bottom, rgba(40,31,63,1) 0%,rgba(55,90,127,0) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#281f3f', endColorstr='#00375a7f',GradientType=0 );
-
-//   background: -moz-linear-gradient(top, rgba(55,90,127,1) 0%, rgba(55,90,127,0) 100%);
-// background: -webkit-linear-gradient(top, rgba(55,90,127,1) 0%,rgba(55,90,127,0) 100%);
-// background: linear-gradient(to bottom, rgba(55,90,127,1) 0%,rgba(55,90,127,0) 100%);
-// filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#375a7f', endColorstr='#00375a7f',GradientType=0 );
+  background: -moz-linear-gradient(top,  rgba(53,13,82,1) 0%, rgba(53,13,82,0) 100%);
+   background: -webkit-linear-gradient(top,  rgba(53,13,82,1) 0%,rgba(53,13,82,0) 100%);
+   background: linear-gradient(to bottom,  rgba(53,13,82,1) 0%,rgba(53,13,82,0) 100%);
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#350d52 ', endColorstr='#00350d52',GradientType=0 );
+  .navbar-collapse{
+    background: #350d52;
+  }
 }
 
 /*--- EXPENSES PAGE ---*/
+.table > tbody > tr.success:hover{
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#00bc8c+0,00bc8c+100&0+0,0.5+100 */
+  background: -moz-linear-gradient(top,  rgba(0,188,140,0) 0%, rgba(0,188,140,0.5) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  rgba(0,188,140,0) 0%,rgba(0,188,140,0.5) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  rgba(0,188,140,0) 0%,rgba(0,188,140,0.5) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0000bc8c', endColorstr='#8000bc8c',GradientType=0 ); /* IE6-9 */
+}
+.table > tbody > tr.info:hover{
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#3498db+0,3498db+100&0+0,0.5+100 */
+  background: -moz-linear-gradient(top,  rgba(52,152,219,0) 0%, rgba(52,152,219,0.5) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  rgba(52,152,219,0) 0%,rgba(52,152,219,0.5) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  rgba(52,152,219,0) 0%,rgba(52,152,219,0.5) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#003498db', endColorstr='#803498db',GradientType=0 ); /* IE6-9 */
+}
+
+.table .category-tag{
+  color: #fff;
+  background: $category-tag-color;
+  border-bottom-right-radius: 4px;
+	border-top-right-radius: 4px;
+  margin-left: 20px;
+  position: relative;
+	padding: 3px 12px;
+	text-decoration: none;
+}
+.category-tag:before{
+  content: "";
+  float: left;
+  position: absolute;
+  top: 0;
+  left: -12px;
+  width: 0;
+  height: 0;
+  border-color: transparent $category-tag-color transparent transparent;
+  border-style: solid;
+  border-width: 12px 12px 12px 0;
+}
+
 .expense-form {
   .form-control {
     display: inline;
     min-width: 20%;
     width: auto;
   }
-  #select {
+  .select {
     border-bottom: 1px solid #375a7f;
     background: transparent;
     color: white;
@@ -73,6 +181,10 @@ input.form-control{
   }
   .button-group {
     margin-top: 20px;
+  }
+  .button-note{
+    background: transparent;
+    border: none;
   }
 }
 
@@ -130,19 +242,29 @@ input.form-control{
   }
 }
 
-
 /*--- FOOTER ---*/
-footer{
+footer {
   margin-top: 30px;
   // bottom: 5px;
   // position: fixed;
   // width: 100%;
 }
 
+/*---- MAP ----*/
+#map_canvas {
+  height: 500px;
+  width: 100%;
+}
 
 /*--- MEDIA QUERIES ---*/
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+  .navbar-default{
+    .navbar-collapse{
+      background: transparent;
+    }
+  }
+
   .learn-page{
     .resources{
       .item{
@@ -153,4 +275,49 @@ footer{
       }
     }
   }
+}
+
+/*--- MODAL  ----*/
+
+.ng-modal-overlay {
+  /* A dark translucent div that covers the whole screen */
+  position:absolute;
+  z-index:9999;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color:#000000;
+  opacity: 0.8;
+}
+.ng-modal-dialog {
+  /* A centered div above the overlay with a box shadow. */
+  z-index:10000;
+  position: absolute;
+  width: 50%; /* Default */
+
+  /* Center the dialog */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+
+  background-color: #fff;
+  box-shadow: 4px 4px 80px #000;
+}
+.ng-modal-dialog-content {
+  padding:10px;
+  text-align: left;
+}
+.ng-modal-close {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 120%;
+  display: inline-block;
+  font-weight: bold;
+  font-family: 'arial', 'sans-serif';
 }

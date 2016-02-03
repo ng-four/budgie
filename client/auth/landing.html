@@ -1,17 +1,96 @@
-<div id="wrapper">
-    <div id="page-content-wrapper">
+<div id="wrapper" class="landing-page">
+ <div id="page-content-wrapper">
 
-      <div class="jumbotron">
-        <h1>Budgie</h1>
-        <p>Money management for Generation-Y</p>
+   <div class="navbar navbar-default navbar-fixed-top">
+     <div class="container">
+       <div class="navbar-header">
+         <a href="#" class="navbar-brand"><img src="assets/images/budgie_logo.svg" class="budgie-logo" title="Budgie" alt="Budgie" /></a>
+         <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+       </div>
+       <div class="navbar-collapse collapse" id="navbar-main">
+         <ul class="nav navbar-nav navbar-right">
+           <li><a ui-sref="landing.login" data-toggle="modal" data-target="#loginModal">Sign In</a></li>
+         </ul>
+       </div>
+     </div>
+   </div>
+
+   <div class="jumbotron">
+     <h2>Money management for the next generation.</h2>
+     <p>Log. Track. Plan. Learn.</p>
+     <p><a class="btn btn-primary" ui-sref="landing.signup" data-toggle="modal" data-target="#loginModal" role="button">Get started today!</a>
+   </div>
+
+   <div class="fluid-container">
+      <div class="devices-row row text-center">
+         <img src="https://placeholdit.imgix.net/~text?txtsize=20&txt=750%C3%97300&w=750&h=450" />
       </div>
-
-      <div class="col-lg-10 col-lg-offset-2">
-
+      <div class="features-row row">
+         <div class="features-column col-sm-4 text-center">
+            <div class="icon"><img src="https://placeholdit.imgix.net/~text?txtsize=8&txt=70%C3%9770&w=70&h=70" /></div>
+            <h4>Expense Tracking Simplified</h4>
+            <p>Keep track of daily exptenditures with the easy-to-use web and mobile apps</p>
+         </div>
+         <div class="features-column col-sm-4 text-center">
+            <div class="icon"><img src="https://placeholdit.imgix.net/~text?txtsize=8&txt=70%C3%9770&w=70&h=70" /></div>
+            <h4>Your Financial Life Visualized</h4>
+            <p>Gain insight with statistics and make wiser decisions</p>
+         </div>
+         <div class="features-column col-sm-4 text-center">
+            <div class="icon"><img src="https://placeholdit.imgix.net/~text?txtsize=8&txt=70%C3%9770&w=70&h=70" /></div>
+            <h4>Achieve Your Goals</h4>
+            <p>Easily track how close you are to accomplishing your objectives</p>
+         </div>
       </div>
+      <div class="developers-row row">
+        <div class="col-sm-12 text-center"><h3 class="team-header">The Team</h3></div>
+         <div class="developers-column col-sm-3 text-center">
+            <img src="https://placeholdit.imgix.net/~text?txtsize=8&txt=100%C3%97100&w=100&h=100" class="img-circle" />
+            <h5>Kaushik Sahoo</h5>
+            <p>Product Owner</p>
+            <p class="contact-links"><a href="#" class="icon ion-social-github"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="icon ion-social-linkedin"></a></p>
+         </div>
+         <div class="developers-column col-sm-3 text-center">
+            <img src="https://placeholdit.imgix.net/~text?txtsize=8&txt=100%C3%97100&w=100&h=100" class="img-circle" />
+            <h5>Joseph Martin</h5>
+            <p>Software Engineer</p>
+            <p class="contact-links"><a href="#" class="icon ion-social-github"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="icon ion-social-linkedin"></a></p>
+         </div>
+         <div class="developers-column col-sm-3 text-center">
+            <img src="https://placeholdit.imgix.net/~text?txtsize=8&txt=100%C3%97100&w=100&h=100" class="img-circle" />
+            <h5>Thomas Leupp</h5>
+            <p>Scrum Master</p>
+            <p class="contact-links"><a href="#" class="icon ion-social-github"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="icon ion-social-linkedin"></a></p>
+         </div>
+         <div class="developers-column col-sm-3 text-center">
+            <img src="https://placeholdit.imgix.net/~text?txtsize=8&txt=100%C3%97100&w=100&h=100" class="img-circle" />
+            <h5>VJ Aguilar</h5>
+            <p>Software Engineer</p>
+            <p class="contact-links"><a href="#" class="icon ion-social-github"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="icon ion-social-linkedin"></a></p>
+         </div>
+      </div>
+   </div>
 
-    </div>  <!-- /#page-content-wrapper -->
+ </div>
+ <!-- /#page-content-wrapper -->
 
-</div>  <!-- /#wrapper -->
+</div>
+<!-- /#wrapper -->
 
-<div ui-view></div>
+
+
+<div id="loginModal" class="modal fade" tabindex="-1" role="dialog" accesskey="" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div ui-view></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</div>
