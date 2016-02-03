@@ -15,7 +15,6 @@ angular.module('login.controller', [])
         $("#loginModal").modal("hide");
         $location.path('/main/expense');
       } else {
-        //   $( "Error Authenticating user" ).appendTo( ".blerg" );
         console.log("Error Authenticating User");
         login.email = '';
         login.password = '';
