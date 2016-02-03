@@ -26,6 +26,40 @@ angular.module('starter.controllers', [])
   };
 })
 
+
+.controller('SignUpCtrl', function($scope, AuthServices, $location) {
+  $scope.input = {};
+  $scope.input.full_name = "";
+  $scope.input.email = "";
+  $scope.input.password = "";
+  $scope.input.monthly_limit = 0;
+  $scope.input.savings_goal = 0;
+  $scope.input.total_savings = 0;
+  $scope.submit = function() {
+		var userData = {
+			email: $scope.input.email,
+			password: $scope.input.password,
+			full_name: $scope.input.full_name,
+			monthly_limit: $scope.input.monthly_limit,
+			savings_goal: $scope.input.savings_goal,
+			total_savings: $scope.input.total_savings
+		};
+		console.log("called signup.submit with ", userData);
+		AuthServices.submitNewUser(userData)
+    .then(function(token){
+      if(token){
+        $location.path('/tabs/expense');
+      } else {
+        console.log("Error Creating User");
+      }
+    }, function(error){
+      console.log("Erroring");
+      $location.path('/login');
+      throw error;
+    });
+	};
+})
+
 .controller('ExpenseCtrl', function($scope, $http, $timeout) {
   $scope.input = {};
   $scope.input.name = "";
@@ -47,7 +81,7 @@ angular.module('starter.controllers', [])
 
     return $http({
       method: "POST",
-      url: "http://localhost:8000/expenses",
+      url: "https://budgie-alpha.herokuapp.com/expenses",
       data: {
         'amount':$scope.input.amount,
         'name':$scope.input.name,
@@ -88,7 +122,7 @@ angular.module('starter.controllers', [])
 
     return $http({
       method: "POST",
-      url: "http://localhost:8000/incomes",
+      url: "https://budgie-alpha.herokuapp.com/incomes",
       data: {
         'amount':$scope.input.amount,
         'name':$scope.input.name,
@@ -138,15 +172,24 @@ angular.module('starter.controllers', [])
   $scope.$on('$ionicView.enter', function(e){
     return $http({
       method: 'GET',
-      url: 'http://localhost:8000/expenses/1',
+      url: 'https://budgie-alpha.herokuapp.com/expenses/1',
     }).then(function(expenses){
       return $http({
         method: 'GET',
-        url: 'http://localhost:8000/incomes/1'
+        url: 'https://budgie-alpha.herokuapp.com/incomes/1'
       }).then(function(incomes){
         $scope.expensesData = expenses.data;
         console.log("these are the expenses", $scope.expensesData);
         $scope.incomesData = incomes.data;
+      }).then(function(){
+        return $http({
+          method:'GET',
+          url:'https://budgie-alpha.herokuapp.com/user'
+        }).then(function(resp){
+          console.log("this is user profile data in TodayCtrl!!!", resp.data);
+          $scope.profile_total_savings = resp.data.total_savings;
+          $scope.profile_monthly_limit = resp.data.monthly_limit;
+        });
       });
     });
   });
@@ -156,7 +199,7 @@ angular.module('starter.controllers', [])
   $scope.getTweets = function() {
     return $http({
       method: 'GET',
-      url: 'http://localhost:8000/learn',
+      url: 'https://budgie-alpha.herokuapp.com/learn',
     }).then(function(resp) {
       return resp.data.statuses;
     }, function(error) {

@@ -2,6 +2,21 @@
   <ion-content>
     <ion-list class="list">
       <div class="item item-divider">
+        My Profile
+      </div>
+      <a class="item item-icon-left" href="#">
+        Total Savings
+        <span class="item-note">
+          {{profile_total_savings}}
+        </span>
+      </a>
+      <a class="item item-icon-left" href="#">
+        Monthly Limit
+        <span class="item-note">
+          {{profile_monthly_limit}}
+        </span>
+      </a>
+      <div class="item item-divider">
         Expenses
       </div>
       <ion-item ng-repeat="item in expensesData">
