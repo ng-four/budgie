@@ -1,6 +1,4 @@
-<div id="wrapper">
-    <div id="page-content-wrapper" class="container">
-
+<h2 class="text-center">Log In</h2>
 <form class="form-signin" ng-submit="login.submit(login)">
   <fieldset>
     <div class="form-group">
@@ -12,12 +10,10 @@
       <input type="password" class="form-control" id="password" placeholder="Password" ng-model="login.password">
     </div>
     <div class="form-group text-center">
-        <button type="submit" class="btn btn-primary">Log In</button>
+        <button type="submit" class="btn btn-primary" data-dismiss="modal">Log In</button>
     </div>
   </fieldset>
 </form>
 <div class="text-center">
   <p>Don't have an account? <a ui-sref="landing.signup"><button type="submit" class="btn btn-success btn-xs">Sign Up</button></a><p>
-</div>
-  </div>
 </div>

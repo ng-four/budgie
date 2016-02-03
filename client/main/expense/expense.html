@@ -28,9 +28,7 @@
               <label for="inputLocation">Location:</label>
               <input type="text" class="form-control" id="location" placeholder="Location" name="location" ng-model="expense.location" > <!-- googleplace -->
 
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#noteModal" title="Add an optional note">
-                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-              </button>
+              <button type="button" class="button-note icon ion-clipboard" data-toggle="modal" data-target="#noteModal" title="Add an optional note"></button>
 
             <div class="form-group button-group">
                 <button type="submit" class="btn btn-primary" ng-click="expense.addExpense()">Submit</button>
@@ -95,60 +93,43 @@
   <!-- DAILY TRANSACTIONS -->
 
     <div class="container">
-      <table class="table table-striped table-hover ">
-        <!-- <thead>
-          <tr>
-            <th>Amount</th>
-            <th>Expense</th>
-            <th>Category</th>
-            <th>Time</th>
-            <th>Notes</th>
-          </tr>
-        </thead> -->
+      <table class="table">
         <tbody>
           <tr class="success" ng-repeat="expenseThings in expense.expenseTable">
-            <td>{{expenseThings.amount}}</td>
+            <td>${{expenseThings.amount}}</td>
             <td>{{expenseThings.name}}</td>
-            <td>{{expenseThings.category}}</td>
+            <td><span class="category-tag">{{expenseThings.category}}</span></td>
             <td>{{expenseThings.format}}</td>
             <td>{{expenseThings.notes}}</td>
 
-            <td>
-                <a ng-click="expense.editClick($index, expenseThings.id)" data-toggle="modal" data-target="#editModal" class="btn btn-info btn-sm">edit</a>
+            <td class="text-right">
+                <button type="button" ng-click="expense.editClick($index, expenseThings.id)" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" aria-label="Edit"></button>
             </td>
             <td class="text-right">
-		            <input type="button" value="Remove" class="btn btn-danger" data-ng-click="expense.removeRow($index, expenseThings.id, 'expense')">
+		            <button type="button" value="Remove" data-ng-click="expense.removeRow($index, expenseThings.id, 'expense')" class="button-remove icon ion-close-round" aria-label="Remove"></button>
 		        </td>
 
           </tr>
 
         </tbody>
       </table>
-
-      <table class="table table-striped table-hover ">
-        <!-- <thead>
-          <tr>
-            <th>Amount</th>
-            <th>Expense</th>
-            <th>Category</th>
-            <th>Time</th>
-            <th>Notes</th>
-          </tr>
-        </thead> -->
+    <div class="container">
+    </div>
+      <table class="table">
         <tbody>
           <tr class="info" ng-repeat="incomeThings in expense.incomeTable">
-            <td>{{incomeThings.amount}}</td>
+            <td>${{incomeThings.amount}}</td>
             <td>{{incomeThings.name}}</td>
-            <td>{{incomeThings.category}}</td>
+            <td><span class="category-tag">{{incomeThings.category}}</span></td>
             <td>{{incomeThings.format}}</td>
             <td>{{incomeThings.notes}}</td>
-
             <td class="text-right">
-		            <input type="button" value="Remove" class="btn btn-danger" data-ng-click="expense.removeRow($index, incomeThings.id, 'income')">
+                <button type="button" ng-click="expense.editClick($index, expenseThings.id)" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" aria-label="Edit"></button>
+            </td>
+            <td class="text-right">
+		            <button type="button" value="Remove" data-ng-click="expense.removeRow($index, incomeThings.id, 'income')" class="button-remove icon ion-close-round" aria-label="Remove"></button>
 		        </td>
-
           </tr>
-
         </tbody>
       </table>
     </div>
