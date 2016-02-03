@@ -1,5 +1,5 @@
 angular.module('expense.controller', [])
-.controller('ExpenseController', function(ExpenseServices, MapServices, $http, $timeout){
+.controller('ExpenseController', function(ExpenseServices, MapServices, $http, $timeout, $scope){
 
 	var expense = this;
 
@@ -274,11 +274,43 @@ angular.module('expense.controller', [])
 		console.log("note in modal ", note);
 	}
 
+	/* --------    GOOGLE PLACES AUTOCOMPLETE  --------------*/
+
+			var options = {
+                types : [],
+            };
+
+            var location = document.getElementById('location');
+
+            $scope.gPlace = new google.maps.places.Autocomplete(location, options);
+
+            // google.maps.event.addListener($scope.gPlace, 'place_changed',
+            //         function() {
+            //             $scope.$apply(function() {
+            //                 location.$setViewValue(expense.location);
+            //             });
+            //         });
+
+            google.maps.event.addDomListener(location, 'keydown', function(e) { 
+            	console.log("keydown ");
+    			if (e.keyCode == 13 || e.keyCode == 9) { 
+    				if($('#location:visible').length){			
+    					console.log("scope.gPlace etc", $scope.gPlace.gm_bindings_.types['7'].Rd.U[0].j[0]);
+    					expense.location = $scope.gPlace.gm_bindings_.types['7'].Rd.U[0].j[0];
+    					console.log("enter pressed or tab pressed ");
+    					//console.log('expense.location ', expense.location);
+        				e.preventDefault(); 
+        			}
+    			}		
+			}); 
+
 })
+/*
 .directive('googleplace', function() {
     return {
         require : 'ngModel',
         link : function(scope, element, attrs, model) {
+
             var options = {
                 types : [],
             };
@@ -291,6 +323,31 @@ angular.module('expense.controller', [])
                             model.$setViewValue(element.val());
                         });
                     });
+
+            var location = document.getElementById('location');
+
+            google.maps.event.addDomListener(location, 'keydown', function(e) { 
+            	console.log("keydown ");
+    			if (e.keyCode == 13 && $('#location:visible').length) { 
+    				
+    				console.log("scope.gPlace", scope.gPlace.gm_bindings_.types['7'].Rd.U[0].j[0]);
+    				console.log('element[0] ', element[0]);
+    				console.log('model ', model);
+    				
+    				console.log("enter pressed ");
+    				//console.log('expense.location ', expense.location);
+    			
+
+        			e.preventDefault(); 
+    			}		
+			}); 
+   //          $('#location').keydown(function (e) {
+   //          	console.log("scope ", scope);
+  	// 			if (e.which == 13 && $('.form-control:visible').length){
+  	// 			  console.log("does this work???");
+  	// 			} return false;
+			// });
         }
     };
 })
+*/
