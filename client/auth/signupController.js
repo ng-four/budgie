@@ -4,7 +4,7 @@ angular.module('signup.controller', [])
 	var signup = this;
 
 	signup.submit = function() {
-
+		$("#loginModal").modal("hide");
 		var userData = {
 			email: signup.email,
 			password: signup.password,
