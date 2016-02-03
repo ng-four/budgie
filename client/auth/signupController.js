@@ -22,6 +22,13 @@ angular.module('signup.controller', [])
         $location.path('/main/expense');
       } else {
         console.log("Error Creating User");
+				signup.email = '';
+        signup.password = '';
+				signup.full_name = '';
+				signup.monthly_limit = '';
+				signup.savings_goal = '';
+				signup.total_savings = '';
+        signup.isInvalid = true;
       }
     }, function(error){
       console.log("Erroring");
