@@ -4,6 +4,7 @@ angular.module('login.controller', [])
 	var login = this;
 
 	login.submit = function() {
+		$("#loginModal").modal("hide");
 		var user = {
 			email: login.email,
 			password: login.password
