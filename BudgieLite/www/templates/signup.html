@@ -1,0 +1,35 @@
+<ion-view view-title="Signup">
+  <ion-content class="padding">
+    <form ng-submit="submit()">
+      <div class="list">
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Full Name</span>
+          <input type="text" placeholder="Full Name" ng-model="input.full_name">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Email Address</span>
+          <input type="text" placeholder="Email" ng-model="input.email">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Password</span>
+          <input type="password" placeholder="Password" ng-model="input.password">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Monthly Limit</span>
+          <input type="number" placeholder="Monthly Limit" ng-model="input.monthly_limit">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Monthly Savings Goal</span>
+          <input type="number" placeholder="Monthly Savings Goal" ng-model="input.savings_goal">
+        </label>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Current Total Savings</span>
+          <input type="number" placeholder="Current Total Savings Goal" ng-model="input.total_savings">
+        </label>
+        <div class="col-100">
+          <button class="button button-full button-balanced" type="submit">Create Profile</button>
+        </div>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>

@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material'])
+angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ionic-material'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -38,6 +38,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material'])
     url: '/login',
     templateUrl: 'templates/login.html',
     controller: 'LoginCtrl'
+  })
+
+  .state('signup', {
+    url: '/signup',
+    templateUrl: 'templates/signup.html',
+    controller: 'SignUpCtrl'
   })
 
   // setup an abstract state for the tabs directive
@@ -117,7 +123,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material'])
   var submitNewUser = function(userData) {
 		return $http({
 			method: 'POST',
-			url: 'http://localhost:8000/signup',
+			url: 'https://budgie-alpha.herokuapp.com/signup',
 			data: userData
 		}).then(function(resp) {
 			window.localStorage.setItem('budgieID', resp.data.token);
@@ -131,7 +137,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material'])
 
 		return $http({
 			method: 'POST',
-			url: 'http://localhost:8000/login',
+			url: 'https://budgie-alpha.herokuapp.com/login',
 			data: userData
 		}).then(function(resp) {
 			window.localStorage.setItem('budgieID', resp.data.token);
