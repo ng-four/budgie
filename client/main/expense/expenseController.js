@@ -1,110 +1,93 @@
-angular.module('expense.controller', [])
+angular.module('expense.controller', []) //Controller for the expense view of Budgie
 .controller('ExpenseController', function(ExpenseServices, MapServices, $http, $timeout, $scope){
-
 	var expense = this;
+	expense.location; //Location variable for Google Maps feature
+	expense.inputType = 'expense'; //inputType to specify input is an expense for Google Maps feature
+	expense.categoryType = 'Food & Drink'; //Initializes ng-model on category dropdown to "Food & Drink"
+	expense.expenseTable = []; //Storage array for expense response objects that have been posted for the current day
+	expense.incomeTable = []; //Storage array for income response objects that have been posted for the current day
+	var categories = ['Education','Travel','Food & Drink','Rent','Household','Transport','Payments','Entertainment','Shopping','Healthcare','Tax','Miscellaneous']; //The possible categories users can assign to expense they input
+	var dailyArr = [0,0,0,0,0,0,0,0,0,0,0,0]; //A placeholder array to keep track of expense amounts for the current day based on specified categories
+	var weeklyArr = [0,0,0,0,0,0,0,0,0,0,0,0]; //A placeholder array to keep track of expense amounts for the current week based on specified categories
+	var monthlyArr = [0,0,0,0,0,0,0,0,0,0,0,0]; //A placeholder array to keep track of expense amounts for the current month based on specified categories
+	var monthlyLineArr = [], monthlyDaysArr = [], lastMonthArr = []; //Three arrays to keep track of data for the monthly line chart on the expense view
+																																	//monthlyLineArr keeps track of the current months total expenditure per day
+																																	//monthlyDaysArr keeps track of the current days in the current month and the expense view uses this as the basis of the x-axis on the monthly line chart
+																																	//lastMonthArr keeps track of last months total expenditure per day
 
-	expense.location;
-    expense.inputType = 'expense';
-	expense.categoryType = 'Food & Drink';
-
-	expense.expenseTable = [];
-	expense.incomeTable = [];
-	var categories = ['Education','Travel','Food & Drink','Rent','Household','Transport','Payments','Entertainment','Shopping','Healthcare','Tax','Miscellaneous'];
-	var dailyArr = [0,0,0,0,0,0,0,0,0,0,0,0];
-	var weeklyArr = [0,0,0,0,0,0,0,0,0,0,0,0];
-	var monthlyArr = [0,0,0,0,0,0,0,0,0,0,0,0];
-
-
-	var monthlyLineArr = [], monthlyDaysArr = [], lastMonthArr = [];
-
-	var startDay;
-	var startWeek;
-	var startMonth;
-
-	(function(){
-		ExpenseServices.getExpensesForDays(64)
+	expense.init = function(){						//Function that runs upon every initialization of the ExpenseController
+		ExpenseServices.getExpensesForDays(64) //Performs a request to via ExpenseServices to get expense data for the past 64 days
 		.then(function(resp){
-			console.log("this is the response in getExpensesForDays", resp);
-
-			ExpenseServices.getIncomesForDays(64)
+			ExpenseServices.getIncomesForDays(64) //Upon success, a request via ExpenseServices to get income data for the past 64 days is performed
 			.then(function(incomes){
-				var today = moment().format("DD");
+				var today = moment().format("DD"); //Uses moment.js to get current day
 				for(var i=0; i<incomes.length; i++){
 					var day = incomes[i].income_date.slice(8,10);
-					if(day === today){
+					if(day === today){ //checks to see if the current expense's date is that of todays
 						incomes[i].format = moment(incomes[i].income_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
-						expense.incomeTable.push(incomes[i]);
+						expense.incomeTable.push(incomes[i]); //Pushes each daily income with properly formated date to expense.incomeTable array
 					}else{
 						break;
 					}
 				}
 			});
 
-			var today = moment().format("DD");
-			console.log("this is today", today);
-			for(var i=0; i<resp.length; i++){
-				var day = resp[i].spent_date.slice(8,10);
-				console.log("this is day in for loop", day);
-				if(day === today){
-					resp[i].format = moment(resp[i].spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
-					console.log("moment difference as .format", resp[i].format);
-					expense.expenseTable.push(resp[i]);
-					var category = resp[i].category;
-					var index = categories.indexOf(category) > -1 ? categories.indexOf(category) : categories.length - 1;
-					dailyArr[index] += Number(resp[i].amount);
-				}else{
-					break;
-				}
+		var today = moment().format("DD"); //Again, uses moment.js to get current day
+		for(var i=0; i<resp.length; i++){ //Iterates over the expense data for the past 64 days
+			var day = resp[i].spent_date.slice(8,10); //the specific day for the current expense from our iteration
+			if(day === today){ //checks to see if the current expense's date is that of todays
+				resp[i].format = moment(resp[i].spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment()); //converts spent date of current expense from our iteration into a human-readable time-difference
+				expense.expenseTable.push(resp[i]); //the current expense with the human-readable time difference is now pushed into the expense.expenseTable array
+				var category = resp[i].category;
+				var index = categories.indexOf(category) > -1 ? categories.indexOf(category) : categories.length - 1; //assigns the index of the current expense's category within the categories array to a variable
+				dailyArr[index] += Number(resp[i].amount); //uses the index variable to properly increment a specific categories monetary value within the dailyArr array
+			}else{
+				break;
 			}
+		}
 
-			var thisWeek = moment().format("w");
-			for(var j=0; j<resp.length; j++){
-				var week = moment(resp[j].spent_date, 'YYYY-MM-DD HH:mm:ss').format("w");
-				if(week === thisWeek){
-					var category = resp[j].category;
-					var index = categories.indexOf(category) > -1 ? categories.indexOf(category) : categories.length - 1;
-					weeklyArr[index] += Number(resp[j].amount);
-				}else{
-					break;
-				}
+		var thisWeek = moment().format("w"); //Uses moment.js to get current week
+		for(var j=0; j<resp.length; j++){ //Iterates over the expense data for the past 64 days
+			var week = moment(resp[j].spent_date, 'YYYY-MM-DD HH:mm:ss').format("w"); //the specific week for the current expense from our iteration
+			if(week === thisWeek){ //checks to see if the current expense's date is that of one from the current weeks
+				var category = resp[j].category;
+				var index = categories.indexOf(category) > -1 ? categories.indexOf(category) : categories.length - 1; //assigns the index of the current expense's category within the categories array to a variable
+				weeklyArr[index] += Number(resp[j].amount); //uses the index variable to properly increment a specific categories monetary value within the weeklyArr
+			}else{
+				break;
 			}
+		}
 
-			var thisMonth = moment().format("M");
-			var lastMonth = moment().subtract(1, 'months').format("M");
-			var daysInThisMonth = moment().daysInMonth();
-			for(var a = 0; a<daysInThisMonth; a++){
-				monthlyLineArr.push(null);
-				lastMonthArr.push(null);
-				monthlyDaysArr.push(a + 1);
+		var thisMonth = moment().format("M"); //Uses moment.js to get the current month
+		var lastMonth = moment().subtract(1, 'months').format("M"); //Uses moment.js to get last month
+		var daysInThisMonth = moment().daysInMonth(); //Uses moment.js to get the number of days in the current month
+		for(var a = 0; a<daysInThisMonth; a++){ //Iterates over the number of days in the current month
+			monthlyLineArr.push(null); //Creates the appropriate number of placeholders within the monthlyLineArr array
+			lastMonthArr.push(null); //Creates the appropriate number of placeholders within the lastMonthArr array
+			monthlyDaysArr.push(a + 1); //Establishes the monthlyDaysArr as an array of numbers representative of each day in the current month
+		}
+
+		for(var k=0; k<resp.length; k++){ //Iterates over the expense data the past 64 days
+			var month = moment(resp[k].spent_date, 'YYYY-MM-DD HH:mm:ss').format("M"); //the specific month for the current expense from our iteration
+			var category = resp[k].category;
+			var index = categories.indexOf(category) > -1 ? categories.indexOf(category) : categories.length - 1; //assigns the index of the current expense's category within the categories array to a variable
+			if(month === thisMonth){ //checks to see if the current expense's date is that one from the current months
+				monthlyArr[index] += Number(resp[k].amount); //uses the index variable to properly increment a specific categories monetary value within the monthlyArr
+				monthlyLineArr[resp[k].spent_date.slice(8,10) - 1] += resp[k].amount; //increments the proper day placeholder within monthlyLineArr with the monetary value
+			}else if(month === lastMonth){ //checks to see if the current expense's date is that one from last months
+				lastMonthArr[resp[k].spent_date.slice(8,10) - 1] += resp[k].amount; //increments the proper day placeholder within lastMonthArr with the monetary value
 			}
-
-			for(var k=0; k<resp.length; k++){
-				var month = moment(resp[k].spent_date, 'YYYY-MM-DD HH:mm:ss').format("M");
-				var category = resp[k].category;
-				var index = categories.indexOf(category) > -1 ? categories.indexOf(category) : categories.length - 1;
-				if(month === thisMonth){
-					monthlyArr[index] += Number(resp[k].amount);
-					monthlyLineArr[resp[k].spent_date.slice(8,10) - 1] += resp[k].amount;
-				}else if(month === lastMonth){
-					lastMonthArr[resp[k].spent_date.slice(8,10) - 1] += resp[k].amount;
-				}
-			}
-
-			console.log("this is dailyArr!!!!", dailyArr);
-			console.log("this is weeklyArr!!!!", weeklyArr);
-			console.log("this is monthlyArr!!!!", monthlyArr);
-			console.log("this is monthlyLineArr!!!!", monthlyLineArr);
-			console.log("this is lastMonthArr!!!!", lastMonthArr);
-
-			expense.renderGraphs();
+		}
+			expense.renderGraphs(); //calls the renderGraphs function from below to create the initial expense view graphs
 		});
-	})();
+	};
+	expense.init(); //calls the above function right when the ExpenseController instantiates
 
-	expense.changeExpense = function() {
+	expense.changeExpense = function() { //functionality to toggle between entering an expense/income in the expense views form
 		expense.editExpenseClicked = !expense.editExpenseClicked;
 	};
 
-	expense.editClick = function (idx, id) {
+	expense.editClick = function (idx, id) { //function to allow users to edit expenses from the expense table
 		expense.newIndex = idx;
 		expense.newId = id;
 		expense.oldAmount = expense.expenseTable[idx].amount;
@@ -116,30 +99,17 @@ angular.module('expense.controller', [])
 		expense.newLocation = expense.expenseTable[idx].location;
 	};
 
-	expense.editRow = function(idx, id, inputType){
+	expense.editRow = function(idx, id, inputType){ //function to post users edits for expenses/incomes to database
 		expense.newLocation = $('#newlocation').val();
-		console.log('index', idx);
-		console.log('id', id);
-		console.log('inputType', inputType);
-
 		var jstime = new Date(expense.newSpentDate);
-		console.log('jstime', jstime);
-
 		var hour = jstime.getHours();
-		console.log('hour', hour);
-
 		var minute = jstime.getMinutes();
-		console.log('minute', minute);
-
 		jstime = jstime.toISOString().slice(0, 16);
-
 		var spentDate = moment(jstime, moment.ISO_8601);
 		spentDate.hour(hour);
 		spentDate.minute(minute);
 		spentDate = spentDate.format('YYYY-MM-DD HH:mm:ss');
-		console.log('spentDate', spentDate);
-
-		var expenseData = {
+		var expenseData = { //creating a new expenseData object with users edits
 			'name': expense.newExpenseItem,
 			'amount':expense.newAmount,
 			'category':expense.newCategory,
@@ -147,14 +117,12 @@ angular.module('expense.controller', [])
 			'spent_date':spentDate,
 			'location':expense.newLocation
 		};
-
-		ExpenseServices.editExpense(id, expenseData, inputType)
+		ExpenseServices.editExpense(id, expenseData, inputType) //posts users edits to database via ExpenseServices
 		.then(function(resp){
 			if (resp) {
-				$("#editModal").modal("hide");
-				console.log('success in editExpense', resp);
-				expense.updateChartData(expense.newCategory, expense.newAmount - expense.oldAmount);
-				expense.renderGraphs();
+				$("#editModal").modal("hide"); //Edit modal disappears after edit is successful on backend
+				expense.updateChartData(expense.newCategory, expense.newAmount - expense.oldAmount); //Updates charts data arrays from above
+				expense.renderGraphs(); //Re-renders graphs on expense view based on the users edits
 			} else{
 				expense.isModalInvalid = true;
 				console.error('error in editExpense', resp);
@@ -162,50 +130,38 @@ angular.module('expense.controller', [])
 		});
 	};
 
-	expense.addExpense = function(){
+	expense.addExpense = function(){ //function for a user to add an expense
 		expense.location = $('#location').val();
-		console.log('expense.location in add expense ', expense.location);
-
 		var spentDate = moment();
-		console.log(time.value);
-
 		var hours = time.value.split(':')[0];
 		var minutes = time.value.split(':')[1];
-
 		spentDate.hour(Number(hours));
 		spentDate.minute(Number(minutes));
-
 		spentDate = spentDate.format('YYYY-MM-DD HH:mm:ss');
-
-		console.log("this is spentDate in string format", spentDate);
-		console.log("this is hours and minutes", hours, minutes);
-        console.log("This is the amount going to the server", {'amount':amount.value, 'name':expenseItem.value, 'category':expense.categoryType, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location});
-
-        var expenseData = {'amount':amount.value, 'name':expenseItem.value, 'category':expense.categoryType, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location};
-
-        if(expenseData.location){
-        	MapServices.getGeoCode(expenseData.location)
-        	.then(function(resp) {
-        		expenseData.latlng = JSON.stringify({lat: resp.lat(), lng: resp.lng()});
-        		postExpense(expenseData, expense.inputType);
-        	});
-        } else {
-        	console.log("expenseData ", expenseData);
-        	postExpense(expenseData, expense.inputType);
-        }
+		//expenseData is an object of all the information for the users expense he/she just inputted
+		var expenseData = {'amount':amount.value, 'name':expenseItem.value, 'category':expense.categoryType, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location};
+		if(expenseData.location){ //checks if the user entered a location upon inputting their expense
+			MapServices.getGeoCode(expenseData.location) //Google Maps functionality for geocode data generation
+			.then(function(resp) {
+				expenseData.latlng = JSON.stringify({lat: resp.lat(), lng: resp.lng()}); //Establishing latitude and longitude for users location input
+				postExpense(expenseData, expense.inputType); //calls postExpense function below
+			});
+		} else {
+			postExpense(expenseData, expense.inputType); //calls postExpense function below
+		}
 	};
 
-	var postExpense = function(expObj, expType){
-		ExpenseServices.submitNewExpense(expObj, expType)
+	var postExpense = function(expObj, expType){ //Posts users expense data to the database based on the expenseData object from above and whether or not it is an expense/income
+		ExpenseServices.submitNewExpense(expObj, expType) //Posting to database via ExpenseServices
 		.then(function(resp){
 			if (resp) {
 				resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
-				if(expType === 'expense'){
-					expense.expenseTable.push(resp);
-					expense.updateChartData(resp.category, resp.amount);
-					expense.renderGraphs();
-				}else if(expType === 'income'){
-					expense.incomeTable.push(resp);
+				if(expType === 'expense'){ //Checks if user input was an expense
+					expense.expenseTable.push(resp); //Adds expenseData object to expenseTable
+					expense.updateChartData(resp.category, resp.amount); //Updates charts data arrays from above
+					expense.renderGraphs(); //Re-renders graphs on expense view based on the users edits
+				}else if(expType === 'income'){ //Checks if user input was an income
+					expense.incomeTable.push(resp); //Adds expenseData object to incomeTable (since it is an income)
 				}
 			} else {
 				expense.isInvalid = true;
@@ -214,63 +170,62 @@ angular.module('expense.controller', [])
 		});
 	};
 
-	expense.removeRow = function(idx, id, inputType){
-		console.log("inside removeRow based on income removal");
-		console.log("the idx and id and inputType inside removeRow", idx, id, inputType);
-		if(inputType === 'expense'){
-			expense.updateChartData(expense.expenseTable[idx].category, expense.expenseTable[idx].amount*-1);
-			expense.renderGraphs();
+
+
+	expense.removeRow = function(idx, id, inputType){ //removes a users expense/income from the expenseTable or incomeTable
+		if(inputType === 'expense'){ //Checks if user is removing an expense
+			expense.updateChartData(expense.expenseTable[idx].category, expense.expenseTable[idx].amount*-1); //Updates charts data arrays from above
+			expense.renderGraphs(); //Re-renders graphs on expense view based on users removal action
 			expense.expenseTable.splice(idx, 1);
-			console.log('THIS IS EXPENSETABLE!!!!!!! ON LINE 207', expense.expenseTable[idx]);
-			ExpenseServices.deleteExpense(id, inputType);
-		}else if(inputType === 'income'){
+			ExpenseServices.deleteExpense(id, inputType); //Removes this data from database via ExpenseServices
+		}else if(inputType === 'income'){ //Checks if user is removing an income
 			expense.incomeTable.splice(idx, 1);
-			ExpenseServices.deleteExpense(id, inputType);
-			expense.renderGraphs();
+			ExpenseServices.deleteExpense(id, inputType); //Removes this data from database via ExpenseServices
+			expense.renderGraphs(); //Re-renders graphs on expense view based on users removal action
 		}
 	};
 
-	var dataDailyDonutChart = {
-    series : dailyArr, //expense amount per category
-    labels : categories //category name
-  };
-  var optionsDailyDonutChart = {
-    donut: true,
-    showLabel: true,
-    donutWidth: 32,
-    // width: 300,
-    height: 200,
+	var dataDailyDonutChart = { //Data for the daily donut chart
+		series : dailyArr, //expense amount per category
+		labels : categories //category name
+	};
+	var optionsDailyDonutChart = {
+		donut: true,
+		showLabel: true,
+		donutWidth: 32,
+		// width: 300,
+		height: 200,
 		plugins: [Chartist.plugins.tooltip({
 			appendToBody: true,
 			class: 'donutpointerdataclass'
 		})]
-  };
+	};
 
-	var dataWeeklyDonutChart = {
-    series: weeklyArr, //expense amount per category
-    labels: categories //category name
-  };
-  var optionsWeeklyDonutChart = {
-    donut: true,
-    showLabel: true,
-    donutWidth: 32,
-    // width: 300,
-    height: 200
-  };
+	var dataWeeklyDonutChart = { //Data for the weekly donut chart
+		series: weeklyArr, //expense amount per category
+		labels: categories //category name
+	};
+	var optionsWeeklyDonutChart = {
+		donut: true,
+		showLabel: true,
+		donutWidth: 32,
+		// width: 300,
+		height: 200
+	};
 
-	var dataMonthlyDonutChart = {
-    series: monthlyArr, //expense amount per category
-    labels: categories //category name
-  };
-  var optionsMonthlyDonutChart = {
-    donut: true,
-    showLabel: true,
-    donutWidth: 32,
-    // width: 300,
-    height: 200
-  };
+	var dataMonthlyDonutChart = { //Data for the monthly donut chart
+		series: monthlyArr, //expense amount per category
+		labels: categories //category name
+	};
+	var optionsMonthlyDonutChart = {
+		donut: true,
+		showLabel: true,
+		donutWidth: 32,
+		// width: 300,
+		height: 200
+	};
 
-	var dataMonthlyLineChart = {
+	var dataMonthlyLineChart = { //Data for the monthly line chart
 		labels: monthlyDaysArr,
 		series: [monthlyLineArr,lastMonthArr] //daily expenditure total values
 	};
@@ -287,90 +242,74 @@ angular.module('expense.controller', [])
 		})]
 	};
 
-	var dataDailyBarChart = {
-		labels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-    series: [
-      [3, 2, 9, 5, 4, 6, 4]
-    ]
-	};
-	var optionsDailyBarChart = {
-		fullWidth: true,
-		seriesBarDistance: 10
-	};
-
-	expense.getNotes = function(note){
-		console.log("note in modal ", note);
-	};
-
-	expense.updateChartData = function(category, amount){
+	expense.updateChartData = function(category, amount){ //functionality to instantly update chart data upon user edits
 		var index = categories.indexOf(category);
 		dailyArr[index] += amount;
 		weeklyArr[index] += amount;
 		monthlyArr[index] += amount;
+		var today = Number(moment().format("DD"));
+		var todayIndex = monthlyDaysArr.indexOf(today);
+		monthlyLineArr[todayIndex] += amount;
 	};
 
 	var dailyDonut, weeklyDonut, monthlyDonut, monthlyLine, dailyChart;
 
-	expense.renderGraphs = function(){
+	expense.renderGraphs = function(){ //function to render visuals of users finances
 		console.log("renderGraphs is being called!!");
 		var domCategories = ["dailyDonutChart", "weeklyDonutChart", "monthlyDonutChart", "monthlyLineChart"];
-
-		if(dailyDonut !== undefined){
-		for(var i = 0; i<domCategories.length; i++){
-			var currentCat = document.getElementById(domCategories[i]);
-			currentCat.innerHTML = '';
-		}
-	}
 		// For each div with #id
-			// Remove chartist classnames and delete child nodes
+		// Remove chartist classnames and delete child nodes
 		// Rebuild new chartist variables on processed divs
+		if(dailyDonut !== undefined){
+			for(var i = 0; i<domCategories.length; i++){
+				var currentCat = document.getElementById(domCategories[i]);
+				console.log("these are currentCats", currentCat);
+				currentCat.innerHTML = '';
+			}
+		}
 		dailyDonut = new Chartist.Pie('#dailyDonutChart', dataDailyDonutChart, optionsDailyDonutChart);
 		weeklyDonut = new Chartist.Pie('#weeklyDonutChart', dataWeeklyDonutChart, optionsWeeklyDonutChart);
 		monthlyDonut = new Chartist.Pie('#monthlyDonutChart', dataMonthlyDonutChart, optionsMonthlyDonutChart);
 		monthlyLine = new Chartist.Line('#monthlyLineChart', dataMonthlyLineChart, optionsMonthlyLineChart);
 	};
 
-	/* --------    GOOGLE PLACES AUTOCOMPLETE (REFACTOR INTO DIRECTIVE LATER) --------------*/
+	/* --------    GOOGLE PLACES AUTOCOMPLETE   --------------*/
 
-			var options = {
-                types : [],
-            };
-
-            var location = document.getElementById('location');
-            $scope.gPlace = new google.maps.places.Autocomplete(location, options);
-            google.maps.event.addDomListener(location, 'keydown', function(e) {
-            	console.log('keydown!!!');
-    		//var pac = $('.pac-container');
-    			// pac.each(function( index ) {
-  				// console.log( index + ": " + $( this ).text() );
-				// });
-    			if (e.keyCode == 13 || e.keyCode == 9) {
-    				if($('#location:visible').length){
-    					for(key in $scope.gPlace.gm_bindings_.types){
-    						if(Number(key) >= 0){
-    							expense.location = $scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0];
-    							$('#location').innerText == expense.location;
-    						}
-    					}
-    					console.log("enter pressed or tab pressed ");
-        				e.preventDefault();
-        			}
-    			}
-			});
-    			
-			google.maps.event.addDomListener(location, 'mouseout', function(e) { 
-            	console.log('mouseout!!!'); 
-            	if($('#location').length){
-            		console.log('length ',$('#location').length)
-            		for(key in $scope.gPlace.gm_bindings_.types){
-    						if(Number(key) >= 0){					
-    							expense.location = $scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0];
-    							$('#location').innerText == expense.location;
-    							console.log('expense.location ', expense.location);
-    						}
-    					} 	
-    				}
-
-            }); 
-})
-
+	var options = {
+		types : [],
+	};
+	var location = document.getElementById('location');
+	$scope.gPlace = new google.maps.places.Autocomplete(location, options);
+	google.maps.event.addDomListener(location, 'keydown', function(e) {
+		console.log('keydown!!!');
+		//var pac = $('.pac-container');
+		// pac.each(function( index ) {
+		// console.log( index + ": " + $( this ).text() );
+		// });
+		if (e.keyCode == 13 || e.keyCode == 9) {
+			if($('#location:visible').length){
+				for(key in $scope.gPlace.gm_bindings_.types){
+					if(Number(key) >= 0){
+						expense.location = $scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0];
+						$('#location').innerText == expense.location;
+					}
+				}
+				console.log("enter pressed or tab pressed ");
+				e.preventDefault();
+			}
+		}
+	});
+	google.maps.event.addDomListener(location, 'mouseout', function(e) {
+		console.log('mouseout!!!');
+		if($('#location').length){
+			console.log('length ',$('#location').length)
+			for(key in $scope.gPlace.gm_bindings_.types){
+				if(Number(key) >= 0){
+					expense.location = $scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0];
+					$('#location').innerText == expense.location;
+					console.log('expense.location ', expense.location);
+				}
+			}
+		}
+	});
+});
