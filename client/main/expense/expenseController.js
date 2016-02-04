@@ -113,10 +113,11 @@ angular.module('expense.controller', [])
 		expense.newCategory = expense.expenseTable[idx].category;
 		expense.newNotes = expense.expenseTable[idx].notes;
 		expense.newSpentDate = new Date(expense.expenseTable[idx].spent_date);
-		// expense.newLocation = expense.expenseTable[idx].location;
+		expense.newLocation = expense.expenseTable[idx].location;
 	};
 
 	expense.editRow = function(idx, id, inputType){
+		expense.newLocation = $('#newlocation').val();
 		console.log('index', idx);
 		console.log('id', id);
 		console.log('inputType', inputType);
@@ -144,7 +145,7 @@ angular.module('expense.controller', [])
 			'category':expense.newCategory,
 			'notes':expense.newNotes,
 			'spent_date':spentDate,
-			// 'location':expense.newLocation
+			'location':expense.newLocation
 		};
 
 		ExpenseServices.editExpense(id, expenseData, inputType)
@@ -162,14 +163,10 @@ angular.module('expense.controller', [])
 	};
 
 	expense.addExpense = function(){
-
 		expense.location = $('#location').val();
-
 		console.log('expense.location in add expense ', expense.location);
 
-
 		var spentDate = moment();
-
 		console.log(time.value);
 
 		var hours = time.value.split(':')[0];
@@ -205,12 +202,10 @@ angular.module('expense.controller', [])
 				resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
 				if(expType === 'expense'){
 					expense.expenseTable.push(resp);
-					console.log("This is expenseTable resp", resp);
 					expense.updateChartData(resp.category, resp.amount);
 					expense.renderGraphs();
 				}else if(expType === 'income'){
 					expense.incomeTable.push(resp);
-					console.log("This is incomeTable", expense.incomeTable);
 				}
 			} else {
 				expense.isInvalid = true;
@@ -314,8 +309,6 @@ angular.module('expense.controller', [])
 		monthlyArr[index] += amount;
 	};
 
-
-
 	var dailyDonut, weeklyDonut, monthlyDonut, monthlyLine, dailyChart;
 
 	expense.renderGraphs = function(){
@@ -337,10 +330,6 @@ angular.module('expense.controller', [])
 		monthlyLine = new Chartist.Line('#monthlyLineChart', dataMonthlyLineChart, optionsMonthlyLineChart);
 	};
 
-
-
-
-
 	/* --------    GOOGLE PLACES AUTOCOMPLETE (REFACTOR INTO DIRECTIVE LATER) --------------*/
 
 			var options = {
@@ -351,9 +340,9 @@ angular.module('expense.controller', [])
             $scope.gPlace = new google.maps.places.Autocomplete(location, options);
             google.maps.event.addDomListener(location, 'keydown', function(e) {
             	console.log('keydown!!!');
-    //         	var pac = $('.pac-container');
-    //         	pac.each(function( index ) {
-  		// 			console.log( index + ": " + $( this ).text() );
+    		//var pac = $('.pac-container');
+    			// pac.each(function( index ) {
+  				// console.log( index + ": " + $( this ).text() );
 				// });
     			if (e.keyCode == 13 || e.keyCode == 9) {
     				if($('#location:visible').length){
@@ -368,4 +357,20 @@ angular.module('expense.controller', [])
         			}
     			}
 			});
-});
+    			
+			google.maps.event.addDomListener(location, 'mouseout', function(e) { 
+            	console.log('mouseout!!!'); 
+            	if($('#location').length){
+            		console.log('length ',$('#location').length)
+            		for(key in $scope.gPlace.gm_bindings_.types){
+    						if(Number(key) >= 0){					
+    							expense.location = $scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0];
+    							$('#location').innerText == expense.location;
+    							console.log('expense.location ', expense.location);
+    						}
+    					} 	
+    				}
+
+            }); 
+})
+
