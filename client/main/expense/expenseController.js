@@ -4,7 +4,7 @@ angular.module('expense.controller', [])
 	var expense = this;
 
     expense.inputType = 'expense';
-	expense.categoryType = 'select a category';
+	expense.categoryType = 'Food & Drink';
 
 	expense.expenseTable = [];
 	expense.incomeTable = [];
@@ -137,16 +137,26 @@ angular.module('expense.controller', [])
 		spentDate = spentDate.format('YYYY-MM-DD HH:mm:ss');
 		console.log('spentDate', spentDate);
 
-		ExpenseServices.editExpense(id, {
-			name: expense.newExpenseItem,
-			amount: expense.newAmount,
-			category: expense.newCategory,
-			notes: expense.newNotes,
-			spent_date: spentDate,
-			// location: expense.newLocation,
-		}, inputType).then(function(){
-			expense.updateChartData(expense.newCategory, expense.newAmount - expense.oldAmount);
-			expense.renderGraphs();
+		var expenseData = {
+			'name': expense.newExpenseItem,
+			'amount':expense.newAmount,
+			'category':expense.newCategory,
+			'notes':expense.newNotes,
+			'spent_date':spentDate,
+			// 'location':expense.newLocation
+		};
+
+		ExpenseServices.editExpense(id, expenseData, inputType)
+		.then(function(resp){
+			if (resp) {
+				$("#editModal").modal("hide");
+				console.log('success in editExpense', resp);
+				expense.updateChartData(expense.newCategory, expense.newAmount - expense.oldAmount);
+				expense.renderGraphs();
+			} else{
+				expense.isModalInvalid = true;
+				console.error('error in editExpense', resp);
+			}
 		});
 	};
 
@@ -165,9 +175,9 @@ angular.module('expense.controller', [])
 
 		console.log("this is spentDate in string format", spentDate);
 		console.log("this is hours and minutes", hours, minutes);
-        console.log("This is the amount going to the server", {'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location});
+        console.log("This is the amount going to the server", {'amount':amount.value, 'name':expenseItem.value, 'category':expense.categoryType, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location});
 
-        var expenseData = {'amount':amount.value, 'name':expenseItem.value, 'category':category.value, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location};
+        var expenseData = {'amount':amount.value, 'name':expenseItem.value, 'category':expense.categoryType, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location};
 
         if(expenseData.location){
         	MapServices.getGeoCode(expenseData.location)
@@ -175,7 +185,6 @@ angular.module('expense.controller', [])
         		expenseData.latlng = JSON.stringify({lat: resp.lat(), lng: resp.lng()});
         		postExpense(expenseData, expense.inputType);
         	});
-
         } else {
         	console.log("expenseData ", expenseData);
         	postExpense(expenseData, expense.inputType);
@@ -185,20 +194,23 @@ angular.module('expense.controller', [])
 	var postExpense = function(expObj, expType){
 		ExpenseServices.submitNewExpense(expObj, expType)
 		.then(function(resp){
-			resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
-			if(expType === 'expense'){
-				expense.expenseTable.push(resp);
-				console.log("This is expenseTable resp", resp);
-				expense.updateChartData(resp.category, resp.amount);
-				expense.renderGraphs();
-			}else if(expType === 'income'){
-				expense.incomeTable.push(resp);
-				console.log("This is incomeTable", expense.incomeTable);
+			if (resp) {
+				resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
+				if(expType === 'expense'){
+					expense.expenseTable.push(resp);
+					console.log("This is expenseTable resp", resp);
+					expense.updateChartData(resp.category, resp.amount);
+					expense.renderGraphs();
+				}else if(expType === 'income'){
+					expense.incomeTable.push(resp);
+					console.log("This is incomeTable", expense.incomeTable);
+				}
+			} else {
+				expense.isInvalid = true;
+				console.error('error in posting expense', resp);
 			}
 		});
 	};
-
-
 
 	expense.removeRow = function(idx, id, inputType){
 		console.log("inside removeRow based on income removal");
@@ -213,7 +225,7 @@ angular.module('expense.controller', [])
 			expense.incomeTable.splice(idx, 1);
 			ExpenseServices.deleteExpense(id, inputType);
 			expense.renderGraphs();
-	}
+		}
 	};
 
 	var dataDailyDonutChart = {
@@ -351,5 +363,4 @@ angular.module('expense.controller', [])
         			}
     			}
 			});
-
 });
