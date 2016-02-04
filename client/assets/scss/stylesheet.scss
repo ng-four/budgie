@@ -162,24 +162,30 @@ input.form-control{
 }
 
 .expense-form {
+  margin-bottom: 25px;
+  .form-group{
+    display: inline-block;
+    margin: 0 5px;
+  }
   .form-control {
     display: inline;
-    min-width: 20%;
+    // min-width: 20%;
     width: auto;
   }
   .select {
     border-bottom: 1px solid #375a7f;
     background: transparent;
     color: white;
-    min-width: 10%;
+    width: auto;
   }
-  #notes {
-    min-width: 35%;
+  #amount{
+    width: 110px;
   }
   #time {
-    min-width: 10%;
+    width: 130px;
   }
   .button-group {
+    display: block;
     margin-top: 20px;
   }
   .button-note{

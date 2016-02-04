@@ -143,29 +143,29 @@ input.form-control {
   border-style: solid;
   border-width: 12px 12px 12px 0; }
 
-.expense-form .form-control {
-  display: inline;
-  min-width: 20%;
-  width: auto; }
-
-.expense-form .select {
-  border-bottom: 1px solid #375a7f;
-  background: transparent;
-  color: white;
-  min-width: 10%; }
-
-.expense-form #notes {
-  min-width: 35%; }
-
-.expense-form #time {
-  min-width: 10%; }
-
-.expense-form .button-group {
-  margin-top: 20px; }
-
-.expense-form .button-note {
-  background: transparent;
-  border: none; }
+.expense-form {
+  margin-bottom: 25px; }
+  .expense-form .form-group {
+    display: inline-block;
+    margin: 0 5px; }
+  .expense-form .form-control {
+    display: inline;
+    width: auto; }
+  .expense-form .select {
+    border-bottom: 1px solid #375a7f;
+    background: transparent;
+    color: white;
+    width: auto; }
+  .expense-form #amount {
+    width: 110px; }
+  .expense-form #time {
+    width: 130px; }
+  .expense-form .button-group {
+    display: block;
+    margin-top: 20px; }
+  .expense-form .button-note {
+    background: transparent;
+    border: none; }
 
 .donut-chart {
   position: relative;

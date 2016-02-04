@@ -3,40 +3,64 @@
 
       <div class="container">
 
-        <form class="form-horizontal expense-form text-center">
+        <form name="formAddTransaction" class="form-horizontal expense-form text-center" novalidate>
           <fieldset>
-
             <div class="form-group">
               <label for="select">Log an</label>
-              <select class="form-control" id="select" ng-model="expense.inputType">
+              <select class="form-control select" ng-model="expense.inputType">
                 <option selected value="expense">expense</option>
                 <option value="income">income</option>
               </select>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formAddTransaction.amount.$error.required && !formAddTransaction.amount.$pristine}">
               $
               <label for="inputAmount" class="sr-only">Amount</label>
-              <input type="number" class="form-control" id="amount" placeholder="Amount" name="amount" ng-model="amount">
+              <input type="number" id="amount" class="form-control" placeholder="Amount" name="amount" ng-model="amount" required>
+            </div>
+            <div class="form-group" ng-class="{'has-error': formAddTransaction.expenseItem.$error.required && !formAddTransaction.expenseItem.$pristine}">
               for
               <label for="inputExpense" class="sr-only">Name of Expense</label>
-              <input type="text" class="form-control" id="expenseItem" placeholder="Expense" name="expenseItem" ng-model="expenseItem">
+              <input type="text" id="expenseItem" class="form-control" placeholder="Expense" name="expenseItem" ng-model="expenseItem" required>
+            </div>
+            <div class="form-group"  ng-class="{'has-error': formAddTransaction.time.$error.required && !formAddTransaction.expenseItem.$pristine}">
               at
               <label for="inputTime" class="sr-only">Time</label>
-              <input type="time" class="form-control" id="time" name="time" ng-model="time">
-              .<br>
-              <label for="inputCategory">Category:</label>
-              <input type="text" class="form-control" id="category" placeholder="Category" name="category" ng-model="category">&nbsp;
-           
+              <input type="time" id="time" class="form-control" name="time" ng-model="time" required>
+              .
+            </div>
+            <div class="form-group">
+              <label for="select" class="sr-only">Category:</label>
+              <select class="form-control select" id="select-category" ng-model="expense.categoryType">
+                <option value="Food & Drink">Food & Drink</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Education">Education</option>
+                <option value="Travel">Travel</option>
+                <option value="Rent">Rent</option>
+                <option value="Household">Household</option>
+                <option value="Transport">Transport</option>
+                <option value="Payments">Payments</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Tax">Tax</option>
+                <option value="Miscellaneous">Miscellaneous</option>
+              </select>
+            </div>
+            <div class="form-group">
               <label for="inputLocation">Location:</label>
-              <input type="text" class="form-control" id="location" placeholder="Location" name="location" ng-model="expense.location">             
-              <button type="button" class="button-note ion-clipboard" data-toggle="modal" data-target="#noteModal" title="Add an optional note"></button>
+              <input type="text" id="location" class="form-control" placeholder="Location" name="location" ng-model="expense.location" > <!-- googleplace -->
+            </div>
+            <div class="form-group">
+              <button type="button" class="button-note icon ion-clipboard" data-toggle="modal" data-target="#noteModal" title="Add an optional note"></button>
+            </div>
 
             <div class="form-group button-group">
-                <button type="submit" class="btn btn-primary" ng-click="expense.addExpense()">Submit</button>
-                <button type="reset" class="btn btn-default">Cancel</button>
+              <p ng-show="expense.isInvalid" class='text-danger' role="alert">Please fill out all of the fields</p>
+              <button type="submit" class="btn btn-primary" ng-click="expense.addExpense()" ng-disabled="formAddTransaction.$invalid || formAddTransaction.$pristine">Submit</button>
+              <button type="reset" ng-click="formAddTransaction.$setPristine(true)" class="btn btn-default">Cancel</button>
             </div>
           </fieldset>
         </form>
     </div>  <!--./container-->
-<div>
 
   <!-- EDIT MODAL -->
 
@@ -48,23 +72,51 @@
           <h4 class="modal-title" id="editModalLabel">Edit Expense</h4>
         </div>
         <div class="modal-body">
-          <form class="form-horizontal expense-form text-center">
+          <form name="formEditTransaction" class="form-horizontal expense-form text-center" novalidate>
             <fieldset>
-              <div class="form-group">
+              <div class="form-group" ng-class="{'has-error': formEditTransaction.newAmount.$error.required}">
                 <label for="inputNewAmount" class="sr-only">Amount</label>
-                <input type="number" class="form-control" id="new-amount" placeholder="Amount" name="newAmount" ng-model="expense.newAmount">
-                <input type="text" class="form-control" id="new-expense-item" placeholder="Expense" name="newExpenseItem" ng-model="expense.newExpenseItem">
-                <input type="time" class="form-control" id="new-time" name="newTime" name="newSpentDate" ng-model="expense.newSpentDate">
-                <input type="text" class="form-control" id="new-category" placeholder="Category" name="newCategory" ng-model="expense.newCategory">
-                <input type="text" class="form-control" id="new-notes" placeholder="Notes" name="newNotes" ng-model="expense.newNotes"/>
-                <!-- <input type="text" class="form-control" id="new-location" placeholder="Location" name="location" ng-model="expense.newLocation" googleplace> -->
+                <input type="number" id="new-amount" class="form-control" placeholder="Amount" name="newAmount" ng-model="expense.newAmount" required>
+              </div>
+              <div class="form-group" ng-class="{'has-error': formEditTransaction.newExpenseItem.$error.required}">
+                <label for="inputNewExpenseItem" class="sr-only">Expense</label>
+                <input type="text" id="new-expense-item" class="form-control" placeholder="Expense" name="newExpenseItem" ng-model="expense.newExpenseItem" required>
+              </div>
+              <div class="form-group" ng-class="{'has-error': formEditTransaction.newSpentDate.$error.required}">
+                <label for="newSpentDate" class="sr-only">Spent Date</label>
+                <input type="time" id="new-time" class="form-control" name="newSpentDate" ng-model="expense.newSpentDate" required>
+              </div>
+              <div class="form-group">
+                <label for="select" class="sr-only">Category:</label>
+                <select id="new-category" class="form-control select" name="newCategory" ng-model="expense.newCategory">
+                  <option value="Food & Drink">Food & Drink</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Education">Education</option>
+                  <option value="Travel">Travel</option>
+                  <option value="Rent">Rent</option>
+                  <option value="Household">Household</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Payments">Payments</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Tax">Tax</option>
+                  <option value="Miscellaneous">Miscellaneous</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <input type="text" id="new-notes" class="form-control" placeholder="Notes" name="newNotes" ng-model="expense.newNotes"/>
+              </div>
+              <!-- <input type="text" class="form-control" id="new-location" placeholder="Location" name="location" ng-model="expense.newLocation" googleplace> -->
             </fieldset>
           </form>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" ng-click="expense.editRow(expense.newIndex, expense.newId, 'expense')" data-dismiss="modal">Save</button>
+          <p ng-show="expense.isModalInvalid" class='text-danger text-center' role="alert">Please fill out all of the fields</p>
+          <div class="form-group button-group">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-click="expense.editRow(expense.newIndex, expense.newId, 'expense')" ng-disabled="formEditTransaction.$invalid">Save</button>
+          </div>
         </div>
       </div>
     </div>
@@ -108,7 +160,7 @@
         <button type="button" class="btn btn-default" data-ng-click="expense.location=''" data-dismiss="modal">Cancel</button>
 
         <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
-    
+
       </div>
     </div>
   </div>
@@ -195,6 +247,5 @@
     </div>  <!-- /#page-<content-wrapper  -->
 
 </body>
-
 
 <!-- amount, name, category, notes, time, location  -->
