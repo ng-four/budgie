@@ -145,6 +145,9 @@ input.form-control {
   border-style: solid;
   border-width: 12px 12px 12px 0; }
 
+.dashboard .panel {
+  background-color: transparent; }
+
 .expense-form {
   margin-bottom: 25px; }
   .expense-form .form-group {
@@ -168,6 +171,13 @@ input.form-control {
   .expense-form .button-note {
     background: transparent;
     border: none; }
+
+.modal .expense-form .form-group {
+  display: block;
+  margin: 0; }
+
+.modal .expense-form .form-control {
+  width: 160px; }
 
 .donut-chart {
   position: relative;
@@ -294,6 +304,9 @@ footer {
 #map_canvas {
   height: 500px;
   width: 100%; }
+
+.pac-container {
+  z-index: 1051 !important; }
 
 /*--- MEDIA QUERIES ---*/
 /* Small devices (tablets, 768px and up) */

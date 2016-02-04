@@ -47,7 +47,7 @@
             </div>
             <div class="form-group">
               <label for="inputLocation">Location:</label>
-              <input type="text" id="location" class="form-control" placeholder="Location" name="location" ng-model="expense.location" > 
+              <input type="text" id="location" class="form-control" placeholder="Location" name="location" ng-model="expense.location" >
             </div>
             <div class="form-group">
               <button type="button" class="button-note icon ion-clipboard" data-toggle="modal" data-target="#noteModal" title="Add an optional note"></button>
@@ -72,22 +72,22 @@
           <h4 class="modal-title" id="editModalLabel">Edit Expense</h4>
         </div>
         <div class="modal-body">
-          <form name="formEditTransaction" class="form-horizontal expense-form text-center" novalidate>
+          <form name="formEditTransaction" class="expense-form form-horizontal" novalidate>
             <fieldset>
-              <div class="form-group" ng-class="{'has-error': formEditTransaction.newAmount.$error.required}">
-                <label for="inputNewAmount" class="sr-only">Amount</label>
+              <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newAmount.$error.required}">
+                <label for="inputNewAmount">Amount: </label>
                 <input type="number" id="new-amount" class="form-control" placeholder="Amount" name="newAmount" ng-model="expense.newAmount" required>
               </div>
-              <div class="form-group" ng-class="{'has-error': formEditTransaction.newExpenseItem.$error.required}">
-                <label for="inputNewExpenseItem" class="sr-only">Expense</label>
+              <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newExpenseItem.$error.required}">
+                <label for="inputNewExpenseItem">Expense: </label>
                 <input type="text" id="new-expense-item" class="form-control" placeholder="Expense" name="newExpenseItem" ng-model="expense.newExpenseItem" required>
               </div>
-              <div class="form-group" ng-class="{'has-error': formEditTransaction.newSpentDate.$error.required}">
-                <label for="newSpentDate" class="sr-only">Spent Date</label>
+              <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newSpentDate.$error.required}">
+                <label for="newSpentDate">Time: </label>
                 <input type="time" id="new-time" class="form-control" name="newSpentDate" ng-model="expense.newSpentDate" required>
               </div>
-              <div class="form-group">
-                <label for="select" class="sr-only">Category:</label>
+              <div class="form-group col-md-6">
+                <label for="select">Category:</label>
                 <select id="new-category" class="form-control select" name="newCategory" ng-model="expense.newCategory">
                   <option value="Food & Drink">Food & Drink</option>
                   <option value="Entertainment">Entertainment</option>
@@ -103,11 +103,13 @@
                   <option value="Miscellaneous">Miscellaneous</option>
                 </select>
               </div>
-              <div class="form-group">
-                <input type="text" id="new-notes" class="form-control" placeholder="Notes" name="newNotes" ng-model="expense.newNotes"/>
-              </div>
-              <div class="form-group">
+              <div class="form-group col-md-6">
+                <label for="select">Location: </label>
                 <input type="text" class="form-control" id="newlocation" placeholder="Location" name="newLocation" ng-model="expense.newLocation">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="select">Notes: </label>
+                <input type="text" id="new-notes" class="form-control" placeholder="Notes" name="newNotes" ng-model="expense.newNotes"/>
               </div>
             </fieldset>
           </form>
@@ -215,7 +217,7 @@
 
       <!-- START OF DASHBOARD -->
       <div class="dashboard container">
-        <div class="panel panel-default">
+        <div class="panel">
 
           <div class="panel-heading">
             Dashboard

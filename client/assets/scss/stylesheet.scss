@@ -165,6 +165,12 @@ input.form-control{
   border-width: 12px 12px 12px 0;
 }
 
+.dashboard{
+  .panel{
+    background-color: transparent;
+  }
+}
+
 .expense-form {
   margin-bottom: 25px;
   .form-group{
@@ -195,6 +201,18 @@ input.form-control{
   .button-note{
     background: transparent;
     border: none;
+  }
+}
+
+.modal{
+  .expense-form{
+    .form-group{
+      display: block;
+      margin: 0;
+    }
+    .form-control{
+      width: 160px;
+    }
   }
 }
 
@@ -359,6 +377,9 @@ footer {
 #map_canvas {
   height: 500px;
   width: 100%;
+}
+.pac-container {
+  z-index: 1051 !important;
 }
 
 /*--- MEDIA QUERIES ---*/
