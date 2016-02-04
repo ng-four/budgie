@@ -95,11 +95,7 @@ angular.module('expense.controller', [])
 			console.log("this is monthlyLineArr!!!!", monthlyLineArr);
 			console.log("this is lastMonthArr!!!!", lastMonthArr);
 
-			new Chartist.Pie('#dailyDonutChart', dataDailyDonutChart, optionsDailyDonutChart);
-			new Chartist.Pie('#weeklyDonutChart', dataWeeklyDonutChart, optionsWeeklyDonutChart);
-			new Chartist.Pie('#monthlyDonutChart', dataMonthlyDonutChart, optionsMonthlyDonutChart);
-			new Chartist.Line('#monthlyLineChart', dataMonthlyLineChart, optionsMonthlyLineChart);
-			new Chartist.Bar('#dailyBarChart', dataDailyBarChart, optionsDailyBarChart);
+			expense.renderGraphs();
 		});
 	})();
 
@@ -110,13 +106,14 @@ angular.module('expense.controller', [])
 	expense.editClick = function (idx, id) {
 		expense.newIndex = idx;
 		expense.newId = id;
+		expense.oldAmount = expense.expenseTable[idx].amount;
 		expense.newAmount = expense.expenseTable[idx].amount;
 		expense.newExpenseItem = expense.expenseTable[idx].name;
 		expense.newCategory = expense.expenseTable[idx].category;
 		expense.newNotes = expense.expenseTable[idx].notes;
 		expense.newSpentDate = new Date(expense.expenseTable[idx].spent_date);
 		// expense.newLocation = expense.expenseTable[idx].location;
-	}
+	};
 
 	expense.editRow = function(idx, id, inputType){
 		console.log('index', idx);
@@ -147,13 +144,16 @@ angular.module('expense.controller', [])
 			notes: expense.newNotes,
 			spent_date: spentDate,
 			// location: expense.newLocation,
-		}, inputType);
+		}, inputType).then(function(){
+			expense.updateChartData(expense.newCategory, expense.newAmount - expense.oldAmount);
+			expense.renderGraphs();
+		});
 	};
 
 	expense.addExpense = function(){
 		var spentDate = moment();
 
-		console.log(time.value)
+		console.log(time.value);
 
 		var hours = time.value.split(':')[0];
 		var minutes = time.value.split(':')[1];
@@ -174,7 +174,7 @@ angular.module('expense.controller', [])
         	.then(function(resp) {
         		expenseData.latlng = JSON.stringify({lat: resp.lat(), lng: resp.lng()});
         		postExpense(expenseData, expense.inputType);
-        	})
+        	});
 
         } else {
         	console.log("expenseData ", expenseData);
@@ -188,13 +188,15 @@ angular.module('expense.controller', [])
 			resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
 			if(expType === 'expense'){
 				expense.expenseTable.push(resp);
-				console.log("This is expenseTable", expense.expenseTable);
+				console.log("This is expenseTable resp", resp);
+				expense.updateChartData(resp.category, resp.amount);
+				expense.renderGraphs();
 			}else if(expType === 'income'){
 				expense.incomeTable.push(resp);
 				console.log("This is incomeTable", expense.incomeTable);
 			}
 		});
-	}
+	};
 
 
 
@@ -202,29 +204,37 @@ angular.module('expense.controller', [])
 		console.log("inside removeRow based on income removal");
 		console.log("the idx and id and inputType inside removeRow", idx, id, inputType);
 		if(inputType === 'expense'){
+			expense.updateChartData(expense.expenseTable[idx].category, expense.expenseTable[idx].amount*-1);
+			expense.renderGraphs();
 			expense.expenseTable.splice(idx, 1);
+			console.log('THIS IS EXPENSETABLE!!!!!!! ON LINE 207', expense.expenseTable[idx]);
 			ExpenseServices.deleteExpense(id, inputType);
 		}else if(inputType === 'income'){
 			expense.incomeTable.splice(idx, 1);
 			ExpenseServices.deleteExpense(id, inputType);
+			expense.renderGraphs();
 	}
 	};
 
 	var dataDailyDonutChart = {
     series : dailyArr, //expense amount per category
-    labels : categories //catergory name
+    labels : categories //category name
   };
   var optionsDailyDonutChart = {
     donut: true,
     showLabel: true,
     donutWidth: 32,
     // width: 300,
-    height: 200
+    height: 200,
+		plugins: [Chartist.plugins.tooltip({
+			appendToBody: true,
+			class: 'donutpointerdataclass'
+		})]
   };
 
 	var dataWeeklyDonutChart = {
     series: weeklyArr, //expense amount per category
-    labels: categories //catergory name
+    labels: categories //category name
   };
   var optionsWeeklyDonutChart = {
     donut: true,
@@ -236,7 +246,7 @@ angular.module('expense.controller', [])
 
 	var dataMonthlyDonutChart = {
     series: monthlyArr, //expense amount per category
-    labels: categories //catergory name
+    labels: categories //category name
   };
   var optionsMonthlyDonutChart = {
     donut: true,
@@ -256,7 +266,11 @@ angular.module('expense.controller', [])
 			right: 40
 		},
 		showArea: true,
-		height: '350px'
+		height: '350px',
+		plugins: [Chartist.plugins.tooltip({
+			appendToBody: true,
+			class: 'pointerdataclass'
+		})]
 	};
 
 	var dataDailyBarChart = {
@@ -272,7 +286,41 @@ angular.module('expense.controller', [])
 
 	expense.getNotes = function(note){
 		console.log("note in modal ", note);
+	};
+
+	expense.updateChartData = function(category, amount){
+		var index = categories.indexOf(category);
+		dailyArr[index] += amount;
+		weeklyArr[index] += amount;
+		monthlyArr[index] += amount;
+	};
+
+
+
+	var dailyDonut, weeklyDonut, monthlyDonut, monthlyLine, dailyChart;
+
+	expense.renderGraphs = function(){
+		console.log("renderGraphs is being called!!");
+		var domCategories = ["dailyDonutChart", "weeklyDonutChart", "monthlyDonutChart", "monthlyLineChart"];
+
+		if(dailyDonut !== undefined){
+		for(var i = 0; i<domCategories.length; i++){
+			var currentCat = document.getElementById(domCategories[i]);
+			currentCat.innerHTML = '';
+		}
 	}
+		// For each div with #id
+			// Remove chartist classnames and delete child nodes
+		// Rebuild new chartist variables on processed divs
+		dailyDonut = new Chartist.Pie('#dailyDonutChart', dataDailyDonutChart, optionsDailyDonutChart);
+		weeklyDonut = new Chartist.Pie('#weeklyDonutChart', dataWeeklyDonutChart, optionsWeeklyDonutChart);
+		monthlyDonut = new Chartist.Pie('#monthlyDonutChart', dataMonthlyDonutChart, optionsMonthlyDonutChart);
+		monthlyLine = new Chartist.Line('#monthlyLineChart', dataMonthlyLineChart, optionsMonthlyLineChart);
+	};
+
+
+
+
 
 	/* --------    GOOGLE PLACES AUTOCOMPLETE  --------------*/
 
@@ -291,63 +339,17 @@ angular.module('expense.controller', [])
             //             });
             //         });
 
-            google.maps.event.addDomListener(location, 'keydown', function(e) { 
+            google.maps.event.addDomListener(location, 'keydown', function(e) {
             	console.log("keydown ");
-    			if (e.keyCode == 13 || e.keyCode == 9) { 
-    				if($('#location:visible').length){			
+    			if (e.keyCode == 13 || e.keyCode == 9) {
+    				if($('#location:visible').length){
     					console.log("scope.gPlace etc", $scope.gPlace.gm_bindings_.types['7'].Rd.U[0].j[0]);
     					expense.location = $scope.gPlace.gm_bindings_.types['7'].Rd.U[0].j[0];
     					console.log("enter pressed or tab pressed ");
     					//console.log('expense.location ', expense.location);
-        				e.preventDefault(); 
+        				e.preventDefault();
         			}
-    			}		
-			}); 
+    			}
+			});
 
-})
-/*
-.directive('googleplace', function() {
-    return {
-        require : 'ngModel',
-        link : function(scope, element, attrs, model) {
-
-            var options = {
-                types : [],
-            };
-            scope.gPlace = new google.maps.places.Autocomplete(element[0],
-                    options);
-
-            google.maps.event.addListener(scope.gPlace, 'place_changed',
-                    function() {
-                        scope.$apply(function() {
-                            model.$setViewValue(element.val());
-                        });
-                    });
-
-            var location = document.getElementById('location');
-
-            google.maps.event.addDomListener(location, 'keydown', function(e) { 
-            	console.log("keydown ");
-    			if (e.keyCode == 13 && $('#location:visible').length) { 
-    				
-    				console.log("scope.gPlace", scope.gPlace.gm_bindings_.types['7'].Rd.U[0].j[0]);
-    				console.log('element[0] ', element[0]);
-    				console.log('model ', model);
-    				
-    				console.log("enter pressed ");
-    				//console.log('expense.location ', expense.location);
-    			
-
-        			e.preventDefault(); 
-    			}		
-			}); 
-   //          $('#location').keydown(function (e) {
-   //          	console.log("scope ", scope);
-  	// 			if (e.which == 13 && $('.form-control:visible').length){
-  	// 			  console.log("does this work???");
-  	// 			} return false;
-			// });
-        }
-    };
-})
-*/
+});
