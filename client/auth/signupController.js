@@ -4,7 +4,7 @@ angular.module('signup.controller', [])
 	var signup = this;
 
 	signup.submit = function() {
-		$("#loginModal").modal("hide");
+		
 		var userData = {
 			email: signup.email,
 			password: signup.password,
@@ -19,6 +19,7 @@ angular.module('signup.controller', [])
 		AuthServices.submitNewUser(userData)
     .then(function(token){
       if(token){
+      	$("#loginModal").modal("hide");
         $location.path('/main/expense');
       } else {
         console.log("Error Creating User");
