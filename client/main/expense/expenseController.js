@@ -213,7 +213,7 @@ angular.module('expense.controller', [])
 					console.log("This is incomeTable", expense.incomeTable);
 				}
 			} else {
-				// expense.isInvalid = true;
+				expense.isInvalid = true;
 				console.error('error in posting expense', resp);
 			}
 		});
