@@ -1,5 +1,8 @@
 /*--- VARIABLES ---*/
 /*--- GLOBAL STYLES ---*/
+html {
+  -webkit-font-smoothing: antialiased; }
+
 body {
   background-color: #202840; }
 
@@ -262,3 +265,36 @@ footer {
   display: inline-block;
   font-weight: bold;
   font-family: 'arial', 'sans-serif'; }
+
+/*--- PROFILE PAGE ---*/
+.profile-row, .info-row, .goal-row {
+  margin-bottom: 35px; }
+  .profile-row div p, .info-row div p, .goal-row div p {
+    padding: auto 0;
+    margin: auto 0; }
+
+.button-edit {
+  background: transparent;
+  border: none;
+  color: #57a5f9; }
+
+.button-check {
+  background: transparent;
+  border: none;
+  color: #00bc8c; }
+
+.button-remove {
+  background: transparent;
+  border: none;
+  color: #ff5940; }
+
+.button-notes {
+  background: transparent;
+  border: none;
+  color: white; }
+
+.profile-important {
+  font-size: 32px; }
+
+.goal-row div table tr td {
+  border-bottom: 1px solid #00bc8c; }

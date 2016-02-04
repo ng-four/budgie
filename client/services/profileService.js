@@ -7,8 +7,8 @@ angular.module('profile.service', [])
 				return resp.data;
 			}, function(error){
 				//$location.path('/landing/login');
-				// to handle edge case wherein server shuts down but browser window still open	
-				throw error;										
+				// to handle edge case wherein server shuts down but browser window still open
+				throw error;
 			});
 	};
 

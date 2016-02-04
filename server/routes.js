@@ -174,10 +174,10 @@ router.get('/user', util.checkToken, function(request, response) {
 
 // Update Monthly Limit
 router.put('/monthly_limit', util.checkToken, function(request, response) {
-  db.query('SELECT * FROM Users WHERE id = ?', [request.user.id], function(err, rows){
-    var new_total_savings = rows[0].total_savings - rows[0].monthly_limit + request.body.monthly_limit;
-    db.query('UPDATE Users SET monthly_limit = ?, total_savings = ? WHERE id = ?;',
-    [request.body.monthly_limit, new_total_savings, request.user.id],
+  // db.query('SELECT * FROM Users WHERE id = ?', [request.user.id], function(err, rows){
+    // var new_total_savings = rows[0].total_savings - rows[0].monthly_limit + request.body.monthly_limit;
+    db.query('UPDATE Users SET monthly_limit = ? WHERE id = ?;',
+    [request.body.monthly_limit, request.user.id],
     function(err, result) {
       if (err) {
         console.error(err);
@@ -188,7 +188,7 @@ router.put('/monthly_limit', util.checkToken, function(request, response) {
         response.sendStatus(401);
       }
     });
-  });
+  // });
 });
 
 // Update Savings Goal
@@ -739,6 +739,10 @@ router.post('/goals/:id', util.checkToken, function(request, response) {
   });
 
 });
+
+/**
+ * Others
+ */
 
 // Dropbox logic
 router.get('/dropbox', function(request, response){

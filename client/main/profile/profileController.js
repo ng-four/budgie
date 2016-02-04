@@ -21,7 +21,7 @@ angular.module('profile.controller', [])
 					profile.goals = resp.data;
 				});
 			}, function(error){
-				// to handle edge case wherein server shuts down but browser window still open	
+				// to handle edge case wherein server shuts down but browser window still open
 				//console.log("loadProfile threw error, logging out... ");
 				//AuthServices.logOut();
 				throw error;
@@ -40,7 +40,6 @@ angular.module('profile.controller', [])
 			.then(function(resp){
 				console.log(resp);
 				profile.loadProfile();
-				//$timeout(profile.loadProfile, 1000);
 			}, function(error){
 				throw error;
 			});
@@ -60,15 +59,9 @@ angular.module('profile.controller', [])
 				console.log(resp);
 				profile.changeTarget();
 				profile.loadProfile();
-				//$timeout(profile.loadProfile, 1000); 
 			}, function(error){
 				throw error;
 			});
-	};
-
-
-	profile.logOut = function() {
-		AuthServices.logOut();
 	};
 
 	profile.toggleNewGoal = function(){
@@ -87,7 +80,6 @@ angular.module('profile.controller', [])
 		GoalServices.addNewGoal(newGoal)
 		.then(function(resp){
 			profile.goals.push(resp.data);
-			console.log("this is the response in addNewGoal", resp);
 		});
 
 	};
@@ -100,7 +92,6 @@ angular.module('profile.controller', [])
 		if(!amount){
 			amount = profile.total_savings;
 		}
-		console.log("this is amount (which should be profile.newTotalSavings) inside submitNewTotalSavings", amount);
 		ProfileServices.updateTotalSavings(amount)
 		.then(function(resp){
 			profile.total_savings = amount;
@@ -111,8 +102,39 @@ angular.module('profile.controller', [])
 	profile.completeGoal = function(idx, id){
 			profile.goals.splice(idx, 1);
 			//TODO call service for complete goal
-			GoalServices.completeGoal(id);
+			GoalServices.completeGoal(id)
+      .then(function(){
+        $location.path('main/expenses');
+      });
 	};
+
+  profile.deleteGoal = function(idx, id){
+			profile.goals.splice(idx, 1);
+			//TODO call service for complete goal
+			GoalServices.deleteGoal(id);
+	};
+
+  profile.showNotes = function(notes){
+			profile.currentNote = notes;
+	};
+
+  profile.goalUpdateAmount = null;
+  profile.goalUpdateId = null;
+  profile.addMoneyToGoal = function(){
+			GoalServices.addMoneyToGoal(profile.goalUpdateAmount, profile.goalUpdateId)
+      .then(function(){
+        profile.loadProfile();
+      });
+	};
+  profile.subtractMoneyFromGoal = function(){
+			GoalServices.subtractMoneyFromGoal(profile.goalUpdateAmount, profile.goalUpdateId)
+      .then(function(){
+        profile.loadProfile();
+      });
+	};
+  profile.makeActiveId = function(id){
+    profile.goalUpdateId = id;
+  };
 
 	profile.loadProfile();
 

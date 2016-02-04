@@ -1,68 +1,212 @@
 <div id="wrapper">
-    <div id="page-content-wrapper">
-        <button class="btn btn-primary" ng-click="profile.logOut()">Logout</button>
-    	<br><br>
-    	<div class="col-lg-10">
-    		<h1>{{ profile.full_name }}'s Profile:</h1>
-    	</div>
-    	<div class="col-lg-10">
-    		<legend>Email: {{ profile.email }}</legend>
-    	</div>
-    	<div class="col-lg-10">
-    		<legend>Monthly Spending Limit: ${{ profile.monthly_limit }}</legend><a ng-click="profile.changeLimit()" class="btn btn-info btn-sm">edit</a>
-    	</div>
+  <div id="page-content-wrapper" class="container">
+    <div class="profile-row row">
+      <div class="col-lg-12">
+        <h1>{{ profile.full_name }}</h1>
+      </div>
+      <div class="col-lg-12">
+        <span>{{ profile.email }}</span>
+      </div>
+    </div>
 
-        <div class="form-group" ng-show="profile.limitClicked">
-            <div class="col-lg-10">
-            <input type="number" class="form-control" placeholder="New Monthly Limit" ng-model="profile.newLimit"/><button ng-click="profile.submitNewLimit(profile.newLimit)" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-        
-        <div class="col-lg-10">
-            <h2 class="col-lg-8">Monthly Savings Target: {{ profile.savings_goal }}%</h2><a ng-click="profile.changeTarget()" class="btn btn-info btn-sm">edit</a>
-        </div>
-         <div class="form-group" ng-show="profile.targetClicked">
-            <div class="col-lg-10">
-            <input type="number" class="form-control" placeholder="New Savings Target" ng-model="profile.newSavingsTarget"/><button class="btn btn-primary" ng-click="profile.submitNewSavingsTarget(profile.newSavingsTarget)" >Submit</button>
-            </div>
-        </div>
+    <div class="info-row row">
+      <div class="col-sm-4 text-center">
+        <p>
+          Monthly Spending Limit
+          <button type="button" data-toggle="modal" data-target="#limitModal" class="button-edit icon ion-edit" aria-label="Edit"></button>
+        </p>
+        <p class="profile-important">{{ profile.monthly_limit | currency:"$":2 }}</p>
 
-        <div class="col-lg-10">
-            <h2 class="col-lg-8">Total Savings: ${{profile.total_savings}}</h2><a ng-click="profile.toggleTotalSavings()" class="btn btn-info btn-sm">edit</a>
-        </div>
-         <div class="form-group" ng-show="profile.showTotalSavings">
-            <div class="col-lg-10">
-            <input type="number" class="form-control" placeholder="New Total Savings" ng-model="profile.newTotalSavings"/><button class="btn btn-primary" ng-click="profile.submitNewTotalSavings(profile.newTotalSavings)">Submit</button>
-            </div>
-        </div>
+      </div>
+      <div class="col-sm-4 text-center">
+        <p>
+          Monthly Savings Target
+          <button type="button" data-toggle="modal" data-target="#targetModal" class="button-edit icon ion-edit" aria-label="Edit"></button>
+        </p>
+        <p class="profile-important">{{ profile.savings_goal }}%</p>
+      </div>
+      <div class="col-sm-4 text-center">
+        <p>
+          Total Savings
+          <button type="button" data-toggle="modal" data-target="#totalModal" class="button-edit icon ion-edit" aria-label="Edit"></button>
+        </p><p class="profile-important">{{profile.total_savings | currency:"$":2 }}</p>
+      </div>
+    </div>
 
-        <div class="col-lg-10">
-            <table class='table borderless whitesmoke margin-bottom-ten' >
-            <tr>
-                <th class='col-md-2'>Goal</th><th class='col-md-2'>Amount</th><th class='col-md-2'>Category</th><th class='col-md-2'>Notes</th><th class='col-md-2'>Saved</th>
-            </tr>
-            <tr ng-repeat='goal in profile.goals'>
-                <td class='col-md-2'>{{ goal.name }}</td>
-                <td class='col-md-2'>${{ goal.amount }}</td>
-                <td class='col-md-2'>{{ goal.category }}</td>
-                <td class='col-md-2'>${{ goal.notes }}</td>
-                <td class='col-md-2'>${{ goal.saved_amount }}</td>
-                <td class="text-right">
-    		            <input type="button" value="Acquire Goal" class="btn btn-success" data-ng-click="profile.completeGoal($index, goal.id)">
-    		        </td>
-            </tr>
-            </table>
-            <a ng-click="profile.toggleNewGoal()" class="btn btn-info btn-sm">Add a new goal</a>
+    <div class="modal fade" id="limitModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ></button>
+            <h4 class="modal-title" id="limitModalLabel">Update your monthly spending limit</h4>
+          </div>
+          <div class="modal-body">
+            <input type="number" class="form-control" placeholder="New Monthly Limit" ng-model="profile.newLimit" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" data-ng-click="profile.submitNewLimit(profile.newLimit)" class="btn btn-primary" data-dismiss="modal">Submit</button>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <div class="form-group" ng-show="profile.newGoalClicked">
-            <div class="col-lg-10">
-            <input type="text" class="form-control" placeholder="New Goal" ng-model="profile.newGoal.name"/>
-            <input type="number" class="form-control" placeholder="Price" ng-model="profile.newGoal.amount"/>
-            <input type="text" class="form-control" placeholder="Category" ng-model="profile.newGoal.category"/>
-            <input type="text" class="form-control" placeholder="Notes" ng-model="profile.newGoal.notes"/>
-            <button class="btn btn-primary" ng-click="profile.submitNewGoal(profile.newGoal)">Submit</button>
-            </div>
+    <div class="modal fade" id="targetModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ></button>
+            <h4 class="modal-title" id="targetModalLabel">Update your savings target</h4>
+          </div>
+          <div class="modal-body">
+            <input type="number" class="form-control" placeholder="New Savings Target" ng-model="profile.newSavingsTarget" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary" data-ng-click="profile.submitNewSavingsTarget(profile.newSavingsTarget)" data-dismiss="modal">Submit</button>
+          </div>
         </div>
-	</div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="totalModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ></button>
+            <h4 class="modal-title" id="totalModalLabel">Update your available funds</h4>
+          </div>
+          <div class="modal-body">
+            <input type="number" class="form-control" placeholder="New Total Savings" ng-model="profile.newTotalSavings" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary" data-ng-click="profile.submitNewTotalSavings(profile.newTotalSavings)" data-dismiss="modal">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="goal-row row">
+      <div class="col-lg-12">
+        <h2  ng-show="profile.goals.length">Goals</h2>
+      </div><div class="col-lg-12">
+
+        <p class="text-center" ng-show="!profile.goals.length">You do not have any current goals.<br><br></p>
+        <table class='table borderless whitesmoke margin-bottom-ten' ng-show="profile.goals.length">
+          <tr>
+            <th class='col-md-2'>Goal</th>
+            <th class='col-md-2'>Amount</th>
+            <th class='col-md-2'>Category</th>
+            <th class='col-md-2'>Saved</th>
+          </tr>
+          <tr ng-repeat='goal in profile.goals'>
+            <td class='col-md-2'>{{ goal.name }}</td>
+            <td class='col-md-2'>${{ goal.amount }}</td>
+            <td class='col-md-2'>{{ goal.category }}</td>
+            <td class='col-md-2'>${{ goal.saved_amount }}</td>
+            <td class="text-right">
+              <button type="button" class="button-notes icon ion-clipboard" data-toggle="modal" data-target="#notesModal"
+              data-ng-click="profile.showNotes(goal.notes)" title="Notes"></button>
+            </td>
+            <td class="text-right">
+              <button type="button" class="button-edit icon ion-plus-round" data-toggle="modal" data-target="#addMoneyModal"
+               title="Add money to goal" data-ng-click="profile.makeActiveId(goal.id)"></button>
+            </td>
+            <td class="text-right">
+              <button type="button" class="button-edit icon ion-minus-round" data-toggle="modal" data-target="#subtractMoneyModal"
+              title="Subtract money from goal" data-ng-click="profile.makeActiveId(goal.id)"></button>
+            </td>
+            <td class="text-right">
+              <button type="button" class="button-check icon ion-checkmark-round"
+              data-ng-click="profile.completeGoal($index, goal.id)" title="Complete goal"></button>
+            </td>
+            <td class="text-right">
+              <button type="button" class="button-remove icon ion-close-round"
+              data-ng-click="profile.deleteGoal($index, goal.id)" title="Delete goal"></button>
+            </td>
+          </tr>
+        </table>
+        <div class="text-center">
+          <a data-toggle="modal" data-target="#goalModal" class="btn btn-info btn-sm">Add a new goal</a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="goalModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ></button>
+            <h4 class="modal-title" id="noteModalLabel">Add a new goal</h4>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control" placeholder="New Goal" ng-model="profile.newGoal.name" />
+            <input type="number" class="form-control" placeholder="Price" ng-model="profile.newGoal.amount" />
+            <input type="text" class="form-control" placeholder="Category" ng-model="profile.newGoal.category" />
+            <input type="text" class="form-control" placeholder="Notes" ng-model="profile.newGoal.notes" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary" data-ng-click="profile.submitNewGoal(profile.newGoal)" data-dismiss="modal">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="notesModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ></button>
+            <h4 class="modal-title" id="noteModalLabel">Notes</h4>
+          </div>
+          <div class="modal-body">
+            <p>{{ profile.currentNote }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="addMoneyModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ></button>
+            <h4 class="modal-title" id="addMoneyModalLabel">Add money to goal</h4>
+          </div>
+          <div class="modal-body">
+            <input type="number" class="form-control" placeholder="Amount to put towards goal" ng-model="profile.goalUpdateAmount" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" data-ng-click="profile.addMoneyToGoal()" class="btn btn-primary" data-dismiss="modal">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="subtractMoneyModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ></button>
+            <h4 class="modal-title" id="subtractMoneyModalLabel">Subtract money from goal</h4>
+          </div>
+          <div class="modal-body">
+            <input type="number" class="form-control" placeholder="Amount to retrieve from goal" ng-model="profile.goalUpdateAmount" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" data-ng-click="profile.subtractMoneyFromGoal()" class="btn btn-primary" data-dismiss="modal">Subtract</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
