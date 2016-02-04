@@ -3,6 +3,7 @@ angular.module('expense.controller', [])
 
 	var expense = this;
 
+	expense.location;
     expense.inputType = 'expense';
 	expense.categoryType = 'select a category';
 
@@ -151,6 +152,12 @@ angular.module('expense.controller', [])
 	};
 
 	expense.addExpense = function(){
+
+		expense.location = $('#location').val();
+
+		console.log('expense.location in add expense ', expense.location);
+		
+
 		var spentDate = moment();
 
 		console.log(time.value);
@@ -322,34 +329,33 @@ angular.module('expense.controller', [])
 
 
 
-	/* --------    GOOGLE PLACES AUTOCOMPLETE  --------------*/
+	/* --------    GOOGLE PLACES AUTOCOMPLETE (REFACTOR INTO DIRECTIVE LATER) --------------*/
 
 			var options = {
                 types : [],
             };
 
             var location = document.getElementById('location');
-
             $scope.gPlace = new google.maps.places.Autocomplete(location, options);
-
-            // google.maps.event.addListener($scope.gPlace, 'place_changed',
-            //         function() {
-            //             $scope.$apply(function() {
-            //                 location.$setViewValue(expense.location);
-            //             });
-            //         });
-
-            google.maps.event.addDomListener(location, 'keydown', function(e) {
-            	console.log("keydown ");
-    			if (e.keyCode == 13 || e.keyCode == 9) {
+            google.maps.event.addDomListener(location, 'keydown', function(e) { 
+            	console.log('keydown!!!');            	
+    //         	var pac = $('.pac-container');
+    //         	pac.each(function( index ) {
+  		// 			console.log( index + ": " + $( this ).text() );
+				// });			
+    			if (e.keyCode == 13 || e.keyCode == 9) { 
     				if($('#location:visible').length){
-    					console.log("scope.gPlace etc", $scope.gPlace.gm_bindings_.types['7'].Rd.U[0].j[0]);
-    					expense.location = $scope.gPlace.gm_bindings_.types['7'].Rd.U[0].j[0];
+    					for(key in $scope.gPlace.gm_bindings_.types){
+    						if(Number(key) >= 0){
+    							expense.location = $scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0];
+    							$('#location').innerText == expense.location;
+    						}
+    					} 					
     					console.log("enter pressed or tab pressed ");
-    					//console.log('expense.location ', expense.location);
-        				e.preventDefault();
+        				e.preventDefault(); 
         			}
     			}
-			});
+    				
+			}); 
+})
 
-});

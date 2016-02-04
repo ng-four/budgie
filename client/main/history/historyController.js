@@ -1,5 +1,5 @@
 angular.module('history.controller', [])
-.controller('HistoryController', function(ExpenseServices, AuthServices, MapServices, $http, $filter, $timeout, $q){
+.controller('HistoryController', function(ExpenseServices, AuthServices, MapServices, $http, $filter, $timeout, $q,$scope){
 
 	var history = this;
 
@@ -36,11 +36,8 @@ angular.module('history.controller', [])
 					}
 			}).then(function(resp){
 				history.combineTables();
-				console.log("history.allTable.length ", history.allTable.length);
-
 				})
 				.then(function(resp){
-					console.log("history.allTable.length2 ", history.allTable.length);
 					renderMap();
 			});
 		})
@@ -86,12 +83,15 @@ angular.module('history.controller', [])
 		history.newAmount = history.allTable[idx].amount;
 		history.newExpenseItem = history.allTable[idx].name;
 		history.newCategory = history.allTable[idx].category;
+		history.newLocation = history.allTable[idx].location;
 		history.newNotes = history.allTable[idx].notes;
 		history.newSpentDate = new Date(history.allTable[idx].spent_date);
-		// expense.newLocation = expense.expenseTable[idx].location;
+		console.log('history.newSpentDate in edit ', history.newSpentDate);
 	}
 
 	history.editRow = function(idx, id, inputType){
+		history.newLocation = $('#newlocation').val();
+		
 		inputType = history.allTable[idx].inputType;
 
 		var jstime = new Date(history.newSpentDate);
@@ -112,7 +112,7 @@ angular.module('history.controller', [])
 			category: history.newCategory,
 			notes: history.newNotes,
 			spent_date: spentDate,
-			// location: expense.newLocation,
+			location: history.newLocation,
 		}
 
 		ExpenseServices.editExpense(id, data, inputType)
@@ -175,6 +175,36 @@ angular.module('history.controller', [])
    	}
 
    	loadHistoryView(history.dates);
+
+/* --------    GOOGLE PLACES AUTOCOMPLETE (REFACTOR INTO DIRECTIVE LATER)  --------------*/
+
+   		var options = {
+                types : [],
+            };
+
+            var location = document.getElementById('newlocation');
+            $scope.gPlace2 = new google.maps.places.Autocomplete(location, options);
+            google.maps.event.addDomListener(location, 'keydown', function(e) {             	
+    //         	var pac = $('.pac-container');
+    //         	pac.each(function( index ) {
+  		// 			console.log( index + ": " + $( this ).text() );
+				// });	
+				console.log('keyydown!!!');		
+    			if (e.keyCode == 13 || e.keyCode == 9) { 
+    				console.log("enter pressed or tab pressed ");
+    				if($('#newlocation:visible').length){
+    					console.log("inside if statement ");
+    					for(key in $scope.gPlace2.gm_bindings_.types){
+    						if(Number(key) >= 0){
+    							history.newLocation = $scope.gPlace2.gm_bindings_.types[key].Rd.U[0].j[0];
+    						}
+    					} 					
+    					
+        				e.preventDefault(); 
+        			}
+    			}	
+    				
+			}); 
 
 });
 
