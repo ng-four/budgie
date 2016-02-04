@@ -24,7 +24,7 @@
     "ionic-plugin-deploy"
   ],
   "cordovaPlatforms": [
-    "android",
-    "ios"
+    "ios",
+    "android"
   ]
 }
