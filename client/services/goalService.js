@@ -78,9 +78,6 @@ angular.module('goal.service', [])
     });
   };
 
-
-
-
 	return {
 		addNewGoal: addNewGoal,
     getGoals: getGoals,
