@@ -71,6 +71,7 @@ body {
   padding: 35px 0 90px 0; }
 
 /*--- FORMS ---*/
+
 input.form-control {
   background-color: transparent;
   border: 0;
@@ -211,6 +212,10 @@ footer {
 #map_canvas {
   height: 500px;
   width: 100%; }
+
+.pac-container {
+  z-index: 1051 !important;
+}
 
 /*--- MEDIA QUERIES ---*/
 /* Small devices (tablets, 768px and up) */
