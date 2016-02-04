@@ -91,6 +91,7 @@ angular.module('history.controller', [])
 
 	history.editRow = function(idx, id, inputType){
 		history.newLocation = $('#newlocation').val();
+		console.log('history.newLocation in edit row call', history.newLocation);
 		
 		inputType = history.allTable[idx].inputType;
 
@@ -117,8 +118,6 @@ angular.module('history.controller', [])
 
 		ExpenseServices.editExpense(id, data, inputType)
 			.then(function(resp){
-				console.log("in promise func in edit expense" );
-
 				loadHistoryView(history.dates);
 			})
 	};
@@ -149,26 +148,7 @@ angular.module('history.controller', [])
  		createMap();
  		addMarkers();
    		$timeout(setBounds, 1000);	   		
- 	}
-
-	// var addMarkers = function(){
-
-	// 	for(var j = 0; j < history.expenseTable.length; j++){		
- //   			if(history.expenseTable[j].location){
- //   				var loc = history.expenseTable[j].location;
- //   				console.log("loc ", loc);
- //   			(function(loc,j) {	
- //   				MapServices.getGeoCode(loc, j)
- //   					.then(function(result){
- //   						history.expenseTable[j].latlng = {lat: result.lat(), lng: result.lng()};
- //   					}).then(function(result2){
- //   						MapServices.renderMarker(history.expenseTable[j], map, bounds);
- //   					});
- //   				})(loc,j);
- //   			}
-
- //   		}
- //   }
+ 	}	
 
    	var setBounds = function(){
    		MapServices.setBounds(map, bounds);
@@ -185,26 +165,39 @@ angular.module('history.controller', [])
             var location = document.getElementById('newlocation');
             $scope.gPlace2 = new google.maps.places.Autocomplete(location, options);
             google.maps.event.addDomListener(location, 'keydown', function(e) {             	
-    //         	var pac = $('.pac-container');
-    //         	pac.each(function( index ) {
-  		// 			console.log( index + ": " + $( this ).text() );
+    		// var pac = $('.pac-container');
+    				// pac.each(function( index ) {
+  					// console.log( index + ": " + $( this ).text() );
 				// });	
 				console.log('keyydown!!!');		
     			if (e.keyCode == 13 || e.keyCode == 9) { 
     				console.log("enter pressed or tab pressed ");
     				if($('#newlocation:visible').length){
-    					console.log("inside if statement ");
     					for(key in $scope.gPlace2.gm_bindings_.types){
     						if(Number(key) >= 0){
     							history.newLocation = $scope.gPlace2.gm_bindings_.types[key].Rd.U[0].j[0];
     						}
-    					} 					
-    					
+    					} 					 					
         				e.preventDefault(); 
         			}
     			}	
     				
 			}); 
+
+			google.maps.event.addDomListener(location, 'mouseout', function(e) { 
+            	console.log('mouseout!!!'); 
+            	if($('#newlocation').length){
+            		console.log('length ',$('#newlocation').length)
+            		for(key in $scope.gPlace2.gm_bindings_.types){
+    						if(Number(key) >= 0){					
+    							history.newLocation = $scope.gPlace2.gm_bindings_.types[key].Rd.U[0].j[0];
+    							$('#newlocation').innerText == history.newLocation;
+    							console.log('history.newLocation ', history.newLocation);
+    						}
+    					} 	
+    				}
+
+            }); 
 
 });
 
