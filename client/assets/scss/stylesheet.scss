@@ -152,6 +152,7 @@ input.form-control{
 	padding: 3px 12px;
 	text-decoration: none;
 }
+
 .category-tag:before{
   content: "";
   float: left;
@@ -358,10 +359,26 @@ input.form-control{
           color: #8899a6;
         }
       }
-
     }
+  }
+}
 
-
+/*--- HISTORY ---*/
+.history-controls{
+  .forms{
+    text-align: center;
+    .form-group{
+      display: inline-block;
+    }
+  }
+  .button-group{
+    text-align: center;
+  }
+  .select {
+    border-bottom: 1px solid #375a7f;
+    background: transparent;
+    color: white;
+    width: auto;
   }
 }
 
@@ -380,27 +397,6 @@ footer {
 }
 .pac-container {
   z-index: 1051 !important;
-}
-
-/*--- MEDIA QUERIES ---*/
-/* Small devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-  .navbar-default{
-    .navbar-collapse{
-      background: transparent;
-    }
-  }
-
-  .learn-page{
-    .resources{
-      .item{
-        img{
-          height: 200px;
-          width: 200px;
-        }
-      }
-    }
-  }
 }
 
 /*--- MODAL  ----*/
@@ -493,6 +489,40 @@ footer {
       tr td{
         border-bottom: 1px solid $budgie-green;
       }
+    }
+  }
+}
+
+/*--- MEDIA QUERIES ---*/
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .navbar-default{
+    .navbar-collapse{
+      background: transparent;
+    }
+  }
+
+  .learn-page{
+    .resources{
+      .item{
+        img{
+          height: 200px;
+          width: 200px;
+        }
+      }
+    }
+  }
+
+  .history-controls{
+    text-align: left;
+    .forms{
+      float:left;
+      .form-group{
+        display: inline-block;
+      }
+    }
+    .button-group{
+      float:right;
     }
   }
 }

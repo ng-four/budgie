@@ -72,7 +72,7 @@
           <h4 class="modal-title" id="editModalLabel">Edit Expense</h4>
         </div>
         <div class="modal-body">
-          <form name="formEditTransaction" class="expense-form form-horizontal" novalidate>
+          <form name="formEditTransaction" class="form-horizontal expense-form text-center" novalidate>
             <fieldset>
               <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newAmount.$error.required}">
                 <label for="inputNewAmount">Amount: </label>
@@ -108,7 +108,7 @@
                 <input type="text" class="form-control" id="newlocation" placeholder="Location" name="newLocation" ng-model="expense.newLocation">
               </div>
               <div class="form-group col-md-6">
-                <label for="select">Notes: </label>
+                <label for="notes">Notes: </label>
                 <input type="text" id="new-notes" class="form-control" placeholder="Notes" name="newNotes" ng-model="expense.newNotes"/>
               </div>
             </fieldset>
@@ -172,7 +172,6 @@
 -->
 
   <!-- DAILY TRANSACTIONS -->
-
     <div class="container">
       <table class="table">
         <tbody>
@@ -182,20 +181,17 @@
             <td><span class="category-tag">{{expenseThings.category}}</span></td>
             <td>{{expenseThings.format}}</td>
             <td>{{expenseThings.notes}}</td>
-
             <td class="text-right">
                 <button type="button" ng-click="expense.editClick($index, expenseThings.id)" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" aria-label="Edit"></button>
             </td>
             <td class="text-right">
 		            <button type="button" value="Remove" data-ng-click="expense.removeRow($index, expenseThings.id, 'expense')" class="button-remove icon ion-close-round" aria-label="Remove"></button>
 		        </td>
-
           </tr>
-
         </tbody>
       </table>
-    <div class="container">
     </div>
+    <div class="container">
       <table class="table">
         <tbody>
           <tr class="info" ng-repeat="incomeThings in expense.incomeTable">
