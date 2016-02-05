@@ -33,13 +33,13 @@ angular.module('auth.service', [])
 	};
 
 	var isAuth = function () {
-  	return !!$window.localStorage.getItem('budgieID');
+  		return !!$window.localStorage.getItem('budgieID');
 	};
 
 	var logOut = function () {
 		console.log('logOut called in AuthServices');
-    $window.localStorage.removeItem('budgieID');
-    $location.path('/landing/login');
+    	$window.localStorage.removeItem('budgieID');
+    	$location.path('/landing/login');
 	};
 
 	return {

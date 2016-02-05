@@ -1,5 +1,5 @@
 angular.module('expense.controller', []) //Controller for the expense view of Budgie
-.controller('ExpenseController', function(ExpenseServices, MapServices, ProfileServices, $http, $timeout, $scope){
+.controller('ExpenseController', function(ExpenseServices, MapServices, ProfileServices, AuthServices, $http, $timeout, $scope){
 	var expense = this;
 	expense.location; //Location variable for Google Maps feature
 	expense.inputType = 'expense'; //inputType to specify input is an expense for Google Maps feature
@@ -333,4 +333,12 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 			}
 		}
 	});
+
+	var checkAuth = function(){
+  	if(!AuthServices.isAuth()){
+  		AuthServices.logOut();
+  	  }
+    }
+
+  checkAuth();
 });

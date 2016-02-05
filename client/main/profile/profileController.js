@@ -21,9 +21,6 @@ angular.module('profile.controller', [])
 					profile.goals = resp.data;
 				});
 			}, function(error){
-				// to handle edge case wherein server shuts down but browser window still open
-				//console.log("loadProfile threw error, logging out... ");
-				//AuthServices.logOut();
 				throw error;
 			});
 	};
@@ -51,9 +48,10 @@ angular.module('profile.controller', [])
 
 
 	profile.submitNewSavingsTarget = function(newSavings){
-		if(!newSavings){
-			newSavings = profile.savings_goal;
-		}
+		newSavings = newSavings || profile.savings_goal;
+		// if(!newSavings){
+		// 	newSavings = profile.savings_goal;
+		// }
 		ProfileServices.updateSavingsTarget(newSavings)
 			.then(function(resp){
 				console.log(resp);
@@ -89,9 +87,10 @@ angular.module('profile.controller', [])
 	};
 
 	profile.submitNewTotalSavings = function(amount){
-		if(!amount){
-			amount = profile.total_savings;
-		}
+		amount = amount || profile.total_savings;
+		// if(!amount){
+		// 	amount = profile.total_savings;
+		// }
 		ProfileServices.updateTotalSavings(amount)
 		.then(function(resp){
 			profile.total_savings = amount;
@@ -120,12 +119,14 @@ angular.module('profile.controller', [])
 
   profile.goalUpdateAmount = null;
   profile.goalUpdateId = null;
+
   profile.addMoneyToGoal = function(){
 			GoalServices.addMoneyToGoal(profile.goalUpdateAmount, profile.goalUpdateId)
       .then(function(){
         profile.loadProfile();
       });
 	};
+
   profile.subtractMoneyFromGoal = function(){
 			GoalServices.subtractMoneyFromGoal(profile.goalUpdateAmount, profile.goalUpdateId)
       .then(function(){
