@@ -1,5 +1,5 @@
 angular.module('expense.controller', []) //Controller for the expense view of Budgie
-.controller('ExpenseController', function(ExpenseServices, MapServices, $http, $timeout, $scope){
+.controller('ExpenseController', function(ExpenseServices, MapServices, ProfileServices, $http, $timeout, $scope){
 	var expense = this;
 	expense.location; //Location variable for Google Maps feature
 	expense.inputType = 'expense'; //inputType to specify input is an expense for Google Maps feature
@@ -210,7 +210,11 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		showLabel: true,
 		donutWidth: 32,
 		// width: 300,
-		height: 200
+		height: 200,
+		plugins: [Chartist.plugins.tooltip({
+			appendToBody: true,
+			class: 'donutpointerdataclass'
+		})]
 	};
 
 	var dataMonthlyDonutChart = { //Data for the monthly donut chart
@@ -222,24 +226,16 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		showLabel: true,
 		donutWidth: 32,
 		// width: 300,
-		height: 200
+		height: 200,
+		plugins: [Chartist.plugins.tooltip({
+			appendToBody: true,
+			class: 'donutpointerdataclass'
+		})]
 	};
 
 	var dataMonthlyLineChart = { //Data for the monthly line chart
 		labels: monthlyDaysArr,
 		series: [monthlyLineArr,lastMonthArr] //daily expenditure total values
-	};
-	var optionsMonthlyLineChart = {
-		fullWidth: true,
-		chartPadding: {
-			right: 40
-		},
-		showArea: true,
-		height: '350px',
-		plugins: [Chartist.plugins.tooltip({
-			appendToBody: true,
-			class: 'pointerdataclass'
-		})]
 	};
 
 	expense.updateChartData = function(category, amount){ //functionality to instantly update chart data upon user edits
@@ -252,7 +248,10 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		monthlyLineArr[todayIndex] += amount;
 	};
 
-	var dailyDonut, weeklyDonut, monthlyDonut, monthlyLine, dailyChart;
+	// var dailyDonut, weeklyDonut, monthlyDonut, monthlyLine, dailyChart;
+
+
+
 
 	expense.renderGraphs = function(){ //function to render visuals of users finances
 		console.log("renderGraphs is being called!!");
@@ -267,11 +266,33 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 				currentCat.innerHTML = '';
 			}
 		}
-		dailyDonut = new Chartist.Pie('#dailyDonutChart', dataDailyDonutChart, optionsDailyDonutChart);
-		weeklyDonut = new Chartist.Pie('#weeklyDonutChart', dataWeeklyDonutChart, optionsWeeklyDonutChart);
-		monthlyDonut = new Chartist.Pie('#monthlyDonutChart', dataMonthlyDonutChart, optionsMonthlyDonutChart);
-		monthlyLine = new Chartist.Line('#monthlyLineChart', dataMonthlyLineChart, optionsMonthlyLineChart);
+
+		var dailyDonut = new Chartist.Pie('#dailyDonutChart', dataDailyDonutChart, optionsDailyDonutChart);
+		var weeklyDonut = new Chartist.Pie('#weeklyDonutChart', dataWeeklyDonutChart, optionsWeeklyDonutChart);
+		var monthlyDonut = new Chartist.Pie('#monthlyDonutChart', dataMonthlyDonutChart, optionsMonthlyDonutChart);
+
+		ProfileServices.getProfileData().then(function(response){
+			var avgLimit = (response.monthly_limit)/(moment().daysInMonth());
+			var optionsMonthlyLineChart = {
+				fullWidth: true,
+				chartPadding: {
+					right: 40
+				},
+				showArea: true,
+				height: '350px',
+				plugins: [Chartist.plugins.tooltip({
+					appendToBody: true,
+					class: 'pointerdataclass'
+				}),
+				Chartist.plugins.ctThreshold({
+					threshold: avgLimit
+				})]
+			};
+			var monthlyLine = new Chartist.Line('#monthlyLineChart', dataMonthlyLineChart, optionsMonthlyLineChart);
+		});
 	};
+
+
 
 	/* --------    GOOGLE PLACES AUTOCOMPLETE   --------------*/
 
@@ -288,10 +309,10 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		// });
 		if (e.keyCode == 13 || e.keyCode == 9) {
 			if($('#location:visible').length){
-				for(key in $scope.gPlace.gm_bindings_.types){
+				for(var key in $scope.gPlace.gm_bindings_.types){
 					if(Number(key) >= 0){
 						expense.location = $scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0];
-						$('#location').innerText == expense.location;
+						$('#location').innerText = expense.location;
 					}
 				}
 				console.log("enter pressed or tab pressed ");

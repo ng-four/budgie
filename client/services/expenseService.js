@@ -13,7 +13,7 @@ angular.module('expense.service', [])
       url: '/'+inputType+"s",
       data: expenseData
     }).then(function(resp) {
-      
+
       return resp.data;
     }, function(error) {
        console.error('Submit Expense ERROR!!! ', error);

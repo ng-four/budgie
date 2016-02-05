@@ -209,6 +209,101 @@ input.form-control{
   }
 }
 
+.ct-series-a .ct-slice-donut, .ct-series-a .ct-line, .ct-series-a .ct-point{
+  stroke: #3bcd90;
+}
+.ct-series-a .ct-area {
+  fill: #3bcd90;
+}
+
+.ct-series-b .ct-slice-donut, .ct-series-b .ct-line, .ct-series-b .ct-point{
+  stroke: #32b7af;
+}
+.ct-series-b .ct-area {
+  fill: #32b7af;
+}
+
+.ct-series-c .ct-slice-donut, .ct-series-c .ct-line, .ct-series-c .ct-point{
+  stroke: #3ac49e;
+}
+.ct-series-c .ct-area {
+  fill: #3ac49e;
+}
+
+.ct-series-d .ct-slice-donut, .ct-series-d .ct-line, .ct-series-d .ct-point{
+  stroke: #22aac1;
+}
+.ct-series-d .ct-area {
+  fill: #22aac1;
+}
+
+.ct-series-e .ct-slice-donut, .ct-series-e .ct-line, .ct-series-e .ct-point{
+  stroke: #008fdd;
+}
+.ct-series-e .ct-area {
+  fill: #008fdd;
+}
+
+.ct-series-f .ct-slice-donut, .ct-series-f .ct-line, .ct-series-f .ct-point{
+  stroke: #079cd1;
+}
+.ct-series-f .ct-area {
+  fill: #079cd1;
+}
+
+.ct-series-g .ct-slice-donut, .ct-series-g .ct-line, .ct-series-g .ct-point, .ct-series-g .ct-area {
+  stroke: #0f83e3;
+}
+.ct-series-g .ct-area {
+  fill: #0f83e3;
+}
+
+.ct-series-h .ct-slice-donut, .ct-series-h .ct-line, .ct-series-h .ct-point, .ct-series-h .ct-area {
+  stroke: #5466e2;
+}
+.ct-series-h .ct-area {
+  fill: #5466e2;
+}
+
+.ct-series-i .ct-slice-donut, .ct-series-i .ct-line, .ct-series-i .ct-point, .ct-series-i .ct-area {
+  stroke: #3775e4;
+}
+.ct-series-i .ct-area {
+  fill: #3775e4;
+}
+
+.ct-series-j .ct-slice-donut, .ct-series-j .ct-line, .ct-series-j .ct-point, .ct-series-j .ct-area {
+  stroke: #6955de;
+}
+.ct-series-j .ct-area {
+  fill: #6955de;
+}
+
+.ct-series-k .ct-slice-donut, .ct-series-k .ct-line, .ct-series-k .ct-point, .ct-series-k .ct-area {
+  stroke: #8431d6;
+}
+.ct-series-k .ct-area {
+  fill: #8431d6;
+}
+
+.ct-series-l .ct-slice-donut, .ct-series-l .ct-line, .ct-series-l .ct-point, .ct-series-l .ct-area {
+  stroke: #7943da;
+}
+.ct-series-l .ct-area {
+  fill: #7943da;
+}
+
+.ct-target-line {
+  stroke: blue;
+  stroke-width: 2px;
+  stroke-dasharray: 4px;
+}
+
+.ct-point.ct-threshold-above, .ct-bar.ct-threshold-above {
+  stroke: #f05b4f;
+}
+
+
 /*--- LEARN PAGE ---*/
 .learn-page{
   .resources{
