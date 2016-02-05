@@ -4,6 +4,7 @@ angular.module('expense.service', [])
   var geocoder = new google.maps.Geocoder();
 
  var submitNewExpense = function(expenseData, inputType) {
+  console.log('expenseData ', expenseData);
   if(inputType === "income"){
      expenseData.income_date = expenseData.spent_date;
    }

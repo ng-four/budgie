@@ -76,15 +76,13 @@ angular.module('budgie', [
 		});
 
 		$urlRouterProvider.otherwise('/main/expense');
-	//  $httpProvider.interceptors.push('AttachSession');   // commented out till we get Auth set up
 
 })
 
-
-.factory('AttachTokens', function () {
+.factory('AttachTokens', function ($window) {
   var attach = {
     request: function (object) {
-      var jwt = window.localStorage.getItem('budgieID');
+      var jwt = $window.localStorage.getItem('budgieID');
       if (jwt !== 'undefined' && jwt) {
         object.headers['x-access-token'] = jwt;
       }
@@ -95,18 +93,19 @@ angular.module('budgie', [
   return attach;
 })
 
-
-.run(function ($rootScope, $location, AuthServices, ProfileServices) {
+.run(function ($rootScope, $location, AuthServices, ProfileServices, $state) {
   ProfileServices.getProfileData()
 	.then(function(success){
 	}, function(error){
 		if(AuthServices.isAuth()){
+			console.log('logout called in initial run func');
 			AuthServices.logOut();
 		}
 	});
 
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
-    if (toState.authenticate && !AuthServices.isAuth()) {
+    if (toState.authenticate && !AuthServices.isAuth()) {  
+
       $location.path('/landing/login');
     }
   	if(toState.name === 'main'){						//redirects to handle routing edge cases
