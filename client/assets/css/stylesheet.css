@@ -145,6 +145,9 @@ input.form-control {
   border-style: solid;
   border-width: 12px 12px 12px 0; }
 
+.dashboard .panel {
+  background-color: transparent; }
+
 .expense-form {
   margin-bottom: 25px; }
   .expense-form .form-group {
@@ -168,6 +171,13 @@ input.form-control {
   .expense-form .button-note {
     background: transparent;
     border: none; }
+
+.modal .expense-form .form-group {
+  display: block;
+  margin: 0; }
+
+.modal .expense-form .form-control {
+  width: 160px; }
 
 .donut-chart {
   position: relative;
@@ -286,6 +296,21 @@ input.form-control {
     .learn-page .tweet-container .tweet .content small {
       color: #8899a6; }
 
+/*--- HISTORY ---*/
+.history-controls .forms {
+  text-align: center; }
+  .history-controls .forms .form-group {
+    display: inline-block; }
+
+.history-controls .button-group {
+  text-align: center; }
+
+.history-controls .select {
+  border-bottom: 1px solid #375a7f;
+  background: transparent;
+  color: white;
+  width: auto; }
+
 /*--- FOOTER ---*/
 footer {
   margin-top: 30px; }
@@ -295,14 +320,8 @@ footer {
   height: 500px;
   width: 100%; }
 
-/*--- MEDIA QUERIES ---*/
-/* Small devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-  .navbar-default .navbar-collapse {
-    background: transparent; }
-  .learn-page .resources .item img {
-    height: 200px;
-    width: 200px; } }
+.pac-container {
+  z-index: 1051 !important; }
 
 /*--- MODAL  ----*/
 .ng-modal-overlay {
@@ -378,3 +397,20 @@ footer {
 
 .goal-row div table tr td {
   border-bottom: 1px solid #00bc8c; }
+
+/*--- MEDIA QUERIES ---*/
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .navbar-default .navbar-collapse {
+    background: transparent; }
+  .learn-page .resources .item img {
+    height: 200px;
+    width: 200px; }
+  .history-controls {
+    text-align: left; }
+    .history-controls .forms {
+      float: left; }
+      .history-controls .forms .form-group {
+        display: inline-block; }
+    .history-controls .button-group {
+      float: right; } }
