@@ -379,11 +379,24 @@ input.form-control{
     .item{
       margin-bottom: 15px;
       text-align: center;
-      img{
+			.thumbnail{
         background-color: #fff;
-        height: 100%;
-        width: 100%;
+        border: 0;
+        border-radius: 0;
+        height: 150px;
+        margin: 0 auto;
+        padding: 0;
+        width: 150px;
       }
+      .marketwatch{ padding-top: 45px; }
+      .google-finance{ padding-top: 10px; }
+      .yahoo-finance{ padding-top: 30px; }
+      .investopedia{ padding-top: 40px; }
+      .freakonomics{ padding-top: 25px; }
+      .cheat-sheet{ padding-top: 30px; }
+      .credit-com{ padding-top: 35px; }
+      .learnvest{ padding-top: 0; }
+      .nerdwallet{ padding-top: 35px; }
     }
   }
   .tweet-container{
@@ -566,10 +579,19 @@ footer {
   .learn-page{
     .resources{
       .item{
-        img{
-          height: 200px;
-          width: 200px;
-        }
+				.thumbnail{
+					height: 200px;
+					width: 200px;
+				}
+        .marketwatch{ padding-top: 65px; }
+        .google-finance{ padding-top: 30px; }
+        .yahoo-finance{ padding-top: 60px; }
+        .investopedia{ padding-top: 80px; }
+        .freakonomics{ padding-top: 50px; }
+        .cheat-sheet{ padding-top: 60px; }
+        .credit-com{ padding-top: 70px; }
+        .learnvest{ padding-top: 10px; }
+        .nerdwallet{ padding-top: 70px; }
       }
     }
   }
