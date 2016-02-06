@@ -42,6 +42,10 @@ body {
   border: none;
   color: #57a5f9; }
 
+.pointer:hover {
+  cursor: pointer;
+  cursor: hand; }
+
 /*--- LANDING ---*/
 .landing-page .jumbotron {
   height: 500px;
