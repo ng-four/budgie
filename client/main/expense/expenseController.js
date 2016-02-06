@@ -1,9 +1,10 @@
 angular.module('expense.controller', []) //Controller for the expense view of Budgie
 .controller('ExpenseController', function(ExpenseServices, MapServices, ProfileServices, AuthServices, $http, $timeout, $scope){
 	var expense = this;
+	expense.amount;
 	expense.location; //Location variable for Google Maps feature
 	expense.inputType = 'expense'; //Initializes ng-model on transaction type dropdown to "expense"
-	expense.categoryType = 'Food & Drink'; //Initializes ng-model on category dropdown to "Food & Drink"
+	expense.categoryType = 'Miscellaneous'; //Initializes ng-model on category dropdown to "Food & Drink"
 	expense.expenseTable = []; //Storage array for expense response objects that have been posted for the current day
 	expense.incomeTable = []; //Storage array for income response objects that have been posted for the current day
 	var categories = ['Education','Travel','Food & Drink','Rent','Household','Transport','Payments','Entertainment','Shopping','Healthcare','Tax','Miscellaneous']; //The possible categories users can assign to expense they input
@@ -87,16 +88,28 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		expense.editExpenseClicked = !expense.editExpenseClicked;
 	};
 
-	expense.editClick = function (idx, id) { //function to allow users to edit expenses from the expense table
+	expense.editClick = function (idx, id, inputType) { //function to allow users to edit expenses from the expense table
 		expense.newIndex = idx;
 		expense.newId = id;
-		expense.oldAmount = expense.expenseTable[idx].amount;
-		expense.newAmount = expense.expenseTable[idx].amount;
-		expense.newExpenseItem = expense.expenseTable[idx].name;
-		expense.newCategory = expense.expenseTable[idx].category;
-		expense.newNotes = expense.expenseTable[idx].notes;
-		expense.newSpentDate = new Date(expense.expenseTable[idx].spent_date);
-		expense.newLocation = expense.expenseTable[idx].location;
+		expense.inputType = inputType;
+		if (inputType === 'expense') {
+			expense.oldAmount = expense.expenseTable[idx].amount;
+			expense.newAmount = expense.expenseTable[idx].amount;
+			expense.newExpenseItem = expense.expenseTable[idx].name;
+			expense.newCategory = expense.expenseTable[idx].category;
+			expense.newNotes = expense.expenseTable[idx].notes;
+			expense.newSpentDate = new Date(expense.expenseTable[idx].spent_date);
+			expense.newLocation = expense.expenseTable[idx].location;
+		}
+		if (inputType === 'income') {
+			expense.oldAmount = expense.incomeTable[idx].amount;
+			expense.newAmount = expense.incomeTable[idx].amount;
+			expense.newExpenseItem = expense.incomeTable[idx].name;
+			expense.newCategory = expense.incomeTable[idx].category;
+			expense.newNotes = expense.incomeTable[idx].notes;
+			expense.newSpentDate = new Date(expense.incomeTable[idx].income_date);
+			expense.newLocation = expense.incomeTable[idx].location;
+		}
 	};
 
 	expense.editRow = function(idx, id, inputType){ //function to post users edits for expenses/incomes to database

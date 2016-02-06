@@ -19,14 +19,8 @@ body {
 .main-content {
   margin-top: 100px; }
 
-.btn-circle {
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 1.428571429;
-  border-radius: 15px; }
+.has-error .form-control {
+  border-color: #e74c3c; }
 
 .table > tbody > tr.success {
   border-bottom: 1px solid #00bc8c; }
@@ -47,10 +41,6 @@ body {
   background: transparent;
   border: none;
   color: #57a5f9; }
-
-.historytable th:hover{
-  cursor: pointer;
-}
 
 /*--- LANDING ---*/
 .landing-page .jumbotron {
@@ -175,6 +165,24 @@ input.form-control {
   .expense-form .button-note {
     background: transparent;
     border: none; }
+
+.table-expenses .amount, .table-incomes .amount {
+  width: 70px; }
+
+.table-expenses .name, .table-incomes .name {
+  width: 125px; }
+
+.table-expenses .category, .table-incomes .category {
+  width: 140px; }
+
+.table-expenses .time, .table-incomes .time {
+  width: 100px; }
+
+.table-expenses .notes, .table-incomes .notes {
+  width: 325px; }
+
+.table-expenses .edit, .table-expenses .remove, .table-incomes .edit, .table-incomes .remove {
+  width: 25px; }
 
 .modal .expense-form .form-group {
   display: block;
@@ -311,6 +319,8 @@ input.form-control {
   min-height: 65px;
   padding: 9px 0;
   position: relative; }
+  .learn-page .tweet-container .tweet a:hover {
+    text-decoration: none; }
   .learn-page .tweet-container .tweet .content {
     margin-left: 58px; }
     .learn-page .tweet-container .tweet .content .avatar {
@@ -322,6 +332,9 @@ input.form-control {
       color: #8899a6; }
     .learn-page .tweet-container .tweet .content small {
       color: #8899a6; }
+
+.learn-page .tweet-container .tweet-footer span {
+  margin-right: 15px; }
 
 /*--- HISTORY ---*/
 .history-controls .forms {
@@ -337,6 +350,9 @@ input.form-control {
   background: transparent;
   color: white;
   width: auto; }
+
+.history-table th:hover {
+  cursor: pointer; }
 
 /*--- FOOTER ---*/
 footer {

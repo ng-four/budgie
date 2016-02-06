@@ -76,23 +76,28 @@ angular.module('history.controller', [])
 	};
 
 
-	history.editClick = function (idx, id) {
-		console.log("idx, id ", idx, id);
+	history.editClick = function (idx, id, inputType) {
+		console.log("idx, id, inputType ", idx, id, inputType);
 		history.newIndex = idx;
 		history.newId = id;
+		history.inputType = inputType;
 		history.newAmount = history.allTable[idx].amount;
 		history.newExpenseItem = history.allTable[idx].name;
 		history.newCategory = history.allTable[idx].category;
 		history.newLocation = history.allTable[idx].location;
 		history.newNotes = history.allTable[idx].notes;
-		history.newSpentDate = new Date(history.allTable[idx].spent_date);
-		console.log('history.newSpentDate in edit ', history.newSpentDate);
+		if (inputType === 'expense') {
+			history.newSpentDate = new Date(history.allTable[idx].spent_date);
+		}
+		if (inputType === 'income') {
+			history.newSpentDate = new Date(history.allTable[idx].income_date);
+		}
 	}
 
 	history.editRow = function(idx, id, inputType){
 		history.newLocation = $('#newlocation').val();
 		console.log('history.newLocation in edit row call', history.newLocation);
-		
+
 		inputType = history.allTable[idx].inputType;
 
 		var jstime = new Date(history.newSpentDate);
@@ -133,11 +138,11 @@ angular.module('history.controller', [])
 	}
 
 	var addMarkers = function(){
-		for(var j = 0; j < history.allTable.length; j++){	
-   			if(history.allTable[j].geocode){					
+		for(var j = 0; j < history.allTable.length; j++){
+   			if(history.allTable[j].geocode){
    				var latlng = JSON.parse(history.allTable[j].geocode);
    				history.allTable[j].latlng = latlng;
-   				(function(j) {	
+   				(function(j) {
    					MapServices.renderMarker(history.allTable[j], map, bounds);
    				})(j);
    			}
@@ -147,8 +152,8 @@ angular.module('history.controller', [])
  	var renderMap = function(){
  		$timeout(createMap,200);
  		$timeout(addMarkers,600);
-   		$timeout(setBounds, 1000);	   		
- 	}	
+ 		$timeout(setBounds, 1000);
+ 	}
 
    	var setBounds = function(){
    		MapServices.setBounds(map, bounds);
@@ -164,40 +169,39 @@ angular.module('history.controller', [])
 
             var location = document.getElementById('newlocation');
             $scope.gPlace2 = new google.maps.places.Autocomplete(location, options);
-            google.maps.event.addDomListener(location, 'keydown', function(e) {             	
+            google.maps.event.addDomListener(location, 'keydown', function(e) {
     		// var pac = $('.pac-container');
     				// pac.each(function( index ) {
   					// console.log( index + ": " + $( this ).text() );
-				// });	
-				console.log('keyydown!!!');		
-    			if (e.keyCode == 13 || e.keyCode == 9) { 
+				// });
+				console.log('keyydown!!!');
+    			if (e.keyCode == 13 || e.keyCode == 9) {
     				console.log("enter pressed or tab pressed ");
     				if($('#newlocation:visible').length){
     					for(key in $scope.gPlace2.gm_bindings_.types){
     						if(Number(key) >= 0){
     							history.newLocation = $scope.gPlace2.gm_bindings_.types[key].Rd.U[0].j[0];
     						}
-    					} 					 					
-        				e.preventDefault(); 
+    					}
+        				e.preventDefault();
         			}
-    			}	
-    				
-			}); 
+    			}
 
-			google.maps.event.addDomListener(location, 'mouseout', function(e) { 
-            	console.log('mouseout!!!'); 
+			});
+
+			google.maps.event.addDomListener(location, 'mouseout', function(e) {
+            	console.log('mouseout!!!');
             	if($('#newlocation').length){
             		console.log('length ',$('#newlocation').length)
             		for(key in $scope.gPlace2.gm_bindings_.types){
-    						if(Number(key) >= 0){					
+    						if(Number(key) >= 0){
     							history.newLocation = $scope.gPlace2.gm_bindings_.types[key].Rd.U[0].j[0];
     							$('#newlocation').innerText == history.newLocation;
     							console.log('history.newLocation ', history.newLocation);
     						}
-    					} 	
+    					}
     				}
 
-            }); 
+            });
 
 });
-

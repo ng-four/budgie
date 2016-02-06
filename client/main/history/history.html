@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <table class="historytable table">
+      <table class="history-table table">
         <thead>
           <tr>
             <th ng-click="history.sortBy('amount')" title='Sort by transaction amount'>Amount</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
@@ -54,7 +54,7 @@
             <td style="overflow: hidden;white-space: nowrap; height: 60px; max-width: 175px; text-overflow: ellipsis;" title="{{expenseThings.location}}">{{expenseThings.location}}</td>
             <td style="overflow: hidden;white-space: nowrap; height: 60px; max-width: 175px; text-overflow: ellipsis;" title="{{expenseThings.notes}}">{{expenseThings.notes}}</td>
             <td class="text-right">
-              <button type="button" ng-click="history.editClick($index, expenseThings.id)" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" title="Click to edit"></button>
+              <button type="button" ng-click="history.editClick($index, expenseThings.id, expenseThings.inputType)" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" aria-label="Edit" title="Click to edit"></button>
             </td>
             <td class="text-right">
               <button type="button" value="Remove" data-ng-click="history.removeRow($index, expenseThings.id, expenseThings.inputType)" class="button-remove icon ion-close-round" title="Click to delete"></button>
@@ -85,9 +85,9 @@
                 <label for="inputNewExpenseItem">Expense: </label>
                 <input type="text" class="form-control" id="new-expense-item" placeholder="Expense" name="newExpenseItem" ng-model="history.newExpenseItem" required>
               </div>
-              <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newSpentDate.$error.required}">
+              <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newSpentDate.$.invalid}">
                 <label for="newSpentDate">Time: </label>
-                <input type="time" class="form-control" id="new-time" name="newTime" name="newSpentDate" ng-model="history.newSpentDate" required>
+                <input type="time" class="form-control" id="new-time" name="newSpentDate" ng-model="history.newSpentDate" required>
               </div>
               <div class="form-group col-md-6">
                 <label for="select">Category:</label>
@@ -118,8 +118,13 @@
           </form>
         </div>
         <div class="modal-footer">
+          <p ng-show="history.isModalInvalid" class='text-danger text-center' role="alert">Please fill out all of the fields</p>
+          <p ng-show="formEditTransaction.newAmount.$invalid" class="text-danger">Please enter an amount</p>
+          <p ng-show="history.newAmount < 0" class="text-danger">Please enter an amount that's not negative</p>
+          <p ng-show="formEditTransaction.newExpenseItem.$invalid" class="text-danger">Please enter a item for expense</p>
+          <p ng-show="formEditTransaction.newSpentDate.$invalid" class="text-danger">Please enter a time</p>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" ng-disabled="formEditTransaction.$invalid" ng-click="history.editRow(history.newIndex, history.newId, history.inputType)" data-dismiss="modal" >Save</button>
+          <button type="button" class="btn btn-primary" ng-disabled="history.newAmount < 0 || formEditTransaction.$invalid" ng-click="history.editRow(history.newIndex, history.newId, history.inputType)" data-dismiss="modal" >Save</button>
         </div>
       </div>
     </div>
