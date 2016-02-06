@@ -105,9 +105,9 @@
           </tr>
           <tr ng-repeat='goal in profile.goals'>
             <td class='col-md-2'>{{ goal.name }}</td>
-            <td class='col-md-2'>${{ goal.amount }}</td>
+            <td class='col-md-2'>{{ goal.amount | currency:"$":0 }}</td>
             <td class='col-md-2'>{{ goal.category }}</td>
-            <td class='col-md-2'>${{ goal.saved_amount }}</td>
+            <td class='col-md-2'>{{ goal.saved_amount | currency:"$":0 }}</td>
             <td class="text-right">
               <button type="button" class="button-notes icon ion-clipboard" data-toggle="modal" data-target="#notesModal"
               data-ng-click="profile.showNotes(goal.notes)" title="{{ goal.notes || 'Notes' }}"></button>

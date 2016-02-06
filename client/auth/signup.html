@@ -20,14 +20,14 @@
     </div>
     <div class="form-group" ng-class="{'has-error': formSignUp.monthly_limit.$error.required && !formSignUp.monthly_limit.$pristine}">
       <label for="inputMonthlyLimit" class="sr-only">Monthly Limit</label>
-      <input type="number" name="monthly_limit" id="monthly_limit" class="form-control" placeholder="Monthly Limit" ng-model="signup.monthly_limit" required>
+      <input type="number" name="monthly_limit" id="monthly_limit" class="form-control" placeholder="Monthly Limit" ng-model="signup.monthly_limit" data-toggle="tooltip" data-placement="left" title="Estimate your total monthly expenditures. (Don't worry - you can always edit this later.)" required>
       <p ng-show="formSignUp.monthly_limit.$error.required && !formSignUp.monthly_limit.$pristine" class="help-block">Please enter a Monthly Limit</p>
       <p ng-show="signup.monthly_limit <= 0 && !formSignUp.monthly_limit.$pristine" class="text-danger">Please choose an amount greater than zero.</p>
 
     </div>
     <div class="form-group" ng-class="{'has-error': formSignUp.savings_goal.$error.required && !formSignUp.savings_goal.$pristine}">
       <label for="inputMonthlySavingsGoal" class="sr-only">Monthly Savings Goal</label>
-      <input type="number" name="savings_goal" id="savings_goal" class="form-control" placeholder="Monthly Savings Goal" ng-model="signup.savings_goal" required>
+      <input type="number" name="savings_goal" id="savings_goal" class="form-control" placeholder="Monthly Savings Goal" ng-model="signup.savings_goal" data-toggle="tooltip" data-placement="right" title="Experts recommend setting aside at least 10% of your monthly salary for savings." required>
       <p ng-show="formSignUp.savings_goal.$error.required && !formSignUp.savings_goal.$pristine" class="help-block">Please enter a Monthly Savings Goal</p>
       <p ng-show="signup.savings_goal > 99 && !formSignUp.savings_goal.$pristine" class="text-danger">Please enter a percentage below 100.</p>
       <p ng-show="signup.savings_goal <= 0 && !formSignUp.savings_goal.$pristine" class="text-danger">Please enter a percentage greater than zero.</p>

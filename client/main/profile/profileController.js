@@ -30,12 +30,9 @@ angular.module('profile.controller', [])
 	};
 
 	profile.submitNewLimit = function(newLimit){
-		if(!newLimit){
-			newLimit = profile.monthly_limit;
-		}
+		newLimit = newLimit || profile.monthly_limit
 		ProfileServices.updateLimit(newLimit)
 			.then(function(resp){
-				console.log(resp);
 				profile.loadProfile();
 			}, function(error){
 				throw error;
@@ -49,12 +46,8 @@ angular.module('profile.controller', [])
 
 	profile.submitNewSavingsTarget = function(newSavings){
 		newSavings = newSavings || profile.savings_goal;
-		// if(!newSavings){
-		// 	newSavings = profile.savings_goal;
-		// }
 		ProfileServices.updateSavingsTarget(newSavings)
 			.then(function(resp){
-				console.log(resp);
 				profile.changeTarget();
 				profile.loadProfile();
 			}, function(error){
@@ -78,6 +71,11 @@ angular.module('profile.controller', [])
 		GoalServices.addNewGoal(newGoal)
 		.then(function(resp){
 			profile.goals.push(resp.data);
+			goal.name = '';
+			goal.amount = '';
+			goal.category = '';
+			goal.notes = '';
+
 		});
 
 	};

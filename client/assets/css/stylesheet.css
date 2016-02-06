@@ -48,6 +48,10 @@ body {
   border: none;
   color: #57a5f9; }
 
+.historytable th:hover{
+  cursor: pointer;
+}
+
 /*--- LANDING ---*/
 .landing-page .jumbotron {
   height: 500px;
