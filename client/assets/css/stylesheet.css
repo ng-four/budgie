@@ -383,6 +383,12 @@ input.form-control {
 .history-table th:hover {
   cursor: pointer; }
 
+.history-table .location, .history-table .notes {
+  max-width: 175px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
 /*--- FOOTER ---*/
 footer {
   margin-top: 30px; }
