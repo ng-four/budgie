@@ -54,7 +54,10 @@ body{
   }
 }
 
-
+.pointer:hover {
+  cursor: pointer;
+  cursor: hand;
+}
 
 /*--- LANDING ---*/
 .landing-page{
