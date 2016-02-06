@@ -301,6 +301,9 @@ input.form-control {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#141414',GradientType=0 );
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.36); }
 
+.ct-grid {
+  stroke: none; }
+
 .ct-grids .ct-horizontal:first-child, .first-vertical, .axis {
   stroke: white; }
 
@@ -311,10 +314,32 @@ input.form-control {
 .learn-page .resources .item {
   margin-bottom: 15px;
   text-align: center; }
-  .learn-page .resources .item img {
+  .learn-page .resources .item .thumbnail {
     background-color: #fff;
-    height: 100%;
-    width: 100%; }
+    border: 0;
+    border-radius: 0;
+    height: 150px;
+    margin: 0 auto;
+    padding: 0;
+    width: 150px; }
+  .learn-page .resources .item .marketwatch {
+    padding-top: 45px; }
+  .learn-page .resources .item .google-finance {
+    padding-top: 10px; }
+  .learn-page .resources .item .yahoo-finance {
+    padding-top: 30px; }
+  .learn-page .resources .item .investopedia {
+    padding-top: 40px; }
+  .learn-page .resources .item .freakonomics {
+    padding-top: 25px; }
+  .learn-page .resources .item .cheat-sheet {
+    padding-top: 30px; }
+  .learn-page .resources .item .credit-com {
+    padding-top: 35px; }
+  .learn-page .resources .item .learnvest {
+    padding-top: 0; }
+  .learn-page .resources .item .nerdwallet {
+    padding-top: 35px; }
 
 .learn-page .tweet-container li {
   border-bottom: 1px solid rgba(225, 232, 237, 0.3); }
@@ -450,9 +475,27 @@ footer {
 @media (min-width: 768px) {
   .navbar-default .navbar-collapse {
     background: transparent; }
-  .learn-page .resources .item img {
+  .learn-page .resources .item .thumbnail {
     height: 200px;
     width: 200px; }
+  .learn-page .resources .item .marketwatch {
+    padding-top: 65px; }
+  .learn-page .resources .item .google-finance {
+    padding-top: 30px; }
+  .learn-page .resources .item .yahoo-finance {
+    padding-top: 60px; }
+  .learn-page .resources .item .investopedia {
+    padding-top: 80px; }
+  .learn-page .resources .item .freakonomics {
+    padding-top: 50px; }
+  .learn-page .resources .item .cheat-sheet {
+    padding-top: 60px; }
+  .learn-page .resources .item .credit-com {
+    padding-top: 70px; }
+  .learn-page .resources .item .learnvest {
+    padding-top: 10px; }
+  .learn-page .resources .item .nerdwallet {
+    padding-top: 70px; }
   .history-controls {
     text-align: left; }
     .history-controls .forms {
