@@ -133,6 +133,12 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		ExpenseServices.editExpense(id, expenseData, inputType) //posts users edits to database via ExpenseServices
 		.then(function(resp){
 			if (resp) {
+				if (inputType === 'expense') {
+					expense.expenseTable.splice(idx, 1, resp);
+				}
+				if (inputType === 'income') {
+					expense.incomeTable.splice(idx, 1, resp);
+				}
 				$("#editModal").modal("hide"); //Edit modal disappears after edit is successful on backend
 				expense.updateChartData(expense.newCategory, expense.newAmount - expense.oldAmount); //Updates charts data arrays from above
 				expense.renderGraphs(); //Re-renders graphs on expense view based on the users edits
@@ -174,6 +180,11 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 				resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
 				if(expType === 'expense'){ //Checks if user input was an expense
 					expense.expenseTable.push(resp); //Adds expenseData object to expenseTable
+					$('#amount').val("");
+					$('#expenseItem').val("");
+					$('#time').val("");
+					$('#location').val("");
+					$('#notes').val("");
 					expense.updateChartData(resp.category, resp.amount); //Updates charts data arrays from above
 					expense.renderGraphs(); //Re-renders graphs on expense view based on the users edits
 				}else if(expType === 'income'){ //Checks if user input was an income
