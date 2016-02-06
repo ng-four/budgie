@@ -316,7 +316,7 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 					var animationDefinition = {
 						'stroke-dashoffset': {
 							id: 'anim' + data.index,
-							dur: 300,
+							dur: 100,
 							from: -pathLength + 'px',
 							to:  '0px',
 							easing: Chartist.Svg.Easing.easeOutQuint,
@@ -343,7 +343,7 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 				var animationDefinition = {
 					'stroke-dashoffset': {
 						id: 'anim' + data.index,
-						dur: 300,
+						dur: 100,
 						from: -pathLength + 'px',
 						to:  '0px',
 						easing: Chartist.Svg.Easing.easeOutQuint,
@@ -370,7 +370,7 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 				var animationDefinition = {
 					'stroke-dashoffset': {
 						id: 'anim' + data.index,
-						dur: 300,
+						dur: 100,
 						from: -pathLength + 'px',
 						to:  '0px',
 						easing: Chartist.Svg.Easing.easeOutQuint,
