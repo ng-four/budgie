@@ -1,6 +1,5 @@
+// Express Setup
 var express = require('express');
-
-// Config
 var app = express();
 
 // Middleware
@@ -10,10 +9,10 @@ var cors = require('cors');
 app.use(cors());
 
 
-// Set what we are listening on.
+// Set what we are listening on (Env check)
 app.set("port", process.env.PORT || 8000);
 
-// Serving static files from client directory.
+// Serving static files from client directory. Work around only.
 var dirname = __dirname;
 dirname = dirname.slice(0,-6);
 app.use(express.static(dirname + '/client/'));
@@ -22,7 +21,7 @@ app.use(express.static(dirname + '/client/'));
 var router = require('./routes.js');
 app.use("/", router);
 
-// If we are being run directly, run the server.
+// If we are being run directly, run the server
 if (!module.parent) {
     app.listen(app.get("port"));
     console.log("Listening on", app.get("port"));

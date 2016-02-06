@@ -158,8 +158,6 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		spentDate.minute(Number(minutes));
 		spentDate = spentDate.format('YYYY-MM-DD HH:mm:ss');
 
-		console.log('spentDate.hour, spentDate.minute, spentDate', spentDate.hour, spentDate.minute, spentDate);
-
 		//expenseData is an object of all the information for the users expense he/she just inputted
 		var expenseData = {'amount':amount.value, 'name':expenseItem.value, 'category':expense.categoryType, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location};
 		if(expenseData.location){ //checks if the user entered a location upon inputting their expense
@@ -177,8 +175,8 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		ExpenseServices.submitNewExpense(expObj, expType) //Posting to database via ExpenseServices
 		.then(function(resp){
 			if (resp) {
-				resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
-				if(expType === 'expense'){ //Checks if user input was an expense
+				if(expType === 'expense'){ //Checks if user input was an expense (according to server)
+          resp.format = moment(resp.spent_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
 					expense.expenseTable.push(resp); //Adds expenseData object to expenseTable
 					$('#amount').val("");
 					$('#expenseItem').val("");
@@ -187,7 +185,8 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 					$('#notes').val("");
 					expense.updateChartData(resp.category, resp.amount); //Updates charts data arrays from above
 					expense.renderGraphs(); //Re-renders graphs on expense view based on the users edits
-				}else if(expType === 'income'){ //Checks if user input was an income
+				}else if(expType === 'income'){ //Checks if user input was an income (according to server)
+          resp.format = moment(resp.income_date, 'YYYY-MM-DD HH:mm:ss').from(moment());
 					expense.incomeTable.push(resp); //Adds expenseData object to incomeTable (since it is an income)
 				}
 			} else {
@@ -281,7 +280,6 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 
 
 	expense.renderGraphs = function(){ //function to render visuals of users finances
-		console.log("renderGraphs is being called!!");
 		var domCategories = ["dailyDonutChart", "weeklyDonutChart", "monthlyDonutChart", "monthlyLineChart"];
 		// For each div with #id
 		// Remove chartist classnames and delete child nodes
@@ -289,7 +287,6 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		// if(expense.dailyDonut !== undefined){
 			for(var i = 0; i<domCategories.length; i++){
 				var currentCat = document.getElementById(domCategories[i]);
-				console.log("these are currentCats", currentCat);
 				currentCat.innerHTML = '';
 			}
 		// }
