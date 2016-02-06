@@ -40,7 +40,7 @@
             <th ng-click="history.sortBy('amount')" title='Sort by transaction amount'>Amount</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
             <th ng-click="history.sortBy('name')" title='Sort by transaction description'>Expense</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
             <th ng-click="history.sortBy('category')" title="Sort by category">Category</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
-            <th ng-click="history.sortBy('spent_date')" title="Sort by transaction date">Date</th><span class="sortorder" ng-class="{reverse:reverse}"/>
+            <th ng-click="history.sortBy('spent_date')" title="Sort by transaction date" data-toggle="tooltip" data-placement="bottom" tooltip>Date</th><span class="sortorder" ng-class="{reverse:reverse}"/>
             <th ng-click="history.sortBy('location')" title="Sort by transaction location">Location</th><span class="sortorder" ng-class="{reverse:reverse}"/>
             <th ng-click="history.sortBy('notes')" title="Sort by note">Notes</th><span class="sortorder" ng-class="{reverse:reverse}"/>
           </tr>
