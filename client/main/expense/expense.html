@@ -15,17 +15,18 @@
             <div class="form-group" ng-class="{'has-error': formAddTransaction.amount.$error.required && !formAddTransaction.amount.$pristine}">
               $
               <label for="inputAmount" class="sr-only">Amount</label>
-              <input type="number" id="amount" class="form-control" placeholder="Amount" name="amount" ng-model="amount" required>
+              <input type="number" id="amount" class="form-control" placeholder="Amount" name="amount" ng-model="expense.amount" required only-digits>
             </div>
             <div class="form-group" ng-class="{'has-error': formAddTransaction.expenseItem.$error.required && !formAddTransaction.expenseItem.$pristine}">
               for
               <label for="inputExpense" class="sr-only">Name of Expense</label>
               <input type="text" id="expenseItem" class="form-control" placeholder="Expense" name="expenseItem" ng-model="expenseItem" required>
             </div>
-            <div class="form-group"  ng-class="{'has-error': formAddTransaction.time.$error.required && !formAddTransaction.expenseItem.$pristine}">
+            <div class="form-group"  ng-class="{'has-error': formAddTransaction.time.$invalid && !formAddTransaction.time.$pristine}">
               at
               <label for="inputTime" class="sr-only">Time</label>
-              <input type="time" id="time" class="form-control" name="time" ng-model="time" required>
+              <input type="time" id="time" class="form-control" name="time" ng-model="time" ng-model="expense.spent_date" required>
+              .
             </div>
             <div class="form-group">
               <label for="select" class="sr-only">Category:</label>
@@ -45,6 +46,7 @@
               </select>
             </div>
             <div class="form-group">
+              <label for="inputLocation" class="sr-only">Location:</label>
               <input type="text" id="location" class="form-control" placeholder="Location" name="location" ng-model="expense.location" >
             </div>
             <div class="form-group">
@@ -52,8 +54,11 @@
             </div>
 
             <div class="form-group button-group">
-              <p ng-show="expense.isInvalid" class='text-danger' role="alert">Please fill out all of the fields</p>
-              <button type="submit" class="btn btn-primary" ng-click="expense.addExpense()" ng-disabled="formAddTransaction.$invalid || formAddTransaction.$pristine">Submit</button>
+              <p ng-show="formAddTransaction.amount.$invalid && !formAddTransaction.amount.$pristine" class="text-danger">Please enter an amount</p>
+              <p ng-show="expense.amount < 0" class="text-danger">Please enter an amount that's not negative</p>
+              <p ng-show="formAddTransaction.expenseItem.$invalid && !formAddTransaction.expenseItem.$pristine" class="text-danger">Please enter a item for expense</p>
+              <p ng-show="formAddTransaction.time.$invalid && !formAddTransaction.time.$pristine" class="text-danger">Please enter a time</p>
+              <button type="submit" class="btn btn-primary" ng-click="expense.addExpense()" ng-disabled="expense.amount < 0 || formAddTransaction.$invalid || formAddTransaction.$pristine">Submit</button>
               <button type="reset" ng-click="formAddTransaction.$setPristine(true)" class="btn btn-default">Cancel</button>
             </div>
           </fieldset>
@@ -67,24 +72,24 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" ></button>
-          <h4 class="modal-title" id="editModalLabel">Edit Expense</h4>
+          <h4 class="modal-title" id="editModalLabel">Edit {{expense.inputType === "expense" ? "Expense" : "Income"}}</h4>
         </div>
         <div class="modal-body">
           <form name="formEditTransaction" class="form-horizontal expense-form text-center" novalidate>
             <fieldset>
-              <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newAmount.$error.required}">
+              <div class="form-group col-sm-6" ng-class="{'has-error': formEditTransaction.newAmount.$error.required}">
                 <label for="inputNewAmount">Amount: </label>
-                <input type="number" id="new-amount" class="form-control" placeholder="Amount" name="newAmount" ng-model="expense.newAmount" required>
+                <input type="number" id="new-amount" class="form-control" placeholder="Amount" name="newAmount" ng-model="expense.newAmount" required only-digits>
               </div>
-              <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newExpenseItem.$error.required}">
+              <div class="form-group col-sm-6" ng-class="{'has-error': formEditTransaction.newExpenseItem.$error.required}">
                 <label for="inputNewExpenseItem">Expense: </label>
                 <input type="text" id="new-expense-item" class="form-control" placeholder="Expense" name="newExpenseItem" ng-model="expense.newExpenseItem" required>
               </div>
-              <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newSpentDate.$error.required}">
+              <div class="form-group col-sm-6" ng-class="{'has-error': formEditTransaction.newSpentDate.$invalid}">
                 <label for="newSpentDate">Time: </label>
                 <input type="time" id="new-time" class="form-control" name="newSpentDate" ng-model="expense.newSpentDate" required>
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-sm-6">
                 <label for="select">Category:</label>
                 <select id="new-category" class="form-control select" name="newCategory" ng-model="expense.newCategory">
                   <option value="Food & Drink">Food & Drink</option>
@@ -101,11 +106,11 @@
                   <option value="Miscellaneous">Miscellaneous</option>
                 </select>
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-sm-6">
                 <label for="select">Location: </label>
                 <input type="text" class="form-control" id="newlocation" placeholder="Location" name="newLocation" ng-model="expense.newLocation">
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-sm-6">
                 <label for="notes">Notes: </label>
                 <input type="text" id="new-notes" class="form-control" placeholder="Notes" name="newNotes" ng-model="expense.newNotes"/>
               </div>
@@ -114,10 +119,14 @@
         </div>
 
         <div class="modal-footer">
-          <p ng-show="expense.isModalInvalid" class='text-danger text-center' role="alert">Please fill out all of the fields</p>
           <div class="form-group button-group">
+            <p ng-show="expense.isModalInvalid" class='text-danger text-center' role="alert">Please fill out all of the fields</p>
+            <p ng-show="formEditTransaction.newAmount.$invalid" class="text-danger">Please enter an amount</p>
+            <p ng-show="expense.newAmount < 0" class="text-danger">Please enter an amount that's not negative</p>
+            <p ng-show="formEditTransaction.newExpenseItem.$invalid" class="text-danger">Please enter a item for expense</p>
+            <p ng-show="formEditTransaction.newSpentDate.$invalid" class="text-danger">Please enter a time</p>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" ng-click="expense.editRow(expense.newIndex, expense.newId, 'expense')" ng-disabled="formEditTransaction.$invalid">Save</button>
+            <button type="button" class="btn btn-primary" ng-click="expense.editRow(expense.newIndex, expense.newId, expense.inputType)" ng-disabled="expense.newAmount < 0 || formEditTransaction.$invalid">Save</button>
           </div>
         </div>
       </div>
@@ -171,18 +180,18 @@
 
   <!-- DAILY TRANSACTIONS -->
     <div class="container">
-      <table class="table">
+      <table class="table-expenses table">
         <tbody>
           <tr class="success" ng-repeat="expenseThings in expense.expenseTable">
-            <td>${{expenseThings.amount}}</td>
-            <td>{{expenseThings.name}}</td>
-            <td><span class="category-tag">{{expenseThings.category}}</span></td>
-            <td>{{expenseThings.format}}</td>
-            <td>{{expenseThings.notes}}</td>
-            <td class="text-right">
-                <button type="button" ng-click="expense.editClick($index, expenseThings.id)" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" aria-label="Edit"></button>
+            <td class="amount">${{expenseThings.amount}}</td>
+            <td class="name">{{expenseThings.name}}</td>
+            <td class="category"><span class="category-tag">{{expenseThings.category}}</span></td>
+            <td class="time">{{expenseThings.format}}</td>
+            <td class="notes">{{expenseThings.notes}}</td>
+            <td class="edit text-right">
+                <button type="button" ng-click="expense.editClick($index, expenseThings.id, 'expense')" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" aria-label="Edit"></button>
             </td>
-            <td class="text-right">
+            <td class="remove text-right">
 		            <button type="button" value="Remove" data-ng-click="expense.removeRow($index, expenseThings.id, 'expense')" class="button-remove icon ion-close-round" aria-label="Remove"></button>
 		        </td>
           </tr>
@@ -190,18 +199,18 @@
       </table>
     </div>
     <div class="container">
-      <table class="table">
+      <table class="table-incomes table">
         <tbody>
           <tr class="info" ng-repeat="incomeThings in expense.incomeTable">
-            <td>${{incomeThings.amount}}</td>
-            <td>{{incomeThings.name}}</td>
-            <td><span class="category-tag">{{incomeThings.category}}</span></td>
-            <td>{{incomeThings.format}}</td>
-            <td>{{incomeThings.notes}}</td>
-            <td class="text-right">
-                <button type="button" ng-click="expense.editClick($index, expenseThings.id)" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" aria-label="Edit"></button>
+            <td class="amount">${{incomeThings.amount}}</td>
+            <td class="name">{{incomeThings.name}}</td>
+            <td class="category"><span class="category-tag">{{incomeThings.category}}</span></td>
+            <td class="time">{{incomeThings.format}}</td>
+            <td class="notes">{{incomeThings.notes}}</td>
+            <td class="edit text-right">
+                <button type="button" ng-click="expense.editClick($index, incomeThings.id, 'income')" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" aria-label="Edit"></button>
             </td>
-            <td class="text-right">
+            <td class="remove text-right">
 		            <button type="button" value="Remove" data-ng-click="expense.removeRow($index, incomeThings.id, 'income')" class="button-remove icon ion-close-round" aria-label="Remove"></button>
 		        </td>
           </tr>
