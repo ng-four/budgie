@@ -37,8 +37,6 @@ angular.module('signup.controller', [])
       $location.path('/landing/login');
       throw error;
     });
-
-
 			// .then(function(resp){
 			// 	console.log("resp in submit in signup controller", resp);
 			// 	//var changePath = function(){
@@ -50,4 +48,19 @@ angular.module('signup.controller', [])
 			// });
 	};
 
+})
+
+.directive('tooltip', function(){
+    return {
+       // restrict: 'A',
+        link: function(scope, element, attrs){
+            $(element).hover(function(){
+                // on mouseenter
+                $(element).tooltip('show');
+            }, function(){
+                // on mouseleave
+                $(element).tooltip('hide');
+            });
+        }
+    };
 });
