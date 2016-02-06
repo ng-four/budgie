@@ -184,7 +184,7 @@ input.form-control {
   display: inline-block; }
   .donut-chart .donut-chart-label {
     position: relative;
-    top: 115px;
+    top: 120px;
     text-align: center;
     color: white; }
 
@@ -267,6 +267,29 @@ input.form-control {
 
 .ct-point.ct-threshold-above, .ct-bar.ct-threshold-above {
   stroke: #f05b4f; }
+
+.ct-label {
+  display: none; }
+
+.chartist-tooltip {
+  position: absolute;
+  max-width: 200px;
+  padding: 3px 8px;
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  background: #000000;
+  background: -moz-linear-gradient(top, #000000 0%, #141414 100%);
+  background: -webkit-linear-gradient(top, #000000 0%, #141414 100%);
+  background: linear-gradient(to bottom, #000000 0%, #141414 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#141414',GradientType=0 );
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.36); }
+
+.ct-grids .ct-horizontal:first-child, .first-vertical, .axis {
+  stroke: white; }
+
+.ct-label {
+  color: white; }
 
 /*--- LEARN PAGE ---*/
 .learn-page .resources .item {

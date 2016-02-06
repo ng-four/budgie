@@ -196,8 +196,8 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		// width: 300,
 		height: 200,
 		plugins: [Chartist.plugins.tooltip({
-			appendToBody: true,
-			class: 'donutpointerdataclass'
+			currency: "$",
+			appendToBody: true
 		})]
 	};
 
@@ -212,8 +212,8 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		// width: 300,
 		height: 200,
 		plugins: [Chartist.plugins.tooltip({
-			appendToBody: true,
-			class: 'donutpointerdataclass'
+			currency: "$",
+			appendToBody: true
 		})]
 	};
 
@@ -228,8 +228,8 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		// width: 300,
 		height: 200,
 		plugins: [Chartist.plugins.tooltip({
-			appendToBody: true,
-			class: 'donutpointerdataclass'
+			currency: "$",
+			appendToBody: true
 		})]
 	};
 
@@ -259,17 +259,118 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		// For each div with #id
 		// Remove chartist classnames and delete child nodes
 		// Rebuild new chartist variables on processed divs
-		if(dailyDonut !== undefined){
+		// if(expense.dailyDonut !== undefined){
 			for(var i = 0; i<domCategories.length; i++){
 				var currentCat = document.getElementById(domCategories[i]);
 				console.log("these are currentCats", currentCat);
 				currentCat.innerHTML = '';
 			}
+		// }
+
+		if(dailyArr.reduce(function(a, b){ return a + b; }) > 0) {
+			expense.dailyDonut = new Chartist.Pie('#dailyDonutChart', dataDailyDonutChart, optionsDailyDonutChart);
+			jQuery('#dailyDonutChart').append('<p class="donut-chart-label" ng-show="expense.dailyDonut">Daily</p>');
+		} else {
+			expense.dailyDonut = undefined;
+			jQuery('#dailyDonutChart').append('<p class="donut-chart-label" ng-hide="expense.dailyDonut">No Expenses Today</p>');
+		}
+		if(weeklyArr.reduce(function(a, b){ return a + b; }) > 0){
+			expense.weeklyDonut = new Chartist.Pie('#weeklyDonutChart', dataWeeklyDonutChart, optionsWeeklyDonutChart);
+			jQuery('#weeklyDonutChart').append('<p class="donut-chart-label" ng-show="expense.weeklyDonut">Weekly</p>');
+		} else {
+			expense.weeklyDonut = undefined;
+			jQuery('#weeklyDonutChart').append('<p class="donut-chart-label" ng-hide="expense.weeklyDonut">No Expenses This Week</p>');
+		}
+		if(monthlyArr.reduce(function(a, b){ return a + b; }) > 0){
+			expense.monthlyDonut = new Chartist.Pie('#monthlyDonutChart', dataMonthlyDonutChart, optionsMonthlyDonutChart);
+			jQuery('#monthlyDonutChart').append('<p class="donut-chart-label" ng-show="expense.monthlyDonut">Monthly</p>');
+		} else {
+			expense.monthlyDonut = undefined;
+			jQuery('#monthlyDonutChart').append('<p class="donut-chart-label" ng-hide="expense.monthlyDonut">No Expenses This Month</p>');
 		}
 
-		var dailyDonut = new Chartist.Pie('#dailyDonutChart', dataDailyDonutChart, optionsDailyDonutChart);
-		var weeklyDonut = new Chartist.Pie('#weeklyDonutChart', dataWeeklyDonutChart, optionsWeeklyDonutChart);
-		var monthlyDonut = new Chartist.Pie('#monthlyDonutChart', dataMonthlyDonutChart, optionsMonthlyDonutChart);
+
+		if(expense.dailyDonut !== undefined){
+			expense.dailyDonut.on('draw', function(data) { //animation for dailyDonut chart
+				if(data.type === 'slice') {
+					var pathLength = data.element._node.getTotalLength();
+					data.element.attr({
+						'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+					});
+					var animationDefinition = {
+						'stroke-dashoffset': {
+							id: 'anim' + data.index,
+							dur: 300,
+							from: -pathLength + 'px',
+							to:  '0px',
+							easing: Chartist.Svg.Easing.easeOutQuint,
+							fill: 'freeze'
+						}
+					};
+					if(data.index !== 0) {
+						animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+					}
+					data.element.attr({
+						'stroke-dashoffset': -pathLength + 'px'
+					});
+					data.element.animate(animationDefinition, false);
+				}
+			});
+		}
+	if(expense.weeklyDonut !== undefined){
+		expense.weeklyDonut.on('draw', function(data) { //animation for weeklyDonut chart
+			if(data.type === 'slice') {
+				var pathLength = data.element._node.getTotalLength();
+				data.element.attr({
+					'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+				});
+				var animationDefinition = {
+					'stroke-dashoffset': {
+						id: 'anim' + data.index,
+						dur: 300,
+						from: -pathLength + 'px',
+						to:  '0px',
+						easing: Chartist.Svg.Easing.easeOutQuint,
+						fill: 'freeze'
+					}
+				};
+				if(data.index !== 0) {
+					animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+				}
+				data.element.attr({
+					'stroke-dashoffset': -pathLength + 'px'
+				});
+				data.element.animate(animationDefinition, false);
+			}
+		});
+	}
+	if(expense.monthlyDonut !== undefined){
+		expense.monthlyDonut.on('draw', function(data) { //animation for monthlyDonut chart
+			if(data.type === 'slice') {
+				var pathLength = data.element._node.getTotalLength();
+				data.element.attr({
+					'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+				});
+				var animationDefinition = {
+					'stroke-dashoffset': {
+						id: 'anim' + data.index,
+						dur: 300,
+						from: -pathLength + 'px',
+						to:  '0px',
+						easing: Chartist.Svg.Easing.easeOutQuint,
+						fill: 'freeze'
+					}
+				};
+				if(data.index !== 0) {
+					animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+				}
+				data.element.attr({
+					'stroke-dashoffset': -pathLength + 'px'
+				});
+				data.element.animate(animationDefinition, false);
+			}
+		});
+	}
 
 		ProfileServices.getProfileData().then(function(response){
 			var avgLimit = (response.monthly_limit)/(moment().daysInMonth());
@@ -281,14 +382,121 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 				showArea: true,
 				height: '350px',
 				plugins: [Chartist.plugins.tooltip({
-					appendToBody: true,
-					class: 'pointerdataclass'
+					currency: "$",
+					appendToBody: true
 				}),
 				Chartist.plugins.ctThreshold({
 					threshold: avgLimit
 				})]
 			};
-			var monthlyLine = new Chartist.Line('#monthlyLineChart', dataMonthlyLineChart, optionsMonthlyLineChart);
+			expense.monthlyLine = new Chartist.Line('#monthlyLineChart', dataMonthlyLineChart, optionsMonthlyLineChart);
+			expense.monthlyLine.on('draw', function(data) {
+				if(data.type === 'grid') {
+					if(data.index === 0){
+						data.element.addClass("axis");
+					}
+				}
+			});
+
+
+
+		var seq = 0,
+		delays = 10,
+		durations = 300;
+
+		// Once the chart is fully created we reset the sequence
+		expense.monthlyLine.on('created', function() {
+			seq = 0;
+		});
+
+		// On each drawn element by Chartist we use the Chartist.Svg API to trigger SMIL animations
+		expense.monthlyLine.on('draw', function(data) {
+			seq++;
+
+			if(data.type === 'line') {
+				data.element.animate({
+					opacity: {
+						begin: seq * delays + 1000,
+						dur: durations,
+						from: 0,
+						to: 1
+					}
+				});
+			} else if(data.type === 'label' && data.axis === 'x') {
+				data.element.animate({
+					y: {
+						begin: seq * delays,
+						dur: durations,
+						from: data.y + 100,
+						to: data.y,
+						easing: 'easeOutQuart'
+					}
+				});
+			} else if(data.type === 'label' && data.axis === 'y') {
+				data.element.animate({
+					x: {
+						begin: seq * delays,
+						dur: durations,
+						from: data.x - 100,
+						to: data.x,
+						easing: 'easeOutQuart'
+					}
+				});
+			} else if(data.type === 'point') {
+				data.element.animate({
+					x1: {
+						begin: seq * delays,
+						dur: durations,
+						from: data.x - 10,
+						to: data.x,
+						easing: 'easeOutQuart'
+					},
+					x2: {
+						begin: seq * delays,
+						dur: durations,
+						from: data.x - 10,
+						to: data.x,
+						easing: 'easeOutQuart'
+					},
+					opacity: {
+						begin: seq * delays,
+						dur: durations,
+						from: 0,
+						to: 1,
+						easing: 'easeOutQuart'
+					}
+				});
+			} else if(data.type === 'grid') {
+				var pos1Animation = {
+					begin: seq * delays,
+					dur: durations,
+					from: data[data.axis.units.pos + '1'] - 30,
+					to: data[data.axis.units.pos + '1'],
+					easing: 'easeOutQuart'
+				};
+
+				var pos2Animation = {
+					begin: seq * delays,
+					dur: durations,
+					from: data[data.axis.units.pos + '2'] - 100,
+					to: data[data.axis.units.pos + '2'],
+					easing: 'easeOutQuart'
+				};
+
+				var animations = {};
+				animations[data.axis.units.pos + '1'] = pos1Animation;
+				animations[data.axis.units.pos + '2'] = pos2Animation;
+				animations['opacity'] = {
+					begin: seq * delays,
+					dur: durations,
+					from: 0,
+					to: 1,
+					easing: 'easeOutQuart'
+				};
+
+				data.element.animate(animations);
+			}
+		});
 		});
 	};
 
