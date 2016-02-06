@@ -26,5 +26,9 @@
     "angular-sanitize": "^1.4.9",
     "ng-csv": "^0.3.6",
     "chartist-plugin-tooltip": "^0.0.12"
+  },
+  "resolutions":{
+    "angular": "~1.4.9"
   }
+
 }
