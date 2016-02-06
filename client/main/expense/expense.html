@@ -183,7 +183,7 @@
       <table class="table-expenses table">
         <tbody>
           <tr class="success" ng-repeat="expenseThings in expense.expenseTable">
-            <td class="amount">${{expenseThings.amount}}</td>
+            <td class="amount">{{expenseThings.amount | currency:"$":0}}</td>
             <td class="name">{{expenseThings.name}}</td>
             <td class="category"><span class="category-tag">{{expenseThings.category}}</span></td>
             <td class="time">{{expenseThings.format}}</td>
@@ -202,7 +202,7 @@
       <table class="table-incomes table">
         <tbody>
           <tr class="info" ng-repeat="incomeThings in expense.incomeTable">
-            <td class="amount">${{incomeThings.amount}}</td>
+            <td class="amount">{{incomeThings.amount | currency:"$":0}}</td>
             <td class="name">{{incomeThings.name}}</td>
             <td class="category"><span class="category-tag">{{incomeThings.category}}</span></td>
             <td class="time">{{incomeThings.format}}</td>
