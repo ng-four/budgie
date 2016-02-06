@@ -1,6 +1,7 @@
 angular.module('signup.controller', [])
 .controller('SignupController', function($location, AuthServices){
 
+
 	var signup = this;
 
 	signup.submit = function() {

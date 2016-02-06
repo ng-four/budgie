@@ -145,8 +145,8 @@ angular.module('history.controller', [])
     }
 
  	var renderMap = function(){
- 		createMap();
- 		addMarkers();
+ 		$timeout(createMap,200);
+ 		$timeout(addMarkers,600);
    		$timeout(setBounds, 1000);	   		
  	}	
 

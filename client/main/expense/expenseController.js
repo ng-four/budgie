@@ -2,7 +2,7 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 .controller('ExpenseController', function(ExpenseServices, MapServices, ProfileServices, AuthServices, $http, $timeout, $scope){
 	var expense = this;
 	expense.location; //Location variable for Google Maps feature
-	expense.inputType = 'expense'; //inputType to specify input is an expense for Google Maps feature
+	expense.inputType = 'expense'; //Initializes ng-model on transaction type dropdown to "expense"
 	expense.categoryType = 'Food & Drink'; //Initializes ng-model on category dropdown to "Food & Drink"
 	expense.expenseTable = []; //Storage array for expense response objects that have been posted for the current day
 	expense.incomeTable = []; //Storage array for income response objects that have been posted for the current day
@@ -138,6 +138,9 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		spentDate.hour(Number(hours));
 		spentDate.minute(Number(minutes));
 		spentDate = spentDate.format('YYYY-MM-DD HH:mm:ss');
+
+		console.log('spentDate.hour, spentDate.minute, spentDate', spentDate.hour, spentDate.minute, spentDate);
+
 		//expenseData is an object of all the information for the users expense he/she just inputted
 		var expenseData = {'amount':amount.value, 'name':expenseItem.value, 'category':expense.categoryType, 'spent_date':spentDate, 'notes':notes.value, 'location':expense.location};
 		if(expenseData.location){ //checks if the user entered a location upon inputting their expense
