@@ -7,7 +7,6 @@ angular.module('auth.service', [])
 		 	url: '/signup',
 			data: userData
 		}).then(function(resp) {
-			console.log("resp in submitNewUser ", resp);
 			$window.localStorage.setItem('budgieID', resp.data.token);
 			return resp.data;
 		}, function(error) {
@@ -21,7 +20,6 @@ angular.module('auth.service', [])
 			url: '/login',
 			data: userData
 		}).then(function(resp) {
-      console.log('this is resp in submitLogin', resp);
 			$window.localStorage.setItem('budgieID', resp.data.token);
 			$location.path('/main/expense');
 			return resp.data;
@@ -37,7 +35,6 @@ angular.module('auth.service', [])
 	};
 
 	var logOut = function () {
-		console.log('logOut called in AuthServices');
     	$window.localStorage.removeItem('budgieID');
     	$location.path('/landing/login');
 	};
