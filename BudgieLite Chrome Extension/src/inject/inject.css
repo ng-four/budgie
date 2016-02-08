@@ -1,0 +1,26 @@
+/**
+ * Place your custom CSS styles here.
+ **/
+body {
+  min-width: 300px;
+}
+
+.login-button {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+input.form-control{
+ background-color: rgba(0,0,0,0);
+ border: 0;
+ border-radius: 0;
+ border-bottom: 1px solid #375a7f;
+ color: white;
+ margin: 20px;
+ max-width: 260px;
+}
+
+.btn-group a {
+  padding-left: 0;
+  padding-right: 0;
+}
