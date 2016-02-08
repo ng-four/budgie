@@ -12,6 +12,8 @@ angular.module('map.service', [])
 
     var geocoder = new google.maps.Geocoder();
 
+    var infowindow = new google.maps.InfoWindow();
+
   	var getGeoCode = function(address){
 
   		var deferred = $q.defer();
@@ -34,19 +36,15 @@ angular.module('map.service', [])
 
   	var renderMarker = function(transaction, map, bounds){
   		var date = transaction.spent_date || "";
-
-  		var contentString = '<div id="content">'+
+                                                    //;background: #ed1e79
+  		var contentString = '<div id="content" style="font-family: sans-serif">'+
       		'<div id="bodyContent">'+
-      		'<p style="color: black">' + transaction.name + '</p>'+
-       		'<p style="color: black">' + transaction.location + '</p>'+
+      		'<p style="color: black"><strong>' + transaction.name + '</strong></p>'+
+       		'<p style="color: black; width: 200px">' + transaction.location.slice(0, -15) + '</p>'+
       		'<p style="color: black">$' + transaction.amount + '</p>'+
       		'<p style="color: black">' + date + '</p>'+
       		'</div>'+
       		'</div>';
-
-  		var infowindow = new google.maps.InfoWindow({
-    		content: contentString
-  		});
 
       var icons = {
         "Food & Drink": "assets/google/forkknife.png", // "assets/google/purple-dot.png", 
@@ -70,13 +68,14 @@ angular.module('map.service', [])
         icon: icons[transaction.category]
   		});
 
-  		marker.addListener('mouseover', function() {
+  		marker.addListener('click', function() {
+        infowindow.setContent(contentString);
     		infowindow.open(map, marker);
   		});
 
-  		marker.addListener('mouseout', function() {
-    		infowindow.close(map, marker);
-  		});
+  		// marker.addListener('mouseout', function() {
+    // 		infowindow.close(map, marker);
+  		// });
 
   		var ll = new google.maps.LatLng(transaction.latlng);
   		
