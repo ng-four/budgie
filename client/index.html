@@ -65,7 +65,7 @@
 </head>
 <body class="body-wrapper">
   <div ui-view class="body-expand"></div>
-  <footer class="body-row text-center">
+  <footer class="text-center">
     © Budgie 2016 | <a href="#">Budgie github</a>
   </footer>
 
@@ -74,7 +74,7 @@
     client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "http://localhost:8000/dropbox"}));
   </script>
   <script>
-  
+
   $('[data-toggle=tooltip]').hover(function(){
         // on mouseenter
         $(this).tooltip('show');
