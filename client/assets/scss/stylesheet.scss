@@ -383,12 +383,12 @@ input.form-control{
         background-color: #fff;
         border: 0;
         border-radius: 0;
-        height: 150px;
+        height: 100px;
         margin: 0 auto;
         padding: 0;
-        width: 150px;
+        width: 100px;
       }
-      .marketwatch{ padding-top: 45px; }
+      .marketwatch{ padding-top: 35px; }
       .google-finance{ padding-top: 10px; }
       .yahoo-finance{ padding-top: 30px; }
       .investopedia{ padding-top: 40px; }
@@ -582,7 +582,16 @@ footer {
     }
   }
 
+  /*--- LEARN PAGE ---*/
   .learn-page{
+    .container-fluid{
+      display: table;
+      height: 100%;
+      .row{
+        display: table-row;
+        height: 100%;
+      }
+    }
     .resources{
       .item{
         .thumbnail{
@@ -599,6 +608,11 @@ footer {
         .learnvest{ padding-top: 10px; }
         .nerdwallet{ padding-top: 70px; }
       }
+    }
+    .tweet-container{
+      display: table-column;
+      height: 100%;
+      overflow: scroll;
     }
   }
 
