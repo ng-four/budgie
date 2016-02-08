@@ -13,7 +13,6 @@ body{
   background-color: $site-background;
 }
 .body-wrapper{
-  display: table;
   height: 100%;
   width: 100%;
   .body-expand{
@@ -52,6 +51,9 @@ body{
     border: none;
     color: #57a5f9;
   }
+}
+.table-responsive{
+  border: none;
 }
 
 .pointer:hover {

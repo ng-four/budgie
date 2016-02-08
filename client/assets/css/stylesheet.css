@@ -7,7 +7,6 @@ body {
   background-color: #202840; }
 
 .body-wrapper {
-  display: table;
   height: 100%;
   width: 100%; }
   .body-wrapper .body-expand {
@@ -41,6 +40,9 @@ body {
   background: transparent;
   border: none;
   color: #57a5f9; }
+
+.table-responsive {
+  border: none; }
 
 .pointer:hover {
   cursor: pointer;

@@ -34,34 +34,36 @@
         </div>
       </div>
 
-      <table class="history-table table">
-        <thead>
-          <tr>
-            <th ng-click="history.sortBy('amount')" title='Sort by transaction amount'>Amount</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
-            <th ng-click="history.sortBy('name')" title='Sort by transaction description'>Expense</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
-            <th ng-click="history.sortBy('category')" title="Sort by category">Category</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
-            <th ng-click="history.sortBy('spent_date')" title="Sort by transaction date">Date</th><span class="sortorder" ng-class="{reverse:reverse}"/>
-            <th ng-click="history.sortBy('location')" title="Sort by transaction location">Location</th><span class="sortorder" ng-class="{reverse:reverse}"/>
-            <th ng-click="history.sortBy('notes')" title="Sort by note">Notes</th><span class="sortorder" ng-class="{reverse:reverse}"/>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-class="{success: expenseThings.inputType === 'expense', info: expenseThings.inputType === 'income'}" ng-repeat="expenseThings in history.allTable | filter: history.inputType | orderBy:cat:reverse">
-            <td class="amount">{{expenseThings.amount | currency:"$":2}}</td>
-            <td class="name">{{expenseThings.name}}</td>
-            <td class="category"><span class="category-tag">{{expenseThings.category}}</span></td>
-            <td class="time">{{expenseThings.spent_date.slice(0,-3)}}</td>
-            <td class="location" title="{{expenseThings.location}}">{{expenseThings.location}}</td>
-            <td class="notes" title="{{expenseThings.notes}}">{{expenseThings.notes}}</td>
-            <td class="edit text-right">
-              <button type="button" ng-click="history.editClick($index, expenseThings.id, expenseThings.inputType)" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" aria-label="Edit" title="Click to edit"></button>
-            </td>
-            <td class="remove text-right">
-              <button type="button" value="Remove" data-ng-click="history.removeRow($index, expenseThings.id, expenseThings.inputType)" class="button-remove icon ion-close-round" title="Click to delete"></button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="container table-responsive">
+        <table class="history-table table">
+          <thead>
+            <tr>
+              <th ng-click="history.sortBy('amount')" title='Sort by transaction amount'>Amount</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
+              <th ng-click="history.sortBy('name')" title='Sort by transaction description'>Expense</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
+              <th ng-click="history.sortBy('category')" title="Sort by category">Category</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
+              <th ng-click="history.sortBy('spent_date')" title="Sort by transaction date">Date</th><span class="sortorder" ng-class="{reverse:reverse}"/>
+              <th ng-click="history.sortBy('location')" title="Sort by transaction location">Location</th><span class="sortorder" ng-class="{reverse:reverse}"/>
+              <th ng-click="history.sortBy('notes')" title="Sort by note">Notes</th><span class="sortorder" ng-class="{reverse:reverse}"/>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-class="{success: expenseThings.inputType === 'expense', info: expenseThings.inputType === 'income'}" ng-repeat="expenseThings in history.allTable | filter: history.inputType | orderBy:cat:reverse">
+              <td class="amount">{{expenseThings.amount | currency:"$":2}}</td>
+              <td class="name">{{expenseThings.name}}</td>
+              <td class="category"><span class="category-tag">{{expenseThings.category}}</span></td>
+              <td class="time">{{expenseThings.spent_date.slice(0,-3)}}</td>
+              <td class="location" title="{{expenseThings.location}}">{{expenseThings.location}}</td>
+              <td class="notes" title="{{expenseThings.notes}}">{{expenseThings.notes}}</td>
+              <td class="edit text-right">
+                <button type="button" ng-click="history.editClick($index, expenseThings.id, expenseThings.inputType)" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" aria-label="Edit" title="Click to edit"></button>
+              </td>
+              <td class="remove text-right">
+                <button type="button" value="Remove" data-ng-click="history.removeRow($index, expenseThings.id, expenseThings.inputType)" class="button-remove icon ion-close-round" title="Click to delete"></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
