@@ -7,7 +7,6 @@ body {
   background-color: #202840; }
 
 .body-wrapper {
-  display: table;
   height: 100%;
   width: 100%; }
   .body-wrapper .body-expand {
@@ -41,6 +40,9 @@ body {
   background: transparent;
   border: none;
   color: #57a5f9; }
+
+.table-responsive {
+  border: none; }
 
 .pointer:hover {
   cursor: pointer;
@@ -391,7 +393,8 @@ input.form-control {
 
 /*--- FOOTER ---*/
 footer {
-  margin-top: 30px; }
+  margin-top: 10px;
+  width: 100%; }
 
 /*---- MAP ----*/
 #map_canvas {

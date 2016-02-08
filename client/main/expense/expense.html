@@ -31,21 +31,23 @@
             <div class="form-group">
               <label for="select" class="sr-only">Category:</label>
               <select class="form-control select" id="select-category" ng-model="expense.categoryType">
-                <option value="Food & Drink">Food & Drink</option>
-                <option value="Entertainment">Entertainment</option>
-                <option value="Education">Education</option>
-                <option value="Travel">Travel</option>
-                <option value="Rent">Rent</option>
-                <option value="Household">Household</option>
-                <option value="Transport">Transport</option>
-                <option value="Payments">Payments</option>
-                <option value="Shopping">Shopping</option>
-                <option value="Healthcare">Healthcare</option>
+                <option ng-show="expense.inputType=='expense'" value="Food & Drink">Food & Drink</option>
+                <option ng-show="expense.inputType=='expense'" value="Entertainment">Entertainment</option>
+                <option ng-show="expense.inputType=='expense'" value="Education">Education</option>
+                <option ng-show="expense.inputType=='expense'" value="Travel">Travel</option>
+                <option ng-show="expense.inputType=='expense'" value="Rent">Rent</option>
+                <option ng-show="expense.inputType=='expense'" value="Household">Household</option>
+                <option ng-show="expense.inputType=='expense'" value="Transport">Transport</option>
+                <option ng-show="expense.inputType=='expense'" value="Payments">Payments</option>
+                <option ng-show="expense.inputType=='expense'" value="Shopping">Shopping</option>
+                <option ng-show="expense.inputType=='expense'" value="Healthcare">Healthcare</option>
+                <option ng-show="expense.inputType=='income'" value="Salary">Salary</option>
+                <option ng-show="expense.inputType=='income'" value="Gift">Gift</option>
                 <option value="Tax">Tax</option>
                 <option value="Miscellaneous">Miscellaneous</option>
               </select>
             </div>
-            <div class="form-group">
+            <div ng-show="expense.inputType=='expense'" class="form-group">
               <label for="inputLocation" class="sr-only">Location:</label>
               <input type="text" id="location" class="form-control" placeholder="Location" name="location" ng-model="expense.location" googleplace> <!-- data-value="{{expense.location}}"  -->
             </div>
@@ -56,7 +58,7 @@
             <div class="form-group button-group">
               <p ng-show="formAddTransaction.amount.$invalid && !formAddTransaction.amount.$pristine" class="text-danger">Please enter an amount</p>
               <p ng-show="expense.amount < 0" class="text-danger">Please enter an amount that's not negative</p>
-              <p ng-show="formAddTransaction.expenseItem.$invalid && !formAddTransaction.expenseItem.$pristine" class="text-danger">Please enter a item for expense</p>
+              <p ng-show="formAddTransaction.expenseItem.$invalid && !formAddTransaction.expenseItem.$pristine" class="text-danger">Please enter a name for {{expense.inputType}}</p>
               <p ng-show="formAddTransaction.time.$invalid && !formAddTransaction.time.$pristine" class="text-danger">Please enter a time</p>
               <button type="submit" class="btn btn-primary" ng-click="expense.addExpense()" ng-disabled="expense.amount < 0 || formAddTransaction.$invalid || formAddTransaction.$pristine">Submit</button>
               <button type="reset" ng-click="formAddTransaction.$setPristine(true)" class="btn btn-default">Cancel</button>
@@ -82,8 +84,8 @@
                 <input type="number" id="new-amount" class="form-control" placeholder="Amount" name="newAmount" ng-model="expense.newAmount" required only-digits>
               </div>
               <div class="form-group col-sm-6" ng-class="{'has-error': formEditTransaction.newExpenseItem.$error.required}">
-                <label for="inputNewExpenseItem">Expense: </label>
-                <input type="text" id="new-expense-item" class="form-control" placeholder="Expense" name="newExpenseItem" ng-model="expense.newExpenseItem" required>
+                <label for="inputNewExpenseItem">Name: </label>
+                <input type="text" id="new-expense-item" class="form-control" placeholder="Name" name="newExpenseItem" ng-model="expense.newExpenseItem" required>
               </div>
               <div class="form-group col-sm-6" ng-class="{'has-error': formEditTransaction.newSpentDate.$invalid}">
                 <label for="newSpentDate">Time: </label>
@@ -92,21 +94,23 @@
               <div class="form-group col-sm-6">
                 <label for="select">Category:</label>
                 <select id="new-category" class="form-control select" name="newCategory" ng-model="expense.newCategory">
-                  <option value="Food & Drink">Food & Drink</option>
-                  <option value="Entertainment">Entertainment</option>
-                  <option value="Education">Education</option>
-                  <option value="Travel">Travel</option>
-                  <option value="Rent">Rent</option>
-                  <option value="Household">Household</option>
-                  <option value="Transport">Transport</option>
-                  <option value="Payments">Payments</option>
-                  <option value="Shopping">Shopping</option>
-                  <option value="Healthcare">Healthcare</option>
+                  <option ng-show="expense.inputType=='expense'" value="Food & Drink">Food & Drink</option>
+                  <option ng-show="expense.inputType=='expense'" value="Entertainment">Entertainment</option>
+                  <option ng-show="expense.inputType=='expense'" value="Education">Education</option>
+                  <option ng-show="expense.inputType=='expense'" value="Travel">Travel</option>
+                  <option ng-show="expense.inputType=='expense'" value="Rent">Rent</option>
+                  <option ng-show="expense.inputType=='expense'" value="Household">Household</option>
+                  <option ng-show="expense.inputType=='expense'" value="Transport">Transport</option>
+                  <option ng-show="expense.inputType=='expense'" value="Payments">Payments</option>
+                  <option ng-show="expense.inputType=='expense'" value="Shopping">Shopping</option>
+                  <option ng-show="expense.inputType=='expense'" value="Healthcare">Healthcare</option>
+                  <option ng-show="expense.inputType=='income'" value="Salary">Salary</option>
+                  <option ng-show="expense.inputType=='income'" value="Gift">Gift</option>
                   <option value="Tax">Tax</option>
                   <option value="Miscellaneous">Miscellaneous</option>
                 </select>
               </div>
-              <div class="form-group col-sm-6">
+              <div ng-show="expense.inputType=='expense'" class="form-group col-sm-6">
                 <label for="select">Location: </label>
                 <input type="text" class="form-control" id="newlocation" placeholder="Location" name="newLocation" ng-model="expense.newLocation" googleplace>
               </div>
@@ -123,7 +127,7 @@
             <p ng-show="expense.isModalInvalid" class='text-danger text-center' role="alert">Please fill out all of the fields</p>
             <p ng-show="formEditTransaction.newAmount.$invalid" class="text-danger">Please enter an amount</p>
             <p ng-show="expense.newAmount < 0" class="text-danger">Please enter an amount that's not negative</p>
-            <p ng-show="formEditTransaction.newExpenseItem.$invalid" class="text-danger">Please enter a item for expense</p>
+            <p ng-show="formEditTransaction.newExpenseItem.$invalid" class="text-danger">Please enter a name</p>
             <p ng-show="formEditTransaction.newSpentDate.$invalid" class="text-danger">Please enter a time</p>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-primary" ng-click="expense.editRow(expense.newIndex, expense.newId, expense.inputType)" ng-disabled="expense.newAmount < 0 || formEditTransaction.$invalid">Save</button>
@@ -179,7 +183,7 @@
 -->
 
   <!-- DAILY TRANSACTIONS -->
-    <div class="container">
+    <div class="container table-responsive">
       <table class="table-expenses table">
         <tbody>
           <tr class="success" ng-repeat="expenseThings in expense.expenseTable">
@@ -198,7 +202,7 @@
         </tbody>
       </table>
     </div>
-    <div class="container">
+    <div class="container table-responsive">
       <table class="table-incomes table">
         <tbody>
           <tr class="info" ng-repeat="incomeThings in expense.incomeTable">
