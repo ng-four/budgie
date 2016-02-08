@@ -318,12 +318,12 @@ input.form-control {
     background-color: #fff;
     border: 0;
     border-radius: 0;
-    height: 150px;
+    height: 100px;
     margin: 0 auto;
     padding: 0;
-    width: 150px; }
+    width: 100px; }
   .learn-page .resources .item .marketwatch {
-    padding-top: 45px; }
+    padding-top: 35px; }
   .learn-page .resources .item .google-finance {
     padding-top: 10px; }
   .learn-page .resources .item .yahoo-finance {
@@ -382,6 +382,12 @@ input.form-control {
 
 .history-table th:hover {
   cursor: pointer; }
+
+.history-table .location, .history-table .notes {
+  max-width: 175px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
 
 /*--- FOOTER ---*/
 footer {
@@ -475,6 +481,13 @@ footer {
 @media (min-width: 768px) {
   .navbar-default .navbar-collapse {
     background: transparent; }
+  /*--- LEARN PAGE ---*/
+  .learn-page .container-fluid {
+    display: table;
+    height: 100%; }
+    .learn-page .container-fluid .row {
+      display: table-row;
+      height: 100%; }
   .learn-page .resources .item .thumbnail {
     height: 200px;
     width: 200px; }
@@ -496,6 +509,10 @@ footer {
     padding-top: 10px; }
   .learn-page .resources .item .nerdwallet {
     padding-top: 70px; }
+  .learn-page .tweet-container {
+    display: table-column;
+    height: 100%;
+    overflow: scroll; }
   .history-controls {
     text-align: left; }
     .history-controls .forms {

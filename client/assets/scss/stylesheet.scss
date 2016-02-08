@@ -7,7 +7,7 @@ $danger-red: #e74c3c;
 
 /*--- GLOBAL STYLES ---*/
 html {
-	-webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
 }
 body{
   background-color: $site-background;
@@ -142,11 +142,11 @@ input.form-control{
   color: #fff;
   background: $category-tag-color;
   border-bottom-right-radius: 4px;
-	border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
   margin-left: 20px;
   position: relative;
-	padding: 3px 12px;
-	text-decoration: none;
+  padding: 3px 12px;
+  text-decoration: none;
 }
 
 .category-tag:before{
@@ -202,24 +202,24 @@ input.form-control{
 }
 
 .table-expenses, .table-incomes{
-	.amount{
-		width: 70px;
-	}
+  .amount{
+    width: 70px;
+  }
   .name{
     width: 125px;
   }
-	.category{
-		width: 140px;
-	}
+  .category{
+    width: 140px;
+  }
   .time{
     width: 100px
   }
   .notes{
     width: 325px;
   }
-	.edit, .remove{
-		width: 25px;
-	}
+  .edit, .remove{
+    width: 25px;
+  }
 }
 
 .modal{
@@ -340,35 +340,35 @@ input.form-control{
 }
 
 .ct-label {
-	display: none;
+  display: none;
 }
 
 .chartist-tooltip {
-	position: absolute;
-	max-width: 200px;
-	padding: 3px 8px;
-	color: #fff;
-	text-align: center;
-	// background-color: #000;
-	border-radius: 4px;
-	background: #000000;
-	background: -moz-linear-gradient(top, #000000 0%, #141414 100%);
-	background: -webkit-linear-gradient(top, #000000 0%,#141414 100%);
-	background: linear-gradient(to bottom, #000000 0%,#141414 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#141414',GradientType=0 );
-	box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.36);
+  position: absolute;
+  max-width: 200px;
+  padding: 3px 8px;
+  color: #fff;
+  text-align: center;
+  // background-color: #000;
+  border-radius: 4px;
+  background: #000000;
+  background: -moz-linear-gradient(top, #000000 0%, #141414 100%);
+  background: -webkit-linear-gradient(top, #000000 0%,#141414 100%);
+  background: linear-gradient(to bottom, #000000 0%,#141414 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#141414',GradientType=0 );
+  box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.36);
 }
 
 .ct-grid {
-	stroke: none;
+  stroke: none;
 }
 
 .ct-grids .ct-horizontal:first-child, .first-vertical, .axis {
-	stroke: white;
+  stroke: white;
 }
 
 .ct-label {
-	color: white;
+  color: white;
 }
 
 
@@ -379,16 +379,16 @@ input.form-control{
     .item{
       margin-bottom: 15px;
       text-align: center;
-			.thumbnail{
+      .thumbnail{
         background-color: #fff;
         border: 0;
         border-radius: 0;
-        height: 150px;
+        height: 100px;
         margin: 0 auto;
         padding: 0;
-        width: 150px;
+        width: 100px;
       }
-      .marketwatch{ padding-top: 45px; }
+      .marketwatch{ padding-top: 35px; }
       .google-finance{ padding-top: 10px; }
       .yahoo-finance{ padding-top: 30px; }
       .investopedia{ padding-top: 40px; }
@@ -426,9 +426,9 @@ input.form-control{
         }
       }
     }
-		.tweet-footer span{
-			margin-right: 15px;
-		}
+    .tweet-footer span{
+      margin-right: 15px;
+    }
   }
 }
 
@@ -451,9 +451,15 @@ input.form-control{
   }
 }
 .history-table{
-	th:hover{
-	  cursor: pointer;
-	}
+  th:hover{
+    cursor: pointer;
+  }
+  .location, .notes{
+    max-width: 175px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 /*--- FOOTER ---*/
@@ -576,13 +582,22 @@ footer {
     }
   }
 
+  /*--- LEARN PAGE ---*/
   .learn-page{
+    .container-fluid{
+      display: table;
+      height: 100%;
+      .row{
+        display: table-row;
+        height: 100%;
+      }
+    }
     .resources{
       .item{
-				.thumbnail{
-					height: 200px;
-					width: 200px;
-				}
+        .thumbnail{
+          height: 200px;
+          width: 200px;
+        }
         .marketwatch{ padding-top: 65px; }
         .google-finance{ padding-top: 30px; }
         .yahoo-finance{ padding-top: 60px; }
@@ -593,6 +608,11 @@ footer {
         .learnvest{ padding-top: 10px; }
         .nerdwallet{ padding-top: 70px; }
       }
+    }
+    .tweet-container{
+      display: table-column;
+      height: 100%;
+      overflow: scroll;
     }
   }
 
