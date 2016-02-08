@@ -1,6 +1,6 @@
 angular.module('goal.service', [])
 .factory('GoalServices', function($http, $location, $window) {
-  var addNewGoal = function(newGoal){
+  var addNewGoal = function(newGoal){ //Allows a user to add a new goal with a name, amount, category, and notes
     return $http({
       method: 'POST',
       url: '/goals',
@@ -17,7 +17,7 @@ angular.module('goal.service', [])
     });
   };
 
-  var getGoals = function(){
+  var getGoals = function(){ //Get request to retrieve the current goals of a user
     return $http({
       method: 'GET',
       url: '/goals',
@@ -28,7 +28,7 @@ angular.module('goal.service', [])
     });
   };
 
-  var addMoneyToGoal = function(amount, id){
+  var addMoneyToGoal = function(amount, id){ //Put request allowing a user to add funds towards a specific goal
     return $http({
       method: 'PUT',
       url: '/goals/'+id,
@@ -42,7 +42,7 @@ angular.module('goal.service', [])
     });
   };
 
-  var subtractMoneyFromGoal = function(amount, id){
+  var subtractMoneyFromGoal = function(amount, id){ //Patch request allowing a user to subtract funds from a specific goal
     return $http({
       method: 'PATCH',
       url: '/goals/'+id,
@@ -56,7 +56,7 @@ angular.module('goal.service', [])
     });
   };
 
-  var deleteGoal = function(id){
+  var deleteGoal = function(id){ //Delete request allowing a user to delete a specific goal
     return $http({
       method: 'DELETE',
       url: '/goals/'+id,
@@ -67,7 +67,7 @@ angular.module('goal.service', [])
     });
   };
 
-  var completeGoal = function(id){
+  var completeGoal = function(id){ //Post request allowing a user to acquire a goal and funds readjust 
     return $http({
       method: 'POST',
       url: '/goals/'+id,

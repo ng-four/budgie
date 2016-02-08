@@ -3,8 +3,7 @@ angular.module('expense.service', [])
 
   var geocoder = new google.maps.Geocoder();
 
- var submitNewExpense = function(expenseData, inputType) {
-  console.log('expenseData ', expenseData);
+ var submitNewExpense = function(expenseData, inputType) { //Post request allowing a user to submit a new expense/income
   if(inputType === "income"){
      expenseData.income_date = expenseData.spent_date;
    }
@@ -13,14 +12,13 @@ angular.module('expense.service', [])
       url: '/'+inputType+"s",
       data: expenseData
     }).then(function(resp) {
-
       return resp.data;
     }, function(error) {
        console.error('Submit Expense ERROR!!! ', error);
     });
  };
 
- var getExpensesForDays = function(days){
+ var getExpensesForDays = function(days){ //Get request to retrieve a users expenses for a specific number of days
    return $http({
      method: 'GET',
      url: '/expenses/' + days,
@@ -31,7 +29,7 @@ angular.module('expense.service', [])
    });
  };
 
- var deleteExpense = function(id, inputType){
+ var deleteExpense = function(id, inputType){ //Delete request to delete a specific expense of a users
    return $http({
      method: 'DELETE',
      url: '/'+inputType+"s/"+id,
@@ -42,27 +40,23 @@ angular.module('expense.service', [])
    });
  };
 
- var editExpense = function(id, expenseData, inputType) {
-console.log('----', expenseData, inputType);
+ var editExpense = function(id, expenseData, inputType) { //Put request to edit a specific users expense/income
    if(inputType === "income"){
      expenseData.income_date = expenseData.spent_date;
    }
    var url = '/'+inputType+"s/"+id;
-   console.log(url);
-   // console.log("this is the url, that is being used", ('/'+inputType+"s"));
    return $http({
      method: 'PUT',
      url: '/'+inputType+"s/"+id,
      data: expenseData
    }).then(function(resp) {
-     console.log("resp in editExpense ", resp);
      return resp.data;
    }, function(error) {
        console.error('Edit Expense ERROR!!! ', error);
    });
  };
 
- var getIncomesForDays = function(days){ //in refactor add to financeService
+ var getIncomesForDays = function(days){ //Get request to retrieve a users incomes for a specific number of days
    return $http({
      method: 'GET',
      url: '/incomes/' + days,
@@ -73,7 +67,7 @@ console.log('----', expenseData, inputType);
    });
  };
 
- var updateExpense = function(newLimit) {
+ var updateExpense = function(newLimit) { //Put request to change a users monthly limit
     return $http({
       method: 'PUT',
       url: '/monthly_limit',

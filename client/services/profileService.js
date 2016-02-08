@@ -1,18 +1,16 @@
 angular.module('profile.service', [])
 .factory('ProfileServices', function($http, $location, $window) {
 
-	var getProfileData = function(){
+	var getProfileData = function(){ //Get request to the database for all the users profile data
 		return $http.get('/user')
 			.then(function(resp) {
 				return resp.data;
 			}, function(error){
-				//$location.path('/landing/login');
-				// to handle edge case wherein server shuts down but browser window still open
 				throw error;
 			});
 	};
 
-	var updateLimit = function(newLimit) {
+	var updateLimit = function(newLimit) { //Put request to database to update the users monthly spending limit
 		return $http({
 			method: 'PUT',
 			url: '/monthly_limit',
@@ -24,7 +22,7 @@ angular.module('profile.service', [])
 		});
 	};
 
-	var updateSavingsTarget = function(newTarget){
+	var updateSavingsTarget = function(newTarget){ //Put request to database to update the users monthly savings goal
 		return $http({
 			method: 'PUT',
 			url: '/savings_goal',
@@ -36,7 +34,7 @@ angular.module('profile.service', [])
 		});
 	};
 
-	var updateTotalSavings = function(amount){
+	var updateTotalSavings = function(amount){ //Put request to database to update the users total savings
 		return $http({
 			method: 'PUT',
 			url: '/total_savings',
