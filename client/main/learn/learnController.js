@@ -3,15 +3,13 @@ angular.module('learn.controller', [])
   var learn = this;
   learn.tweetsArr = [];
 
-  learn.loadTweets = function() {
-    console.log("profile.loadProfile called ");
+  learn.loadTweets = function() { //Loads finance tweets for the user via LearnServices
     LearnServices.getTweets()
     .then(function(resp){
-      console.log("this is resp in loadTweets", resp);
       learn.tweetsArr = resp.slice();
     }, function(error){
-      console.error("loadTweets threw error.")
+      console.error("loadTweets threw error.");
     });
-  }
+  };
 
 });
