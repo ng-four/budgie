@@ -9,7 +9,9 @@
     <div class="form-group" ng-class="{'has-error': formSignin.password.$error.required && !formSignin.password.$pristine}">
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" name="password" id="password" class="form-control" placeholder="Password" ng-model="login.password" required>
+      <!--
       <p ng-show="formSignin.password.$error.required && !formSignin.password.$pristine" class="help-block">Please enter a password</p>
+    -->
     </div>
     <div class="form-group text-center">
         <p ng-show="login.isInvalid" class='text-danger'>Username and/or password incorrect.</p>

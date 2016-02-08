@@ -180,48 +180,4 @@ angular.module('history.controller', [])
 
    	loadHistoryView(history.dates);
 
-/* --------    GOOGLE PLACES AUTOCOMPLETE (REFACTOR INTO DIRECTIVE LATER)  --------------*/
-		/*
-   		var options = {
-                types : [],
-            };
-
-            var location = document.getElementById('newlocation');
-            $scope.gPlace2 = new google.maps.places.Autocomplete(location, options);
-            google.maps.event.addDomListener(location, 'keydown', function(e) {
-    		// var pac = $('.pac-container');
-    				// pac.each(function( index ) {
-  					// console.log( index + ": " + $( this ).text() );
-				// });
-				console.log('keyydown!!!');
-    			if (e.keyCode == 13 || e.keyCode == 9) {
-    				console.log("enter pressed or tab pressed ");
-    				if($('#newlocation:visible').length){
-    					for(key in $scope.gPlace2.gm_bindings_.types){
-    						if(Number(key) >= 0){
-    							history.newLocation = $scope.gPlace2.gm_bindings_.types[key].Rd.U[0].j[0];
-    						}
-    					}
-        				e.preventDefault();
-        			}
-    			}
-
-			});
-
-			google.maps.event.addDomListener(location, 'mouseout', function(e) {
-            	console.log('mouseout!!!');
-            	if($('#newlocation').length){
-            		console.log('length ',$('#newlocation').length)
-            		for(key in $scope.gPlace2.gm_bindings_.types){
-    						if(Number(key) >= 0){
-    							history.newLocation = $scope.gPlace2.gm_bindings_.types[key].Rd.U[0].j[0];
-    							$('#newlocation').innerText == history.newLocation;
-    							console.log('history.newLocation ', history.newLocation);
-    						}
-    					}
-    				}
-
-            });
-		*/
-
 });
