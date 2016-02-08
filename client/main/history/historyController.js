@@ -1,5 +1,5 @@
 angular.module('history.controller', [])
-.controller('HistoryController', function(ExpenseServices, AuthServices, MapServices, $http, $filter, $timeout, $q,$scope){
+.controller('HistoryController', function(ExpenseServices, AuthServices, MapServices, $http, $filter, $timeout, $q, $scope){
 
 	var history = this;
 
@@ -8,16 +8,16 @@ angular.module('history.controller', [])
 	history.incomeTable = [];
 	history.allTable = [];
 
-	history.filterDates = function(days){
+	history.filterDates = function(days){ //Allows user to filter history table based on time durations
 		loadHistoryView(days);
-	}
+	};
 
-	var loadHistoryView = function(days){
+	var loadHistoryView = function(days){ //Uses expense services to show the users expense/income history
 		days = days || 7;
 		history.expenseTable = [];
 		history.incomeTable = [];
 		history.allTable = [];
-		ExpenseServices.getExpensesForDays(days)
+		ExpenseServices.getExpensesForDays(days) //Gets users expenses
 			.then(function(resp){
 				history.expenseTable = resp;
 				if(resp[0].spent_date){
@@ -28,7 +28,7 @@ angular.module('history.controller', [])
 				AuthServices.logOut();
 				throw error;
 			}).then(function(resp){
-				ExpenseServices.getIncomesForDays(days)
+				ExpenseServices.getIncomesForDays(days) //Gets users incomes
 					.then(function(incomeresp){
 					history.incomeTable = incomeresp;
 					if(incomeresp.spent_date){						// code breaks if there's no income entered yet
@@ -38,12 +38,12 @@ angular.module('history.controller', [])
 				history.combineTables();
 				})
 				.then(function(resp){
-					renderMap();
+					renderMap(); //Renders map to show pinpoints for users expenses
 			});
-		})
-	}
+		});
+	};
 
-	history.combineTables = function() {
+	history.combineTables = function() { //Function to combine users expenses and incomes in the view
 		history.expenseTable.forEach(function(item){
 			item.inputType = 'expense';
 			history.allTable.push(item);
@@ -54,7 +54,7 @@ angular.module('history.controller', [])
 		});
 	};
 
-	history.removeRow = function(idx, id, inputType){
+	history.removeRow = function(idx, id, inputType){ //Allows the user to delete an expense/income
 		if(inputType === 'expense'){
 			history.allTable.splice(idx, 1);
 			ExpenseServices.deleteExpense(id, inputType);
@@ -69,14 +69,14 @@ angular.module('history.controller', [])
     history.reverse = true;
     var orderBy = $filter('orderBy');
 
-	history.sortBy = function(cat){
+	history.sortBy = function(cat){ //Allows the user to sort through their finance history
 		history.cat = cat;
 		history.allTable = orderBy(history.allTable, cat, history.reverse);
 		history.reverse = (history.cat === cat) ? !history.reverse : false;
 	};
 
 
-	history.editClick = function (idx, id, inputType) {
+	history.editClick = function (idx, id, inputType) { //Allows the user to edit an expense/income from their history
 		console.log("idx, id, inputType ", idx, id, inputType);
 		history.newIndex = idx;
 		history.newId = id;
@@ -92,9 +92,9 @@ angular.module('history.controller', [])
 		if (inputType === 'income') {
 			history.newSpentDate = new Date(history.allTable[idx].income_date);
 		}
-	}
+	};
 
-	history.editRow = function(idx, id, inputType){
+	history.editRow = function(idx, id, inputType){ //Submits the edited historical information
 		history.newLocation = $('#newlocation').val();
 		console.log('history.newLocation in edit row call', history.newLocation);
 
@@ -119,7 +119,7 @@ angular.module('history.controller', [])
 			notes: history.newNotes,
 			spent_date: spentDate,
 			location: history.newLocation,
-		}
+		};
 
 		if(data.location){ //checks if the user entered a location upon inputting their expense
 			MapServices.getGeoCode(data.location) //Google Maps functionality for geocode data generation
@@ -128,29 +128,29 @@ angular.module('history.controller', [])
 				ExpenseServices.editExpense(id, data, inputType)
 					.then(function(resp){
 					loadHistoryView(history.dates);
-				})
+				});
 			});
 		} else {
 			ExpenseServices.editExpense(id, data, inputType)
 				.then(function(resp){
 					loadHistoryView(history.dates);
-			})	
-		}		
+			});
+		}
 	};
 
 	/*--------  MAP FUNCTIONS  -------------*/
 
 	var mapCanvas, map, bounds;
 
-	var createMap = function(){
+	var createMap = function(){ //creates the Google Map
 		mapCanvas = $('#map_canvas')[0];
 		map = MapServices.makeMap(mapCanvas);
 		bounds = new google.maps.LatLngBounds();
-	}
+	};
 
 	var geocodes = [];
 
-	var addMarkers = function(){
+	var addMarkers = function(){ //Adds markers to show locations of expenses
 		for(var j = 0; j < history.allTable.length; j++){
    			if(history.allTable[j].geocode){
    				var latlng = JSON.parse(history.allTable[j].geocode);
@@ -166,17 +166,17 @@ angular.module('history.controller', [])
    			}
    		}
    		geocodes = [];
-    }
+    };
 
- 	var renderMap = function(){
+ 	var renderMap = function(){ //Renders the Google Map 
  		$timeout(createMap,200);
  		$timeout(addMarkers,600);
  		$timeout(setBounds, 1000);
- 	}
+ 	};
 
    	var setBounds = function(){
    		MapServices.setBounds(map, bounds);
-   	}
+   	};
 
    	loadHistoryView(history.dates);
 
