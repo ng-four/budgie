@@ -130,23 +130,48 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 			'spent_date':spentDate,
 			'location':expense.newLocation
 		};
-		ExpenseServices.editExpense(id, expenseData, inputType) //posts users edits to database via ExpenseServices
-		.then(function(resp){
-			if (resp) {
-				if (inputType === 'expense') {
-					expense.expenseTable.splice(idx, 1, resp);
+
+		if(expenseData.location){ //checks if the user entered a location upon inputting their expense
+			MapServices.getGeoCode(expenseData.location) //Google Maps functionality for geocode data generation
+			.then(function(resp) {
+				expenseData.latlng = JSON.stringify({lat: resp.lat(), lng: resp.lng()}); //Establishing latitude and longitude for users location input
+				ExpenseServices.editExpense(id, expenseData, inputType) //posts users edits to database via ExpenseServices
+				.then(function(resp){
+					if (resp) {
+						if (inputType === 'expense') {
+							expense.expenseTable.splice(idx, 1, resp);
+						}
+						if (inputType === 'income') {
+							expense.incomeTable.splice(idx, 1, resp);
+						}
+					$("#editModal").modal("hide"); //Edit modal disappears after edit is successful on backend
+					expense.updateChartData(expense.newCategory, expense.newAmount - expense.oldAmount); //Updates charts data arrays from above
+					expense.renderGraphs(); //Re-renders graphs on expense view based on the users edits
+				} else{
+					expense.isModalInvalid = true;
+					console.error('error in editExpense', resp);
 				}
-				if (inputType === 'income') {
-					expense.incomeTable.splice(idx, 1, resp);
+				});
+			});
+		} else {
+			ExpenseServices.editExpense(id, expenseData, inputType) //posts users edits to database via ExpenseServices
+				.then(function(resp){
+				if (resp) {
+					if (inputType === 'expense') {
+						expense.expenseTable.splice(idx, 1, resp);
+					}
+					if (inputType === 'income') {
+						expense.incomeTable.splice(idx, 1, resp);
+					}
+					$("#editModal").modal("hide"); //Edit modal disappears after edit is successful on backend
+					expense.updateChartData(expense.newCategory, expense.newAmount - expense.oldAmount); //Updates charts data arrays from above
+					expense.renderGraphs(); //Re-renders graphs on expense view based on the users edits
+				} else{
+					expense.isModalInvalid = true;
+					console.error('error in editExpense', resp);
 				}
-				$("#editModal").modal("hide"); //Edit modal disappears after edit is successful on backend
-				expense.updateChartData(expense.newCategory, expense.newAmount - expense.oldAmount); //Updates charts data arrays from above
-				expense.renderGraphs(); //Re-renders graphs on expense view based on the users edits
-			} else{
-				expense.isModalInvalid = true;
-				console.error('error in editExpense', resp);
-			}
-		});
+			});
+		}
 	};
 
 	expense.addExpense = function(){ //function for a user to add an expense
@@ -524,53 +549,71 @@ angular.module('expense.controller', []) //Controller for the expense view of Bu
 		});
 	};
 
+	var checkAuth = function(){
+  		if(!AuthServices.isAuth()){
+  			AuthServices.logOut();
+  	  	}
+    }
+  	checkAuth();
+})
 
+.directive('googleplace', [function() {
+    return {
+        require: 'ngModel',
+        scope: {
+            ngModel: '='
+        },
+        link: function(scope, element, attrs, ctrl) {
+            var options = {
+                types: [],
+                componentRestrictions: {country: "us"}
+            };   
+            // var location = document.getElementById('location');
+            var location = element[0];
 
-	/* --------    GOOGLE PLACES AUTOCOMPLETE   --------------*/
-
-	var options = {
-		types : [],
-	};
-	var location = document.getElementById('location');
-	$scope.gPlace = new google.maps.places.Autocomplete(location, options);
-	google.maps.event.addDomListener(location, 'keydown', function(e) {
-		console.log('keydown!!!');
-		//var pac = $('.pac-container');
-		// pac.each(function( index ) {
-		// console.log( index + ": " + $( this ).text() );
-		// });
-		if (e.keyCode == 13 || e.keyCode == 9) {
-			if($('#location:visible').length){
-				for(var key in $scope.gPlace.gm_bindings_.types){
-					if(Number(key) >= 0){
-						expense.location = $scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0];
-						$('#location').innerText = expense.location;
+            scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
+            google.maps.event.addDomListener(location, 'keyup', function(e) {
+                if (e.keyCode == 13) {
+                //	if($('.pac-container:visible').length){
+                	if($('#location:visible').length || $('#newlocation:visible').length){
+						for(var key in scope.gPlace.gm_bindings_.types){
+							if(Number(key) >= 0){
+								ctrl.$setViewValue(scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0]);
+								ctrl.$commitViewValue();	
+            				    ctrl.$render();
+							}
+						}
+						e.preventDefault();
+					}                   
+            	}
+            });
+            google.maps.event.addDomListener(location, 'keydown', function(e) {
+                if (e.keyCode == 9) {
+                //	if($('.pac-container:visible').length){
+                	if($('#location:visible').length || $('#newlocation:visible').length){
+						for(var key in scope.gPlace.gm_bindings_.types){
+							if(Number(key) >= 0){
+								ctrl.$setViewValue(scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0]);
+								ctrl.$commitViewValue();	
+            				    ctrl.$render();
+							}
+						}
+						e.preventDefault();
+					}                   
+            	}
+            });
+            google.maps.event.addDomListener(location, 'mouseout', function(e) {
+				if($('.pac-container:visible').length){
+					for(key in scope.gPlace.gm_bindings_.types){
+						if(Number(key) >= 0){
+							ctrl.$setViewValue(scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0]);
+							ctrl.$commitViewValue();	
+            				ctrl.$render();
+						}
 					}
 				}
-				console.log("enter pressed or tab pressed ");
-				e.preventDefault();
-			}
-		}
-	});
-	google.maps.event.addDomListener(location, 'mouseout', function(e) {
-		console.log('mouseout!!!');
-		if($('#location').length){
-			console.log('length ',$('#location').length)
-			for(key in $scope.gPlace.gm_bindings_.types){
-				if(Number(key) >= 0){
-					expense.location = $scope.gPlace.gm_bindings_.types[key].Rd.U[0].j[0];
-					$('#location').innerText == expense.location;
-					console.log('expense.location ', expense.location);
-				}
-			}
-		}
-	});
+			});
+        }
+    };
+}]);
 
-	var checkAuth = function(){
-  	if(!AuthServices.isAuth()){
-  		AuthServices.logOut();
-  	  }
-    }
-
-  checkAuth();
-});

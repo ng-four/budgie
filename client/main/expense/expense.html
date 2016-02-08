@@ -47,7 +47,7 @@
             </div>
             <div class="form-group">
               <label for="inputLocation" class="sr-only">Location:</label>
-              <input type="text" id="location" class="form-control" placeholder="Location" name="location" ng-model="expense.location" >
+              <input type="text" id="location" class="form-control" placeholder="Location" name="location" ng-model="expense.location" googleplace> <!-- data-value="{{expense.location}}"  -->
             </div>
             <div class="form-group">
               <button type="button" class="button-note icon ion-clipboard" data-toggle="modal" data-target="#noteModal" title="Add an optional note"></button>
@@ -108,7 +108,7 @@
               </div>
               <div class="form-group col-sm-6">
                 <label for="select">Location: </label>
-                <input type="text" class="form-control" id="newlocation" placeholder="Location" name="newLocation" ng-model="expense.newLocation">
+                <input type="text" class="form-control" id="newlocation" placeholder="Location" name="newLocation" ng-model="expense.newLocation" googleplace>
               </div>
               <div class="form-group col-sm-6">
                 <label for="notes">Notes: </label>

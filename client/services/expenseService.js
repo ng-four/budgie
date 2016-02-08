@@ -8,7 +8,6 @@ angular.module('expense.service', [])
   if(inputType === "income"){
      expenseData.income_date = expenseData.spent_date;
    }
-    console.log("this is the url, that is being used", ('/'+inputType+"s"));
     return $http({
       method: 'POST',
       url: '/'+inputType+"s",
@@ -37,7 +36,6 @@ angular.module('expense.service', [])
      method: 'DELETE',
      url: '/'+inputType+"s/"+id,
    }).then(function(resp) {
-     console.log("resp in deleteExpense ", resp);
      return resp.data;
    }, function(error) {
      console.error('Delete Expense ERROR!!! ', error);

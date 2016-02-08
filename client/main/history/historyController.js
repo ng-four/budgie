@@ -121,10 +121,21 @@ angular.module('history.controller', [])
 			location: history.newLocation,
 		}
 
-		ExpenseServices.editExpense(id, data, inputType)
-			.then(function(resp){
-				loadHistoryView(history.dates);
-			})
+		if(data.location){ //checks if the user entered a location upon inputting their expense
+			MapServices.getGeoCode(data.location) //Google Maps functionality for geocode data generation
+			.then(function(resp) {
+				data.latlng = JSON.stringify({lat: resp.lat(), lng: resp.lng()}); //Establishing latitude and longitude for users location input
+				ExpenseServices.editExpense(id, data, inputType)
+					.then(function(resp){
+					loadHistoryView(history.dates);
+				})
+			});
+		} else {
+			ExpenseServices.editExpense(id, data, inputType)
+				.then(function(resp){
+					loadHistoryView(history.dates);
+			})	
+		}		
 	};
 
 	/*--------  MAP FUNCTIONS  -------------*/
@@ -137,16 +148,24 @@ angular.module('history.controller', [])
 		bounds = new google.maps.LatLngBounds();
 	}
 
+	var geocodes = [];
+
 	var addMarkers = function(){
 		for(var j = 0; j < history.allTable.length; j++){
    			if(history.allTable[j].geocode){
    				var latlng = JSON.parse(history.allTable[j].geocode);
+   				if(geocodes.indexOf(latlng.lat + "" + latlng.lng) >= 0) {
+   					latlng.lat += ((Math.random() -.5) / 300);
+   					latlng.lng += ((Math.random() -.5) / 300);
+   				}
    				history.allTable[j].latlng = latlng;
    				(function(j) {
    					MapServices.renderMarker(history.allTable[j], map, bounds);
    				})(j);
+   				geocodes.push(latlng.lat + "" + latlng.lng);
    			}
    		}
+   		geocodes = [];
     }
 
  	var renderMap = function(){
@@ -162,7 +181,7 @@ angular.module('history.controller', [])
    	loadHistoryView(history.dates);
 
 /* --------    GOOGLE PLACES AUTOCOMPLETE (REFACTOR INTO DIRECTIVE LATER)  --------------*/
-
+		/*
    		var options = {
                 types : [],
             };
@@ -203,5 +222,6 @@ angular.module('history.controller', [])
     				}
 
             });
+		*/
 
 });
