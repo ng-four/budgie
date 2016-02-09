@@ -4,7 +4,6 @@ angular.module('budgie', [
 	'profile.controller',
 	'history.controller',
 	'learn.controller',
-	'stocks.controller',
 	'login.controller',
 	'signup.controller',
 	'landing.controller',
@@ -104,7 +103,7 @@ angular.module('budgie', [
 	});
 
   $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
-    if (toState.authenticate && !AuthServices.isAuth()) {  
+    if (toState.authenticate && !AuthServices.isAuth()) {
 
       $location.path('/landing/login');
     }
