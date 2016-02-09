@@ -30,24 +30,17 @@ __Budgie's transaction map allows you to see precisely where your money is going
 
 tbd
 
-#Technologies Used
+#Tech Stack
 
-- [AngularJS](https://angularjs.org/)
-- [Node.js](https://nodejs.org/)
-- [Express](http://expressjs.com/)
-- [MySQL](https://www.mysql.com/)
-- [Bootstrap](http://getbootstrap.com/)
-- [D3](https://d3js.org/)
-- [Google Maps](https://developers.google.com/maps/) and [Places](https://developers.google.com/places/) APIs
-- [Gulp](http://gulpjs.com/)
+![tech-stack](client/assets/techstack.png)
 
 
 #The Budgie Team:
 
-- [__VJ Aguilar__](@shinyness)
-- [__Thomas Leupp__](@Cygnus2112)
-- [__Joseph Martin__](@jpranaymartin)
-- [__Kaushik Sahoo__](@kaushiksahoo2000)
+- [__VJ Aguilar__](https://github.com/shinyness)
+- [__Thomas Leupp__](https://github.com/Cygnus2112)
+- [__Joseph Martin__](https://github.com/jpranaymartin)
+- [__Kaushik Sahoo__](https://github.com/kaushiksahoo2000)
 
 #Contributing
 
