@@ -7,6 +7,7 @@ angular.module('history.controller', [])
 	history.expenseTable = [];
 	history.incomeTable = [];
 	history.allTable = [];
+	history.locCount = 0;
 
 	history.filterDates = function(days){ //Allows user to filter history table based on time durations
 		loadHistoryView(days);
@@ -20,9 +21,6 @@ angular.module('history.controller', [])
 		ExpenseServices.getExpensesForDays(days) //Gets users expenses
 			.then(function(resp){
 				history.expenseTable = resp;
-				if(resp[0].spent_date){
-					var firstDate = new Date(resp[0].spent_date);
-				}
 			}, function(error){
 				console.log("getExpenses threw error in HistoryController, logging out... ");
 				AuthServices.logOut();
@@ -31,9 +29,6 @@ angular.module('history.controller', [])
 				ExpenseServices.getIncomesForDays(days) //Gets users incomes
 					.then(function(incomeresp){
 					history.incomeTable = incomeresp;
-					if(incomeresp.spent_date){						// code breaks if there's no income entered yet
-						var firstDate = new Date(incomeresp[0].spent_date);
-					}
 			}).then(function(resp){
 				history.combineTables();
 				})
@@ -45,6 +40,10 @@ angular.module('history.controller', [])
 
 	history.combineTables = function() { //Function to combine users expenses and incomes in the view
 		history.expenseTable.forEach(function(item){
+			if(item.geocode) {
+				console.log('has geocode ');
+				history.locCount++;
+			}
 			item.inputType = 'expense';
 			history.allTable.push(item);
 		});
