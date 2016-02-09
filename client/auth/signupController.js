@@ -1,7 +1,6 @@
 angular.module('signup.controller', [])
 .controller('SignupController', function($location, AuthServices){
 
-
 	var signup = this;
 
 	signup.submit = function() {
@@ -14,8 +13,6 @@ angular.module('signup.controller', [])
 			savings_goal: signup.savings_goal,
 			total_savings: signup.total_savings
 		};
-
-		console.log("called signup.submit with ", userData);
 
 		AuthServices.submitNewUser(userData)
     .then(function(token){
@@ -37,15 +34,7 @@ angular.module('signup.controller', [])
       $location.path('/landing/login');
       throw error;
     });
-			// .then(function(resp){
-			// 	console.log("resp in submit in signup controller", resp);
-			// 	//var changePath = function(){
-			// 		$location.path('/main/profile');
-			// 	//}
-			// 	//setTimeout(changePath, 3000); //  all of this is just temporary till promises are squared away
-			// }, function(error){
-			// 	throw error;
-			// });
+		
 	};
 
 })
@@ -55,10 +44,8 @@ angular.module('signup.controller', [])
        // restrict: 'A',
         link: function(scope, element, attrs){
             $(element).hover(function(){
-                // on mouseenter
                 $(element).tooltip('show');
             }, function(){
-                // on mouseleave
                 $(element).tooltip('hide');
             });
         }
