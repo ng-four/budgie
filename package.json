@@ -4,7 +4,7 @@
   "description": "An intuitive, easy-to-use personal finance app.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cd test && mocha",
     "start": "node server/server.js",
     "postinstall": "./node_modules/bower/bin/bower install"
   },
@@ -30,7 +30,9 @@
     "moment": "^2.11.1",
     "mysql": "^2.10.2",
     "request": "^2.67.0",
-    "twitter": "^1.2.5"
+    "twitter": "^1.2.5",
+    "mocha": "^2.4.5",
+    "supertest": "^1.1.0"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
