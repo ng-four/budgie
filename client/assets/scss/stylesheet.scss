@@ -64,6 +64,9 @@ body{
 /*--- LANDING ---*/
 .landing-page{
   .jumbotron{
+    background: url('../images/img_landing.jpg');
+    background-size: cover;
+    background-position: 0 0;
     height: 500px;
     text-align: center;
     h2{
@@ -594,7 +597,6 @@ footer {
     }
   }
 
-  /*--- LEARN PAGE ---*/
   .learn-page{
     .container-fluid{
       display: table;
@@ -638,6 +640,15 @@ footer {
     }
     .button-group{
       float:right;
+    }
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .landing-page{
+    .jumbotron{
+        background-position: 0 -100px;
     }
   }
 }
