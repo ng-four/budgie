@@ -124,6 +124,29 @@ describe("expenses", function(){
   });
 });
 
+describe("Goals", function(){
+  describe('POST', function(token, done) {
+    it("should add a new goal", function(done) {
+      request
+        .post('/signup')
+        .send(querystring.stringify({'email':'test@test.com','full_name':'Test Test','password':'testtest','monthly_limit':2000, 'savings_goal':100,'total_savings':10000}))
+        .expect(200, function(err, res){
+          token = res.header.token;
+           request
+            .post('/goals')
+            .set('x-access-token', token)
+            .send(querystring.stringify({'name':'testgoal','amount':'500','Category':'Shopping','notes':'testnotes', 'spent_date':'2016-02-09 12:02:10'}))
+            .expect(201, function(err){
+          if(err) {
+            console.log('error adding an expense');
+          }
+          done(err);
+        });
+      });
+    });
+  });
+});
+
 describe("twitter api", function(){
   describe('GET', function() {
     it("should return a stream of 100 tweets", function(done) {
