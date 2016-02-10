@@ -8,7 +8,7 @@ exports.createToken = function(request, response, user_id){
 
   // Encoding
   var token = jwt.encode(payload, secret);
-  response.set('token', token).json({token: token});
+  response.set('token', token).status(201).json({token: token});
 };
 
 // Custom Auth middleware

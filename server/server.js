@@ -23,6 +23,8 @@ app.use("/", router);
 
 // If we are being run directly, run the server
 if (!module.parent) {
-    app.listen(app.get("port"));
-    console.log("Listening on", app.get("port"));
+  app.listen(app.get("port"));
+  console.log("Listening on", app.get("port"));
+} else if (module.parent) {
+  module.exports = app;
 }
