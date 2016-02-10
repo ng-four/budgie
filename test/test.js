@@ -42,16 +42,20 @@ describe("sign up and log in", function() {
 
     it("should log in an existing user", function(done) {
       request
-        .post('/login')
-        .send(querystring.stringify({
-          'email': 'test6@test6.com',
-          'password': 'test'
-        }))
-        .expect(201, function(err) {
-          if (err) {
-            console.log('error logging in an existing user');
-          }
-          done(err);
+        .post('/signup')
+        .send(querystring.stringify({'email':'test2@test2.com','full_name':'John Smith','password':'test123','monthly_limit':1000, 'savings_goal':200,'total_savings':5000}))
+        .expect(200, function(err, res){
+          token = res.header.token;
+          request
+            .post('/login')
+            .set('x-access-token', token)
+            .send({"email":"test2@test2.com","password":"test123"})
+            .expect(201, function(err){
+              if(err) {
+                console.log('error logging in a new user');
+              }
+              done(err);
+            });
         });
     });
   });
