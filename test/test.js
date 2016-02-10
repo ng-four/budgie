@@ -127,22 +127,16 @@ describe("expenses", function(){
 describe("twitter api", function(){
   describe('GET', function() {
     it("should return a stream of 100 tweets", function(done) {
-      var ctr = 0;
       request
         .get('/learn')
         .expect('Content-Type', /json/)
         .expect(hasTweets)
-        .expect(200, function(err){
-          if (err) {
-            console.log('error in getting tweets');
-          }
-          done(err);
-        });
+        .end(done);
       function hasTweets(response) {
         if (response.body.statuses.length === 100) {
           return true;
         } else {
-          return false;
+          throw new Error("100 tweets wasn't returned");
         }
       }
     });
