@@ -1,18 +1,24 @@
 angular.module('map.service', [])
-.factory('MapServices', function($http, $location, $window, $q) {
+.factory('MapServices', function($q) {
 
   var makeMap = function(mapCanvas) {
+    var deferred = $q.defer();
     var map = new google.maps.Map(mapCanvas, {
       zoom: 15,
       center: {lat: 34.0210487, lng: -118.4922354},
       scrollwheel: false
     });
-    return map;
+    deferred.resolve(map);
+    return deferred.promise;
+   // return map;
   };
+  
+
   var geocoder = new google.maps.Geocoder();
   var infowindow = new google.maps.InfoWindow();
+
   var getGeoCode = function(address){
-    var deferred = $q.defer();
+    var deferred2 = $q.defer();
     var geocodeOptions = {
       address: address
     };
@@ -22,14 +28,13 @@ angular.module('map.service', [])
         console.log("Geocoder failed!!! ", status);
         //deferred.reject('Geocoder failed due to: ' + status);
       }
-      deferred.resolve(results[0].geometry.location);
+      deferred2.resolve(results[0].geometry.location);
     });
-    return deferred.promise;  // need to call lat() and lng()
+    return deferred2.promise;  // need to call lat() and lng()
   };
 
   var renderMarker = function(transaction, map, bounds){
     var date = transaction.spent_date || "";
-    //;background: #ed1e79
 
     var contentString = '<div id="content" style="font-family: sans-serif">'+
     '<div id="bodyContent">'+

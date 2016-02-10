@@ -29,7 +29,7 @@ angular.module('expense.service', [])
    });
  };
 
- var deleteExpense = function(id, inputType){ //Delete request to delete a specific expense of a users
+ var deleteExpense = function(id, inputType){ //Delete request to delete a specific expense
    return $http({
      method: 'DELETE',
      url: '/'+inputType+"s/"+id,
@@ -40,7 +40,7 @@ angular.module('expense.service', [])
    });
  };
 
- var editExpense = function(id, expenseData, inputType) { //Put request to edit a specific users expense/income
+ var editExpense = function(id, expenseData, inputType) { //Put request to edit a specific user's expense/income
    if(inputType === "income"){
      expenseData.income_date = expenseData.spent_date;
    }
@@ -56,7 +56,7 @@ angular.module('expense.service', [])
    });
  };
 
- var getIncomesForDays = function(days){ //Get request to retrieve a users incomes for a specific number of days
+ var getIncomesForDays = function(days){ //Get request to retrieve a user's incomes for a specific number of days
    return $http({
      method: 'GET',
      url: '/incomes/' + days,
@@ -67,7 +67,7 @@ angular.module('expense.service', [])
    });
  };
 
- var updateExpense = function(newLimit) { //Put request to change a users monthly limit
+ var updateExpense = function(newLimit) { //Put request to change a user's monthly limit
     return $http({
       method: 'PUT',
       url: '/monthly_limit',

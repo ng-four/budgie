@@ -1,8 +1,8 @@
 angular.module('profile.controller', [])
-.controller('ProfileController', function(ProfileServices, AuthServices, GoalServices, $timeout, $window, $location){
+.controller('ProfileController', function(ProfileServices, AuthServices, GoalServices, $location){
 	var profile = this;
 
-	profile.loadProfile = function() { //Loads the users profile data via ProfileServices
+	profile.loadProfile = function() { //Loads the user's profile data via ProfileServices
 		ProfileServices.getProfileData()
 			.then(function(resp){
 				profile.limitClicked = false;
@@ -17,7 +17,6 @@ angular.module('profile.controller', [])
 				profile.savings_goal = resp.savings_goal;
 				GoalServices.getGoals()
 				.then(function(resp){
-					console.log(resp);
 					profile.goals = resp.data;
 				});
 			}, function(error){
@@ -77,7 +76,6 @@ angular.module('profile.controller', [])
 			goal.notes = '';
 
 		});
-
 	};
 
 	profile.toggleTotalSavings = function(){
@@ -86,9 +84,6 @@ angular.module('profile.controller', [])
 
 	profile.submitNewTotalSavings = function(amount){ //Allows the user to update their total savings via ProfileServices
 		amount = amount || profile.total_savings;
-		// if(!amount){
-		// 	amount = profile.total_savings;
-		// }
 		ProfileServices.updateTotalSavings(amount)
 		.then(function(resp){
 			profile.total_savings = amount;

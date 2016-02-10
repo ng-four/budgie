@@ -49,14 +49,14 @@
             </div>
             <div ng-show="expense.inputType=='expense'" class="form-group">
               <label for="inputLocation" class="sr-only">Location:</label>
-              <input type="text" id="location" class="form-control" placeholder="Location" name="location" ng-model="expense.location" googleplace> <!-- data-value="{{expense.location}}"  -->
+              <input type="text" id="location" class="form-control" placeholder="Location" name="location" ng-model="expense.location" googleplace> 
             </div>
             <div class="form-group">
               <button type="button" class="button-note icon ion-clipboard" data-toggle="modal" data-target="#noteModal" title="Add an optional note"></button>
             </div>
 
             <div class="form-group button-group">
-              <p ng-show="formAddTransaction.amount.$invalid && !formAddTransaction.amount.$pristine" class="text-danger">Please enter an amount</p>
+          <!--    <p ng-show="formAddTransaction.amount.$invalid && !formAddTransaction.amount.$pristine" class="text-danger">Please enter an amount</p> -->
               <p ng-show="expense.amount < 0" class="text-danger">Please enter an amount that's not negative</p>
               <p ng-show="formAddTransaction.expenseItem.$invalid && !formAddTransaction.expenseItem.$pristine" class="text-danger">Please enter a name for {{expense.inputType}}</p>
               <p ng-show="formAddTransaction.time.$invalid && !formAddTransaction.time.$pristine" class="text-danger">Please enter a time</p>
@@ -126,7 +126,7 @@
           <div class="form-group button-group">
             <p ng-show="expense.isModalInvalid" class='text-danger text-center' role="alert">Please fill out all of the fields</p>
             <p ng-show="formEditTransaction.newAmount.$invalid" class="text-danger">Please enter an amount</p>
-            <p ng-show="expense.newAmount < 0" class="text-danger">Please enter an amount that's not negative</p>
+            <p ng-show="expense.newAmount < 0" class="text-danger">Please enter an amount greater than zero</p>
             <p ng-show="formEditTransaction.newExpenseItem.$invalid" class="text-danger">Please enter a name</p>
             <p ng-show="formEditTransaction.newSpentDate.$invalid" class="text-danger">Please enter a time</p>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

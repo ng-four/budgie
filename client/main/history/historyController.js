@@ -1,5 +1,5 @@
 angular.module('history.controller', [])
-.controller('HistoryController', function(ExpenseServices, AuthServices, MapServices, $http, $filter, $timeout, $q, $scope){
+.controller('HistoryController', function(ExpenseServices, AuthServices, MapServices, $filter, $timeout, $q){
 
 	var history = this;
 
@@ -18,30 +18,30 @@ angular.module('history.controller', [])
 		history.expenseTable = [];
 		history.incomeTable = [];
 		history.allTable = [];
-		ExpenseServices.getExpensesForDays(days) //Gets users expenses
+		ExpenseServices.getExpensesForDays(days) //Gets user's expenses
 			.then(function(resp){
 				history.expenseTable = resp;
 			}, function(error){
-				console.log("getExpenses threw error in HistoryController, logging out... ");
 				AuthServices.logOut();
 				throw error;
 			}).then(function(resp){
-				ExpenseServices.getIncomesForDays(days) //Gets users incomes
+				ExpenseServices.getIncomesForDays(days) //Gets user's incomes
 					.then(function(incomeresp){
 					history.incomeTable = incomeresp;
 			}).then(function(resp){
-				history.combineTables();
-				})
-				.then(function(resp){
-					renderMap(); //Renders map to show pinpoints for users expenses
+				history.combineTables()
+					.then(function(resp){
+						renderMap(); //Renders map to show location markers for user's expenses
+				});
 			});
 		});
 	};
 
-	history.combineTables = function() { //Function to combine users expenses and incomes in the view
+	history.combineTables = function() { //Function to combine user's expenses and incomes in the view
+		var deferred3 = $q.defer();
+
 		history.expenseTable.forEach(function(item){
 			if(item.geocode) {
-				console.log('has geocode ');
 				history.locCount++;
 			}
 			item.inputType = 'expense';
@@ -51,6 +51,9 @@ angular.module('history.controller', [])
 			item.inputType = 'income';
 			history.allTable.push(item);
 		});
+
+		deferred3.resolve();
+		return deferred3.promise;
 	};
 
 	history.removeRow = function(idx, id, inputType){ //Allows the user to delete an expense/income
@@ -61,7 +64,6 @@ angular.module('history.controller', [])
 			history.allTable.splice(idx,1);
 			ExpenseServices.deleteExpense(id, inputType);
 		}
-
 	};
 
 	history.cat = 'spent_date';
@@ -76,7 +78,6 @@ angular.module('history.controller', [])
 
 
 	history.editClick = function (idx, id, inputType) { //Allows the user to edit an expense/income from their history
-		console.log("idx, id, inputType ", idx, id, inputType);
 		history.newIndex = idx;
 		history.newId = id;
 		history.inputType = inputType;
@@ -95,7 +96,6 @@ angular.module('history.controller', [])
 
 	history.editRow = function(idx, id, inputType){ //Submits the edited historical information
 		history.newLocation = $('#newlocation').val();
-		console.log('history.newLocation in edit row call', history.newLocation);
 
 		inputType = history.allTable[idx].inputType;
 
@@ -142,14 +142,24 @@ angular.module('history.controller', [])
 	var mapCanvas, map, bounds;
 
 	var createMap = function(){ //creates the Google Map
+		var deferred = $q.defer();
+
 		mapCanvas = $('#map_canvas')[0];
-		map = MapServices.makeMap(mapCanvas);
-		bounds = new google.maps.LatLngBounds();
+		MapServices.makeMap(mapCanvas)
+			.then(function(newMap){
+				map = newMap;
+				bounds = new google.maps.LatLngBounds();
+			});	
+
+		deferred.resolve();
+   		return deferred.promise;
 	};
 
 	var geocodes = [];
 
-	var addMarkers = function(){ //Adds markers to show locations of expenses
+	var addMarkers = function(){ //Adds markers to show locations of expenses	
+		var deferred2 = $q.defer();
+
 		for(var j = 0; j < history.allTable.length; j++){
    			if(history.allTable[j].geocode){
    				var latlng = JSON.parse(history.allTable[j].geocode);
@@ -165,17 +175,18 @@ angular.module('history.controller', [])
    			}
    		}
    		geocodes = [];
+   		deferred2.resolve();
+   		return deferred2.promise;
     };
 
  	var renderMap = function(){ //Renders the Google Map 
- 		$timeout(createMap,200);
- 		$timeout(addMarkers,600);
- 		$timeout(setBounds, 1000);
+ 		$timeout(createMap, 200).then(function(){
+ 			addMarkers()
+ 			.then(function(){
+ 				MapServices.setBounds(map, bounds);
+ 			});	
+ 		});
  	};
-
-   	var setBounds = function(){
-   		MapServices.setBounds(map, bounds);
-   	};
 
    	loadHistoryView(history.dates);
 

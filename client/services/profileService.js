@@ -1,5 +1,5 @@
 angular.module('profile.service', [])
-.factory('ProfileServices', function($http, $location, $window) {
+.factory('ProfileServices', function($http) {
 
 	var getProfileData = function(){ //Get request to the database for all the users profile data
 		return $http.get('/user')
