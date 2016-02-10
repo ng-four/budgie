@@ -50,6 +50,9 @@ body {
 
 /*--- LANDING ---*/
 .landing-page .jumbotron {
+  background: url("../images/img_landing.jpg");
+  background-size: cover;
+  background-position: 0 0;
   height: 500px;
   text-align: center; }
   .landing-page .jumbotron h2 {
@@ -492,7 +495,6 @@ footer {
 @media (min-width: 768px) {
   .navbar-default .navbar-collapse {
     background: transparent; }
-  /*--- LEARN PAGE ---*/
   .learn-page .container-fluid {
     display: table;
     height: 100%; }
@@ -532,3 +534,8 @@ footer {
         display: inline-block; }
     .history-controls .button-group {
       float: right; } }
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .landing-page .jumbotron {
+    background-position: 0 -100px; } }
