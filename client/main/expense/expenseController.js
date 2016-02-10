@@ -1,5 +1,5 @@
 angular.module('expense.controller', []) //Controller for the expense view of Budgie
-.controller('ExpenseController', function(ExpenseServices, MapServices, ProfileServices, AuthServices, $http, $timeout, $scope){
+.controller('ExpenseController', function(ExpenseServices, MapServices, ProfileServices, AuthServices){
 	var expense = this;
 	expense.amount;
 	expense.location; //Location variable for Google Maps feature
