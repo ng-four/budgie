@@ -69,22 +69,34 @@ body{
     h2{
       padding-top: 4.5em;
     }
+    h2, p{
+      text-shadow: 2px 2px rgba(0,0,0,0.32)
+    }
   }
   .devices-row{
     position: relative;
     top: -70px;
   }
   .features-column{
-    padding: 50px 65px 100px;
+    padding: 15px 65px 100px;
+    .icon{
+      font-size: 100px;
+    }
   }
   .developers-row{
     background-color: $budgie-green;
     color: $site-background;
-    .contact-links a{
-      color: $site-background;
-    }
     .team-header{
       margin-top: 35px;
+    }
+    h5, p{
+      margin-bottom: 4px;
+    }
+    .developer{
+      width: 100px;
+    }
+    .contact-links a{
+      color: $site-background;
     }
   }
   .developers-column{
