@@ -54,21 +54,29 @@ body {
   text-align: center; }
   .landing-page .jumbotron h2 {
     padding-top: 4.5em; }
+  .landing-page .jumbotron h2, .landing-page .jumbotron p {
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.32); }
 
 .landing-page .devices-row {
   position: relative;
   top: -70px; }
 
 .landing-page .features-column {
-  padding: 50px 65px 100px; }
+  padding: 15px 65px 100px; }
+  .landing-page .features-column .icon {
+    font-size: 100px; }
 
 .landing-page .developers-row {
   background-color: #00bc8c;
   color: #202840; }
-  .landing-page .developers-row .contact-links a {
-    color: #202840; }
   .landing-page .developers-row .team-header {
     margin-top: 35px; }
+  .landing-page .developers-row h5, .landing-page .developers-row p {
+    margin-bottom: 4px; }
+  .landing-page .developers-row .developer {
+    width: 100px; }
+  .landing-page .developers-row .contact-links a {
+    color: #202840; }
 
 .landing-page .developers-column {
   padding: 35px 0 90px 0; }
