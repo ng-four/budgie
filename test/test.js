@@ -7,6 +7,8 @@ var querystring = require('querystring');
 
 var request = supertest.agent(server);
 
+var token;
+
 describe("server", function(){
   describe('GET /', function(){
     it("should return index.html", function(done){
@@ -31,7 +33,7 @@ describe("sign up and log in", function(){
         })
     })
 
-    it("should log in an exisiting user"), function(done) {
+    it("should log in an existing user"), function(done) {
       request
         .post('/login')
         .send(querystring.stringify({'email':'test6@test6.com','password':'test'}))
@@ -73,6 +75,31 @@ describe("endpoints should be protected", function(){
         })
     })
   })
+})
+
+describe("goals", function(){
+  describe('POST', function(token, done) {
+    it("should add a new goal", function(done) {
+      request
+        .post('/signup')
+        .send(querystring.stringify({'email':'test2@test2.com','full_name':'John Smith','password':'test123','monthly_limit':1000, 'savings_goal':200,'total_savings':5000}))
+        .expect(200, function(err, res){
+          token = res.header.token;
+           request
+            .post('/goals')
+            .set('x-access-token', token)
+            .send(querystring.stringify({'name':'New Ferrari','amount':500000,'category':'Transportation','notes':'Testarossa - black, preferably'}))
+            .expect(201, function(err){
+          if(err) {
+            console.log('error adding a goal') 
+          }
+          done(err);
+        })
+        });  
+    })
+  })
+
+
 })
 
 describe("twitter api", function(){
