@@ -1,0 +1,149 @@
+<body>
+  <div id="page-content-wrapper">
+    <div class="container">
+      <h1>Transaction History</h1>
+      <div class="history-controls col-lg-12">
+        <div class="forms">
+          <div class="form-group">
+            <label for="selectTransaction" class="sr-only">Select Transactions to View</label>
+            <select id="selectTransaction" class="form-control select" ng-model="history.inputType">
+              <option value="">income and expenses</option>
+              <option value="income">income</option>
+              <option value="expense">expenses</option>
+            </select>
+          </div>
+          <span>for</span>
+          <div class="form-group">
+            <label for="selectDuration" class="sr-only">Select Days to View</label>
+            <select id="selectDuration" class="form-control select" ng-model="history.dates" ng-change="history.filterDates(history.dates)">
+              <option value="7">past 7 days</option>
+              <option value="30">past 30 days</option>
+              <option value="180">past 6 months</option>
+            </select>
+          </div>
+        </div>
+        <div class="button-group">
+          <!-- DROPBOX/CSV EXPORT -->
+          <button class="btn btn-default" ng-csv-dropbox="history.allTable" csv-header="['Amount','Name','Category','Notes','Type']"
+          csv-column-order="['amount','name','category','notes','inputType']" filename="BudgieHistory.csv" field-separator="," decimal-separator=".">
+          Export to Dropbox</button>
+
+          <button class="btn btn-default" ng-csv="history.allTable" csv-header="['Amount','Name','Category','Notes','Type']"
+          csv-column-order="['amount','name','category','notes','inputType']" filename="BudgieHistory.csv" field-separator="," decimal-separator=".">
+          Export to CSV</button>
+        </div>
+      </div>
+
+      <div class="container table-responsive">
+        <table class="history-table table">
+          <thead>
+            <tr>
+              <th ng-click="history.sortBy('amount')" title='Sort by transaction amount'>Amount</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
+              <th ng-click="history.sortBy('name')" title='Sort by transaction description'>Expense</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
+              <th ng-click="history.sortBy('category')" title="Sort by category">Category</th><span class="sortorder" ng-class="{reverse:reverse}"></span>
+              <th ng-click="history.sortBy('spent_date')" title="Sort by transaction date">Date</th><span class="sortorder" ng-class="{reverse:reverse}"/>
+              <th ng-click="history.sortBy('location')" title="Sort by transaction location">Location</th><span class="sortorder" ng-class="{reverse:reverse}"/>
+              <th ng-click="history.sortBy('notes')" title="Sort by note">Notes</th><span class="sortorder" ng-class="{reverse:reverse}"/>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-class="{success: expenseThings.inputType === 'expense', info: expenseThings.inputType === 'income'}" ng-repeat="expenseThings in history.allTable | filter: history.inputType | orderBy:cat:reverse">
+              <td class="amount">{{expenseThings.amount | currency:"$":2}}</td>
+              <td class="name">{{expenseThings.name}}</td>
+              <td class="category"><span class="category-tag">{{expenseThings.category}}</span></td>
+              <td class="time">{{expenseThings.spent_date.slice(0,-3)}}</td>
+              <td class="location" title="{{expenseThings.location}}">{{expenseThings.location}}</td>
+              <td class="notes" title="{{expenseThings.notes}}">{{expenseThings.notes}}</td>
+              <td class="edit text-right">
+                <button type="button" ng-click="history.editClick($index, expenseThings.id, expenseThings.inputType)" data-toggle="modal" data-target="#editModal" class="button-edit icon ion-edit" aria-label="Edit" title="Click to edit"></button>
+              </td>
+              <td class="remove text-right">
+                <button type="button" value="Remove" data-ng-click="history.removeRow($index, expenseThings.id, expenseThings.inputType)" class="button-remove icon ion-close-round" title="Click to delete"></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<!--  EDIT TRANSACTION MODAL -->
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" ></button>
+          <h4 class="modal-title" id="editModalLabel">Edit Transaction</h4>
+        </div>
+        <div class="modal-body">
+          <form name="formEditTransaction" class="form-horizontal expense-form text-center" novalidate>
+            <fieldset>
+              <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newAmount.$error.required}">
+                <label for="inputNewAmount">Amount</label>
+                <input type="number" class="form-control" id="new-amount" placeholder="Amount" name="newAmount" ng-model="history.newAmount" required>
+              </div>
+              <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newExpenseItem.$error.required}">
+                <label for="inputNewExpenseItem">Name: </label>
+                <input type="text" class="form-control" id="new-expense-item" placeholder="Name" name="newExpenseItem" ng-model="history.newExpenseItem" required>
+              </div>
+              <div class="form-group col-md-6" ng-class="{'has-error': formEditTransaction.newSpentDate.$.invalid}">
+                <label for="newSpentDate">Time: </label>
+                <input type="time" class="form-control" id="new-time" name="newSpentDate" ng-model="history.newSpentDate" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="select">Category:</label>
+                <select id="new-category" class="form-control select" name="newCategory" ng-model="history.newCategory">
+                  <option ng-show="history.inputType=='expense'" value="Food & Drink">Food & Drink</option>
+                  <option ng-show="history.inputType=='expense'" value="Entertainment">Entertainment</option>
+                  <option ng-show="history.inputType=='expense'" value="Education">Education</option>
+                  <option ng-show="history.inputType=='expense'" value="Travel">Travel</option>
+                  <option ng-show="history.inputType=='expense'" value="Rent">Rent</option>
+                  <option ng-show="history.inputType=='expense'" value="Household">Household</option>
+                  <option ng-show="history.inputType=='expense'" value="Transport">Transport</option>
+                  <option ng-show="history.inputType=='expense'" value="Payments">Payments</option>
+                  <option ng-show="history.inputType=='expense'" value="Shopping">Shopping</option>
+                  <option ng-show="history.inputType=='expense'" value="Healthcare">Healthcare</option>
+                  <option ng-show="history.inputType=='income'" value="Salary">Salary</option>
+                  <option ng-show="history.inputType=='income'" value="Gift">Gift</option>
+                  <option value="Tax">Tax</option>
+                  <option value="Miscellaneous">Miscellaneous</option>
+                </select>
+              </div>
+              <div ng-show="history.inputType=='expense'" class="form-group col-md-6">
+                <label for="select">Location: </label>
+                <input type="text" class="form-control" id="newlocation" placeholder="Location" name="newLocation" ng-model="history.newLocation" googleplace>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="notes">Notes: </label>
+                <input type="text" class="form-control" id="new-notes" placeholder="Notes" name="newNotes" ng-model="history.newNotes"/>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <p ng-show="history.isModalInvalid" class='text-danger text-center' role="alert">Please fill out all of the fields</p>
+          <p ng-show="formEditTransaction.newAmount.$invalid" class="text-danger">Please enter an amount</p>
+          <p ng-show="history.newAmount < 0" class="text-danger">Please enter an amount that's not negative</p>
+          <p ng-show="formEditTransaction.newExpenseItem.$invalid" class="text-danger">Please enter a name</p>
+          <p ng-show="formEditTransaction.newSpentDate.$invalid" class="text-danger">Please enter a time</p>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" ng-disabled="history.newAmount < 0 || formEditTransaction.$invalid" ng-click="history.editRow(history.newIndex, history.newId, history.inputType)" data-dismiss="modal" >Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--  TRANSACTION MAP VIEW -->
+    <div class="container">
+      <div ng-show="history.locCount > 0" class="map-view">
+        <h1>Transaction Map</h1>
+        <div class="header">Click on a marker to view transaction details</div>
+        <section class="map-container">
+          <div id="map_canvas" ></div>
+        </section>
+      </div>
+
+    </div>
+  </div>
+</body>

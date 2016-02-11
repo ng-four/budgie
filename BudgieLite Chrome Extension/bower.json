@@ -1,0 +1,30 @@
+{
+  "name": "BudgieChrome",
+  "authors": [
+    "kaushiksahoo2000 <kaushiksahoo2000@gmail.com>"
+  ],
+  "description": "chrome extension for budgie",
+  "main": "",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node",
+    "yui"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.0",
+    "angular-ui-router": "^0.2.17",
+    "moment": "^2.11.2"
+  }
+}

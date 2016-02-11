@@ -1,0 +1,100 @@
+<div id="wrapper" class="landing-page">
+ <div id="page-content-wrapper">
+
+   <div class="navbar navbar-default navbar-fixed-top">
+     <div class="container">
+       <div class="navbar-header">
+         <a ui-sref="landing.login" class="navbar-brand"><img src="assets/images/budgie_logo.svg" class="budgie-logo" title="Budgie" alt="Budgie" /></a>
+         <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+       </div>
+       <div class="navbar-collapse collapse" id="navbar-main">
+         <ul class="nav navbar-nav navbar-right">
+           <li><a ui-sref="landing.login" data-toggle="modal" data-target="#loginModal">Sign In</a></li>
+         </ul>
+       </div>
+     </div>
+   </div>
+
+   <div class="jumbotron">
+     <h2>Money management for the next generation.</h2>
+     <p>Log. Track. Plan. Learn.</p>
+     <p><a class="btn btn-primary" ui-sref="landing.signup" data-toggle="modal" data-target="#loginModal" role="button">Get started today!</a>
+   </div>
+
+   <div class="container">
+      <div class="devices-row row text-center">
+         <img src="assets/images/hero.png" width="100%" />
+      </div>
+      <div class="features-row row">
+         <div class="features-column col-sm-4 text-center">
+            <div class="icon-thumb"><span class="icon ion-cash"></span></div>
+            <h4>Expense Tracking Simplified</h4>
+            <p>Keep track of daily exptenditures with the easy-to-use web and mobile apps</p>
+         </div>
+         <div class="features-column col-sm-4 text-center">
+            <div class="icon-thumb"><span class="icon ion-ios-pulse-strong"></span></div>
+            <h4>Your Financial Life Visualized</h4>
+            <p>Gain insight with statistics and make wiser decisions</p>
+         </div>
+         <div class="features-column col-sm-4 text-center">
+            <div class="icon-thumb"><span class="icon ion-ribbon-a"></span></div>
+            <h4>Achieve Your Goals</h4>
+            <p>Easily track how close you are to accomplishing your objectives</p>
+         </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="developers-row row">
+        <div class="col-sm-12 text-center"><h3 class="team-header">The Team</h3></div>
+         <div class="developers-column col-sm-3 text-center">
+            <img src="assets/images/dev_sahoo_kaushik.jpg" class="developer img-circle" />
+            <h4>Kaushik Sahoo</h4>
+            <p>Product Owner</p>
+            <p>Software Engineer</p>
+            <p class="contact-links"><a href="https://github.com/kaushiksahoo2000" class="icon ion-social-github" target="_blank"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.linkedin.com/in/kaushik-sahoo-39114274" class="icon ion-social-linkedin" target="_blank"></a></p>
+         </div>
+         <div class="developers-column col-sm-3 text-center">
+            <img src="assets/images/dev_martin_joseph.jpg" class="developer img-circle" />
+            <h4>Joseph Martin</h4>
+            <p>Software Engineer</p>
+            <p class="contact-links"><a href="https://github.com/jpranaymartin" class="icon ion-social-github" target="_blank"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.linkedin.com/in/jpranaymartin" class="icon ion-social-linkedin" target="_blank"></a></p>
+         </div>
+         <div class="developers-column col-sm-3 text-center">
+            <img src="assets/images/dev_leupp_thomas.jpg" class="developer img-circle" />
+            <h4>Thomas Leupp</h4>
+            <p>Scrum Master</p>
+            <p>Software Engineer</p>
+            <p class="contact-links"><a href="https://github.com/Cygnus2112" class="icon ion-social-github" target="_blank"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.linkedin.com/in/thomasleupp" class="icon ion-social-linkedin" target="_blank"></a></p>
+         </div>
+         <div class="developers-column col-sm-3 text-center">
+            <img src="assets/images/dev_aguilar_vj.jpg" class="developer img-circle" />
+            <h4>VJ Aguilar</h4>
+            <p>Software Engineer</p>
+            <p class="contact-links"><a href="https://github.com/shinyness" class="icon ion-social-github" target="_blank"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.linkedin.com/in/veejaye" class="icon ion-social-linkedin" target="_blank"></a></p>
+         </div>
+      </div>
+   </div>
+
+ </div>
+ <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+
+
+<div id="loginModal" class="modal fade" tabindex="-1" role="dialog" accesskey="" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div ui-view></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</div>

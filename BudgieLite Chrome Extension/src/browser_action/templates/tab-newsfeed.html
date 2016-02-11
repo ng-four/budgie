@@ -1,0 +1,26 @@
+<div class="btn-group btn-group-justified">
+  <a ui-sref="expense" class="btn btn-success">Expense</a>
+  <a ui-sref="income" class="btn btn-success">Income</a>
+  <a ui-sref="today" class="btn btn-success">Today</a>
+  <a ui-sref="newsfeed" class="btn btn-success">Stream</a>
+</div>
+
+
+<div ng-init="loadTweets()">
+  <div ng-repeat="tweets in tweetsArr">
+      <img src="{{tweets.user.profile_image_url}}">
+      <a href="https://twitter.com/{{tweets.user.screen_name}}"><h2>{{tweets.user.name}}</h2></a>
+      <p>@{{tweets.user.screen_name}}</p>
+      <p>
+        {{tweets.text}}
+      </p>
+      <p>
+        {{tweets.created_at}}
+      </p>
+      <p>
+        <a href="{{tweets.entities.urls[0].url}}"></a>
+        <a>{{tweets.retweet_count}}</a>
+        <a> {{tweets.favorite_count}}</a>
+      </p>
+  </div>
+  </div>

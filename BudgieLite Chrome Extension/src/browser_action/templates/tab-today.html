@@ -1,0 +1,36 @@
+
+
+      <div class="btn-group btn-group-justified">
+        <a ui-sref="expense" class="btn btn-success">Expense</a>
+        <a ui-sref="income" class="btn btn-success">Income</a>
+        <a ui-sref="today" class="btn btn-success">Today</a>
+        <a ui-sref="newsfeed" class="btn btn-success">Stream</a>
+      </div>
+
+      <div>
+        My Profile
+      </div>
+      <a href="#">
+        Total Savings
+        <span>
+          {{profile_total_savings}}
+        </span>
+      </a>
+      <a href="#">
+        Monthly Limit
+        <span>
+          {{profile_monthly_limit}}
+        </span>
+      </a>
+      <div>
+        Expenses
+      </div>
+      <div ng-repeat="item in expensesData">
+        ${{item.amount}} for {{item.name}} @ {{item.location}}
+      </div>
+      <div>
+        Incomes
+      </div>
+      <div ng-repeat="item in incomesData">
+        ${{item.amount}} for {{item.name}}
+      </div>

@@ -3,18 +3,75 @@
 <head>
   <meta charset='UTF-8'>
   <title>Budgie</title>
+
+  <!-- FAVICON info -->
+  <link rel="apple-touch-icon" sizes="57x57" href="assets/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="assets/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="assets/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="assets/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="assets/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="assets/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="assets/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="assets/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="assets/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="assets/favicons/manifest.json">
+  <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="apple-mobile-web-app-title" content="Budgie">
+  <meta name="application-name" content="Budgie">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="assets/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#00bc8c">
+
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDT_EUBiOzMqTtcOmndgzbJ-vBYlRpFu1k&libraries=places"></script>
+  <link rel='stylesheet' href='assets/css/darkly.min.css'/>
+  <link rel='stylesheet' href='../bower_components/chartist/dist/chartist.min.css'/>
+  <link rel='stylesheet' href='assets/ionicons-2.0.1/css/ionicons.min.css'/>
+  <script type='text/javascript' src='../bower_components/chartist/dist/chartist.min.js'></script>
+  <script type='text/javascript' src='assets/chartist-plugin-tooltip.js'></script>
+  <script type='text/javascript' src='assets/chartist-plugin-threshold.min.js'></script>
   <link rel='stylesheet' href='assets/css/stylesheet.css'/>
   <script type='text/javascript' src='../bower_components/angular/angular.js'></script>
   <script type='text/javascript' src='../bower_components/angular-ui-router/release/angular-ui-router.js'></script>
+  <script type='text/javascript' src='../bower_components/moment/min/moment.min.js'></script>
+  <script type='text/javascript' src="../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+  <script type='text/javascript' src="../bower_components/ng-csv/build/ng-csv.min.js"></script>
+  <script type='text/javascript' src="assets/ng-csv-dropbox.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js"></script>
   <script type='text/javascript' src='app.js'></script>
   <script type='text/javascript' src='main/mainController.js'></script>
+  <script type='text/javascript' src='auth/landingController.js'></script>
+  <script type='text/javascript' src='auth/loginController.js'></script>
+  <script type='text/javascript' src='auth/signupController.js'></script>
   <script type='text/javascript' src='main/expense/expenseController.js'></script>
   <script type='text/javascript' src='main/history/historyController.js'></script>
   <script type='text/javascript' src='main/learn/learnController.js'></script>
   <script type='text/javascript' src='main/profile/profileController.js'></script>
-  <script type='text/javascript' src='main/stocks/stocksController.js'></script>
+  <!-- <script type='text/javascript' src='main/stocks/stocksController.js'></script> -->
+  <script type='text/javascript' src='services/authService.js'></script>
+  <script type='text/javascript' src='services/profileService.js'></script>
+  <script type='text/javascript' src='services/expenseService.js'></script>
+  <script type='text/javascript' src='services/goalService.js'></script>
+  <script type='text/javascript' src='services/learnService.js'></script>
+  <script type='text/javascript' src='services/mapService.js'></script>
+
+  <script type='text/javascript' src='../bower_components/jquery/dist/jquery.min.js'></script>
+  <script type='text/javascript' src='../bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
+
 </head>
-<body>
-<div ui-view></div>
+<body class="body-wrapper">
+  <div ui-view class="body-expand"></div>
+  <footer class="text-center">
+    © Budgie 2016 | <a href="#">Budgie github</a>
+  </footer>
+
+  <script type="text/javascript">
+    var client = new Dropbox.Client({ key: "yhintvoqspu0w44" });
+    client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://budgieapp.herokuapp.com/dropbox"}));
+  </script>
+
 </body>
 </html>

@@ -1,0 +1,20 @@
+<div class="btn-group btn-group-justified">
+  <a ui-sref="expense" class="btn btn-success">Expense</a>
+  <a ui-sref="income" class="btn btn-success">Income</a>
+  <a ui-sref="today" class="btn btn-success">Today</a>
+  <a ui-sref="newsfeed" class="btn btn-success">Stream</a>
+</div>
+
+    <form ng-submit="addIncome()" class="text-center">
+      <div class="form-group">
+          <input type="number" class="form-control" placeholder="$" ng-model="input.amount">
+          <input type="text" class="form-control" placeholder="Income" ng-model="input.name">
+          <input type="time" class="form-control" placeholder="Time" ng-model="input.time">
+          <input type="text" class="form-control" placeholder="Category" ng-model="input.category">
+          <input type="text" class="form-control" placeholder="Notes" ng-model="input.notes">
+        <div class="form-group button-group">
+        <button type="submit" class="btn btn-success">Add Income</button>
+        </div>
+        <button class="btn btn-success" ng-show="submitted">Income Added!</button>
+      </div>
+    </form>

@@ -1,0 +1,27 @@
+
+<ion-view view-title="Finance Stream" ng-init="loadTweets()">
+  <ion-content>
+    <ion-list class="list card">
+      <ion-item ng-repeat="tweets in tweetsArr">
+        <div class="item item-avatar">
+          <img src="{{tweets.user.profile_image_url}}">
+          <a href="https://twitter.com/{{tweets.user.screen_name}}"><h2>{{tweets.user.name}}</h2></a>
+          <p>@{{tweets.user.screen_name}}</p>
+        </div>
+        <div class="item item-body">
+          <p>
+            {{tweets.text}}
+          </p>
+          <p>
+            {{tweets.created_at}}
+          </p>
+          <p>
+            <a href="{{tweets.entities.urls[0].url}}"><i class="icon ion-ios-paperplane"></i></a>
+            <a><i class="icon ion-loop"></i> {{tweets.retweet_count}}</a>
+            <a><i class="icon ion-heart"></i> {{tweets.favorite_count}}</a>
+          </p>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

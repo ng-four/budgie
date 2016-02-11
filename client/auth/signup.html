@@ -1,0 +1,52 @@
+<h2 class="text-center">Sign Up</h2>
+<form class="form-signin" name="formSignUp" ng-submit="signup.submit(signup)" novalidate>
+  <fieldset>
+    <div class="form-group" ng-class="{'has-error': formSignUp.name.$error.required && !formSignUp.name.$pristine}">
+      <label for="inputName" class="sr-only">Full Name</label>
+      <input type="text" name="name" id="full_name" class="form-control" placeholder="Full Name" ng-model="signup.full_name" required>
+      <p ng-show="formSignUp.name.$error.required && !formSignUp.name.$pristine" class="help-block">Please enter your full name</p>
+    </div>
+    <div class="form-group" ng-class="{'has-error': formSignUp.email.$invalid && !formSignUp.email.$pristine}">
+      <label for="inputEmail" class="sr-only">Email Address</label>
+      <input type="email" name="email" id="email" class="form-control" placeholder="Email" ng-model="signup.email" required>
+      <p ng-show="formSignUp.email.$invalid && !formSignUp.email.$pristine" class="help-block">Please enter a valid email address</p>
+    </div>
+    <div class="form-group" ng-class="{'has-error': formSignUp.password.$error.required && !formSignUp.password.$pristine}">
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" name="password" id="password" class="form-control" placeholder="Password" ng-model="signup.password" ng-minlength="6" required>
+      <p ng-show="formSignUp.password.$error.required && !formSignUp.password.$pristine" class="help-block">Please enter a password</p>
+      <p ng-show="formSignUp.password.$error.minlength" class="text-danger">Password must be at least 6 characters in length.</p>
+
+    </div>
+    <div class="form-group" ng-class="{'has-error': formSignUp.monthly_limit.$error.required && !formSignUp.monthly_limit.$pristine}">
+      <label for="inputMonthlyLimit" class="sr-only">Monthly Limit</label>
+      <input type="number" name="monthly_limit" id="monthly_limit" class="form-control" placeholder="Monthly Limit" ng-model="signup.monthly_limit" data-toggle="tooltip" data-placement="left" title="Estimate your total monthly expenditures. (Don't worry - you can always edit this later.)" tooltip required >
+      <p ng-show="formSignUp.monthly_limit.$error.required && !formSignUp.monthly_limit.$pristine" class="help-block">Please enter a Monthly Limit</p>
+      <p ng-show="signup.monthly_limit <= 0 && !formSignUp.monthly_limit.$pristine" class="text-danger">Please choose an amount greater than zero.</p>
+
+    </div>
+    <div class="form-group" ng-class="{'has-error': formSignUp.savings_goal.$error.required && !formSignUp.savings_goal.$pristine}">
+      <label for="inputMonthlySavingsGoal" class="sr-only">Monthly Savings Goal</label>
+      <input type="number" name="savings_goal" id="savings_goal" class="form-control" placeholder="Monthly Savings Goal" ng-model="signup.savings_goal" data-toggle="tooltip" data-placement="right" title="Experts recommend setting aside at least 10% of your monthly salary for savings." tooltip required>
+      <p ng-show="formSignUp.savings_goal.$error.required && !formSignUp.savings_goal.$pristine" class="help-block">Please enter a Monthly Savings Goal</p>
+      <p ng-show="signup.savings_goal > 99 && !formSignUp.savings_goal.$pristine" class="text-danger">Please enter a percentage below 100.</p>
+      <p ng-show="signup.savings_goal <= 0 && !formSignUp.savings_goal.$pristine" class="text-danger">Please enter a percentage greater than zero.</p>
+
+    </div>
+    <div class="form-group" ng-class="{'has-error': formSignUp.total_goal.$error.required && !formSignUp.total_goal.$pristine}" required>
+      <label for="inputTotalSavingsGoal" class="sr-only">Current Total Savings</label>
+      <input type="number" name="total_goal" id="total_goal" class="form-control" placeholder="Current Total Savings" ng-model="signup.total_savings" required>
+      <p ng-show="formSignUp.total_goal.$error.required && !formSignUp.total_goal.$pristine" class="help-block">Please enter your Current Total Savings</p>
+
+      <p ng-show="signup.total_savings <= 0 && !formSignUp.total_goal.$pristine" class="text-danger">Please enter an amount greater than zero.</p>
+       
+    </div>
+    <div class="form-group text-center">
+      <p ng-show="signup.isInvalid" class='text-danger'>Could not create profile - email already exists in database.</p>
+      <button type="submit" class="btn btn-primary" ng-disabled="formSignUp.$invalid || formSignUp.$pristine || signup.savings_goal > 99 || signup.savings_goal <= 0 || signup.savings_goal <= 0 || signup.total_savings <= 0 || signup.monthly_limit <= 0">Create Profile</button>
+    </div>
+  </fieldset>
+</form>
+<div class="text-center">
+  <p>Already have an account? <a ui-sref="landing.login"><button type="submit" class="btn btn-success btn-xs">Log In</button></a></p>
+</div>

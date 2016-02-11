@@ -1,0 +1,15 @@
+
+    <form ng-submit="submit()" class="text-center">
+      <div class="form-group">
+          <input type="text" class="form-control" placeholder="Full Name" ng-model="input.full_name">
+          <input type="text" class="form-control" placeholder="Email" ng-model="input.email">
+          <input type="password" class="form-control" placeholder="Password" ng-model="input.password">
+          <input type="number" class="form-control" placeholder="Monthly Limit" ng-model="input.monthly_limit">
+          <input type="number" class="form-control" placeholder="Monthly Savings Goal" ng-model="input.savings_goal">
+          <input type="number" class="form-control" placeholder="Current Total Savings Goal" ng-model="input.total_savings">
+      </div>
+        <div class="form-group button-group">
+          <button class="btn btn-primary" type="submit">Create Profile</button>
+          <a ui-sref="login"><button class="btn btn-default">Login</button></a>
+        </div>
+    </form>
